@@ -1,0 +1,84 @@
+{extend name="base" /}
+
+{block name="header"}
+<div class="admin_header_{$skin_name|default='default'} clearfix">
+  <div class="title"><i></i>{$title|default=""}</div>
+  <div class="action">
+    <b></b>
+    <div class="layui-btn-group layui-btn-group-only">
+      <a class="layui-btn  layui-btn-disabled layui-btn-sm "><i class="fa fa-reply"></i> 返 回 </a>
+    </div>
+  </div>
+</div>
+{/block}
+{block name="main"}
+
+<div class="layui-form">
+<table class="layui-table" lay-even="" lay-skin="row" lay-size="sm">
+  <colgroup>
+    <col width="200">
+    <col width="400">
+    <col width="100">
+    <col width="100">
+    <col width="100">
+    <col width="100">
+    <col width="100">
+    <col width="100">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>操作方法</th>
+      <th>描述</th>
+      <th>用户ID</th>
+      <th>管理员</th>
+      <th>登录IP</th>
+      <th>登录城市</th>
+      <th>登录时间</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {volist name="logAdmin" id="vo"}
+    <tr>
+      <td>{$vo.module}/{$vo.controller}/{$vo.action}</td>
+      <td>{$vo.describe}</td>
+      <td>{$vo.user_id}</td>
+      <td>{$vo.username}</td>
+      <td>{$vo.add_ip}</td>
+      <td>{$vo.city}</td>
+      <td>{$vo.create_time|date="Y-m-d H:i:s"}</td>
+      <td class="operation-menu skin">
+        <a href="javascript:;" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs delete" id="{$vo.id}"><i class="layui-icon"></i></a>
+      </td>
+
+    </tr>
+    {/volist}
+  </tbody>
+</table>
+  </div>
+<div style="padding:0 20px;">{$logAdmin->render()}</div>
+{/block}
+
+{block name="script"}
+
+<script type="text/javascript">
+  $('.delete').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定要删除?', function(index) {
+      $.ajax({
+        url:"{:url('admin/log/delete')}",
+        data:{id:id},
+        success:function(res) {
+          layer.msg(res.msg);
+          if(res.code == 1) {
+            setTimeout(function(){
+              location.href = res.url;
+            },1500)
+          }
+        }
+      })
+    })
+  });
+</script>
+{/block}

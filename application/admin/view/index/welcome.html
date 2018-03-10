@@ -1,0 +1,205 @@
+{extend name="base" /}
+{block name="header"}
+<style type="text/css">
+    .admin_main{
+        padding-top: 10px!important;
+    }
+</style>
+{/block}
+{block name="main"}
+<div class="layui-tab-item layui-show">
+                    <div class="admin_content">
+                        <div class="admin_content_box">
+                            <div id="admHome">
+
+                                <div class="homeRght">
+                                    <div class="headimg">
+                                        <a href="{url('Member/modify',['parent_id'=>$login.id])}" data-icon="fa-user" data-title="修改信息" class="new_tab"><img  src="{$login.thumb|default='__ADMIN__/images/default_headimg.png'}" alt=""/></a>
+                                    </div>
+                                    <div class="welcome en-font">
+                                        您好！<span>{$login.nickname|default=''}</span>
+                                        <a href="{url('User/logout')}" ><i style="color: red;" class="fa fa-sign-out" aria-hidden="true"></i></a>
+                                    </div>
+                                    <div class="time bline en-font">
+                                        <b></b>
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i><span class="showtime">{date_format='Y-m-d H:i:s'}</span>
+                                    </div>
+                                    <div class="info bline en-font">
+                                        真实姓名：<span class="c">{$login.username|default='请叫偶宝宝'}</span>
+                                    </div>
+                                    <div class="info bline en-font">
+                                        登录时间：<span class="c">{$login.login_time|default='上个世纪'}</span>
+                                    </div>
+                                    <div class="info bline en-font">
+                                        登录地址：<span class="c">{$login.login_ip|default='银河系'}</span>
+                                    </div>
+
+                                    <div class="notice">
+                                        <div class="con">
+                                            <div class="layui-btn-group skin">
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn" data-title="留言列表" data-icon="fa-pencil-square-o">留言<span class="layui-badge layui-bg-gray">{if empty($count.feedback)}0{elseif $count.feedback<99}{$count.feedback}{else}99+{/if}</span></a>
+                                                <a class="layui-btn" onclick="layer.msg('敬请期待')">订单<span class="layui-badge layui-bg-gray">0</span></a>
+                                                <a class="layui-btn" onclick="layer.msg('敬请期待')">消息<span class="layui-badge layui-bg-gray">0</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="quick">
+                                        <div class="con">
+                                            <div class="layui-btn-group">
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary">下载日志</a>
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary" rel="simple_clear">清除日志</a>
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary" rel="switch_trace">{if config('app_trace')}关闭Trace{else}启用Trace{/if}</a>
+                                            </div>
+                                            <div class="layui-btn-group">
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary" rel="simple_clear">清除缓存</a>
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary" rel="simple_clear" >清临时文件</a>
+                                                <a href="{$dev.manual_url|default='http://andphp.com'}" target="_blank" class="layui-btn layui-btn-primary">培训手册</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="homeLeft">
+                                    <div class="cms_count">
+                                        <ul class="grid">
+                                            <li class="li-1">
+                                                <div class="info">
+                                                    <a href="{url('Article/lists')}" class="new_tab" data-title="文章列表" data-icon="fa-file-text">
+                                                        <i class="icon"><img  src="{$root|default='__ADMIN__/images/article.png'}" alt=""/></i>
+                                                        <span class="number en-font">{if empty($count.article)}0{elseif $count.article<999}{$count.article}{else}999+{/if}</span>
+                                                        <span class="name">文章</span>
+                                                    </a>
+                                                </div>
+
+                                            </li>
+                                            <li class="li-2">
+                                                <div class="info">
+                                                    <a href="{url('Product/lists')}" class="new_tab" data-title="产品列表" data-icon="fa-camera">
+                                                        <i class="icon"><img  src="{$root|default='__ADMIN__/images/product.png'}" alt=""/></i>
+                                                        <span class="number en-font">{if empty($count.product)}0{elseif $count.product<999}{$count.product}{else}999+{/if}</span>
+                                                        <span class="name">产品</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="li-3">
+                                                <div class="info">
+                                                    <a href="{url('Album/lists')}" class="new_tab" data-title="图集列表" data-icon="fa-image">
+                                                        <i class="icon"><img  src="{$root|default='__ADMIN__/images/album.png'}" alt=""/></i>
+                                                        <span class="number en-font">{if empty($count.album)}0{elseif $count.album<999}{$count.album}{else}999+{/if}</span>
+                                                        <span class="name">图集</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="li-4">
+                                                <div class="info">
+                                                    <a href="{url('User/lists')}" class="new_tab" data-title="会员列表" data-icon="fa-user">
+                                                        <i class="icon"><img  src="{$root|default='__ADMIN__/images/user.png'}" alt=""/></i>
+                                                        <span class="number en-font">{if empty($count.user)}0{elseif $count.user<999}{$count.user}{else}999+{/if}</span>
+                                                        <span class="name">会员</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="cms_info clearfix">
+                                        <div class="you">
+                                            <div class="info">
+                                                <div class="title en-font">使用者：<a href="{url('Setting/lists')}"  class="new_tab" data-title="设置列表" data-icon=" fa-gears"><i class="fa fa-pencil-square-o"></i></a></div>
+                                                <div class="con">
+                                                    <ul class="list">
+                                                        <li><i class="fa fa-thumbs-up"></i>名称：<span>{$sys_config.corp_title|default='demo'}</span></li>
+                                                        <li><i class="fa fa-wifi"></i>网址：<span class="en-font"><a href="{$absroot|default='http://andphp.com'}" target="_blank">{$absroot|default='http://andphp.com'}</a></span></li>
+                                                        <li><i class="fa fa-phone"></i>电话：<span class="en-font">{$sys_config.tel|default='400404400'}</span></li>
+                                                        <li><i class="fa fa-envelope"></i>邮箱：<span class="en-font">{$sys_config.email|default='10000@andphp.com'}</span></li>
+                                                        <li><i class="fa fa-map-marker"></i> 地址：<span>{$sys_config.address|default='http://andphp.com'}</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="dev">
+                                            <div class="info">
+                                                <div class="title en-font">开发者：</div>
+                                                <div class="con">
+                                                    <ul class="list">
+                                                        <li><i class="fa fa-thumbs-up"></i>名称：<span>{$dev.corp_title|default='大雄'}</span></li>
+                                                        <li><i class="fa fa-wifi"></i>网址：<span class="en-font"><a href="{$dev.site|default='www.andphp.com'}" target="_blank">{$dev.site|default='www.andphp.com'}</a></span></li>
+                                                        <li><i class="fa fa-phone"></i>电话：<span class="en-font">{$dev.tel|default='40040010010'}</span></li>
+                                                        <li><i class="fa fa-envelope"></i>邮箱：<span class="en-font">{$dev.email|default='10000@andphp.com'}</span></li>
+                                                        <li><i class="fa fa-map-marker"></i> 地址：<span>{$dev.address|default='重庆九龙坡区and幸福大街'}</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="cms_about clearfix">
+                                        <div class="server">
+                                            <div class="info">
+                                                <div class="con">
+                                                    <table class="layui-table">
+                                                        <tr>
+                                                            <th width="25%">存储配额限制</th>
+                                                            <th width="25%">配额已使用</th>
+                                                            <th width="25%">配额续费日期</th>
+                                                            <th>域名到期日期</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{$dev.storage_limit|default='不关心'}</td>
+                                                            <td  class="skin">
+                                                                <a href="{url('Tool/getSiteSize')}" class="javascript link" rel="get_site_size">『计算』 <span id="showSiteSize" class="layui-badge layui-bg-orange">0KB</span></a>
+                                                            </td>
+                                                            <td>{$dev.storage_expire|default='不关心'}</td>
+                                                            <td>{$dev.domain_expire|default='不关心'}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>操作系统</th>
+                                                            <th>服务器环境</th>
+                                                            <th>服务器IP</th>
+                                                            <th>上传最大限制</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{$dev.php_os|default='不关心'}</td>
+                                                            <td>{$dev.server_software|default='不关心'}</td>
+                                                            <td>{$dev.server_name|default='不关心'}</td>
+                                                            <td>{$dev.upload_max_filesize|default='不关心'}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>PHP版本</th>
+                                                            <th>MYSQL版本</th>
+                                                            <th>脚本超时时间</th>
+                                                            <th>CURL支持</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{$dev.php_version|default='不关心'}</td>
+                                                            <td>{$dev.mysql_version|default='不关心'}</td>
+                                                            <td>{$dev.max_execution_time|default='不关心'}</td>
+                                                            <td>{$dev.curl_extension|default='不关心'}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>系统官网</th>
+                                                            <th>建站手册</th>
+                                                            <th>检查更新</th>
+                                                            <th>系统版本</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="skin"><a href="{$dev.cms_site|default='andphp.com'}" class="link" target="_blank">『访问』</a></td>
+                                                            <td class="skin"><a href="{$dev.use_url|default='andphp.com'}"  class="link" target="_blank">『查阅』</a></td>
+                                                            <td class="skin"><a href="{$dev.update_url|default='andphp.com'}" class="link" target="_blank">『求点赞』</a></td>
+                                                            <td>{$dev.cms_title|default='andphp.com'} V{$dev.cms_version|default='1.0'}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/block}

@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="{$keywords|default=''}" />
+    <title>{$title|default='AndPHP后台管理系统'}</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+
+    <link rel="shortcut icon" href="__COMMON__/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/font-awesome-4.7.0/css/font-awesome.min.css" />
+
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/global.css" />
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/index.css" />
+    {block name="css"}{/block}
+
+    <script type="text/javascript">var wwwroot='/';var absroot=document.domain;</script>
+
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+    <script type="text/javascript" src="__ADMIN__/js/global.js"></script>
+    <script type="text/javascript" src="__ADMIN__/js/jquery.nicescroll.min.js"></script>
+
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <style type="text/css">
+        .site-tree-mobile{display: none; position: fixed; z-index: 100000; bottom: 55px; left: 15px; width: 50px; height: 50px; line-height: 50px; border-radius: 2px; text-align: center; background-color: rgba(0,0,0,.7); color: #fff;}
+        .site-tree-mobile i{font-size: 20px;}
+    </style>
+</head>
+
+<body>
+<script type="text/javascript">
+    var winWidth = $(window).width();
+    var heiHeght = $(window).height();
+</script>
+<div id="gloBox" class="layui-fluid {$skin_name}">
+    <div id="gloTop" class="clearfix layui-row">
+        <div class="layui-col-xs6 layui-col-sm6 layui-col-md4 gtLeft clearfix">
+            <div class="logo "><img src="__ADMIN__/images/admin_logo.png" alt="AndPHP"/></div>
+            <div class="menuBar layui-hide-xs">
+                <ul class="list">
+                    <li class="bar_line bar_top"></li>
+                    <li class="bar_line bar_mid"></li>
+                    <li class="bar_line bar_foot"></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="layui-col-xs6 layui-col-sm6 layui-col-md8 gtRght">
+            <ul class="layui-nav list" lay-filter="">
+                <li class="layui-nav-item">
+                    <a href="javascript:;" class="admin-user" >
+                        <span class="admin-user-headpic"><img  src="{$login.thumb|get_url|default='__ADMIN__/images/default_headimg.png'}" alt=""/></span><span class="admin-user-name en-font">{$login.username|default='admin'}</span>
+                    </a>
+                    <dl class="layui-nav-child">
+                        <i class="i"></i>
+                        <dd><a href="/admin/user/modify/id/1.html" class="new_tab" data-icon="fa-user"><i class="fa fa-pencil" aria-hidden="true"></i>修改密码</a></dd>
+                        <dd><a href="" class="javascript" rel="lockScreen"><i class="fa fa-lock" aria-hidden="true" style="padding-right: 2px;padding-left: 2px;"></i>锁屏(Alt+L)</a></dd>
+                        <dd class="bt"><a id="logout"><i class="fa fa-sign-out" aria-hidden="true"></i>注销登录</a></dd>
+                    </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav list layui-hide-xs" lay-filter="">
+                <li class="layui-nav-item circle gohome first"><a class="tooltip and-bg-{$skin_name|default='default'}}" data-tip-text="访问前台" data-tip-type="3" href="/" target="_blank"><i class="fa fa-home"></i></a></li>
+                <li class="layui-nav-item circle gohome"><a class="tooltip and-bg-{$skin_name|default='default'}}" data-tip-text="访问SNS" data-tip-type="3" href="/sns" target="_blank"><i class="fa fa-comments"></i></a></li>
+                <li class="layui-nav-item circle"><a class="tooltip javascript" rel="full_screen" data-tip-text="F11全屏" data-tip-type="3" href="javascript:void(0);"><i class="fa fa-arrows "></i></a></li>
+                <li class="layui-nav-item circle"><a class="tooltip javascript" rel="simple_clear" data-tip-text="清除缓存" data-tip-type="3" href="{:url('admin/Tool/clear_cache')}"><i class="fa fa-remove" style="margin: -7px 0 0 -5px;"></i></a></li>
+                <li class="layui-nav-item circle"><a target="_blank" class="tooltip" data-tip-text="培训手册" data-tip-type="3" href="https://kancloud.andphp.com"><i class="fa fa-book" style="margin: -7px 0 0 -7px;"></i></a></li>
+                <li class="layui-nav-item circle skin-down"><a  href="javascript:void(0);"><i class="fa fa-yelp" style="margin: -7px 0 0 -6px;"></i></a>
+                    <div class="skin-show clearfix">
+                        <a data-skin="default" rel="change_skin"  style="background: #5EABE1;" class="javascript"></a>
+                        <a data-skin="green" rel="change_skin"  style="background: rgba(0,166,90,1);" class="javascript"></a>
+                        <a data-skin="pink"  rel="change_skin" style="background: rgba(250,96,134,1);" class="javascript"></a>
+                        <a data-skin="yellow"  rel="change_skin" style="background: rgba(255,154,30,1);" class="javascript"></a>
+                        <a data-skin="red"   rel="change_skin" style="background: rgba(250,42,0,1);" class="javascript"></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div id="gloLeft" class="sizing site-tree">
+        <div class="leftbg"></div>
+        <div id="leftBar">
+            <ul class="list" id="gloMenu">
+                {volist name="menus" id="data"}
+                <li class="layui-nav-item ">
+                    <div class="navT">
+                        <a href="javascript:;"><i data-icon="{$data.icon}" class="fa {$data.icon}   animated" style="color: rgb({rand(50,200)},{rand(50,200)},{rand(50,200)}); "></i><cite>{$data.title}</cite></a>
+                    </div>
+
+                    <div class="navC">
+                        <ul class="list">
+                            {notempty name="$data.list"}{volist name="$data.list" id="vo"}
+                            <li class="b"><a href="{$vo.url}" data-url="{$vo.url}" data-icon="{$vo.icon}" data-title="{$vo.title}" kit-target data-id='{$vo.id}'><i data-icon="{$vo.icon|default=$vo.icon}" class="fa fa-angle-right fa-lg animated"></i><cite>{$vo.title}</cite></a></li>
+                            <li class="s"><a href="{$vo.url}" class="tooltip" data-tip-text="{$vo.title}" data-tip-bg="#66AFE2" data-title="{$vo.title}" data-icon="{$vo.icon|default=$vo.icon}"><i class="fa fa-reorder"></i></a></li>
+                            {/volist}{/notempty}
+                        </ul>
+                    </div>
+                </li>
+                {/volist}
+            </ul>
+        </div>
+    </div>
+    <div id="gloRght" lay-allowClose="true">
+        <div class="layui-tab admin-nav-card" lay-filter="admin-tab" >
+            <div class="topBg coverBg"></div>
+            <div class="tab-bg"></div>
+            <a href="javascript:void(0);" class="tab-prev"><i class="fa fa-angle-double-left fa-2x"></i></a>
+            <a href="javascript:void(0);" class="tab-next"><i class="fa fa-angle-double-right fa-2x"></i></a>
+            <ul class="layui-tab-title">
+                <li class="layui-this">
+                    <i class="fa fa-desktop" aria-hidden="true"></i><cite>后台首页</cite>
+                </li>
+            </ul>
+            <div class="layui-tab-content">
+                <!--{include file="index/welcome" /}-->
+
+
+                <div class="layui-tab-item layui-show admin_home">
+                    <div class="admin_content">
+                        <div class="admin_content_box">
+                            <div id="admHome" class="layui-row">
+
+                                <div class="layui-hide-sm layui-show-md-block homeRght">
+                                    <div class="headimg">
+                                        <a href="{url('Member/modify',['parent_id'=>$login.id])}" data-icon="fa-user" data-title="修改信息" class="new_tab"><img  src="{$login.thumb|get_url|default='__ADMIN__/images/default_headimg.png'}" alt=""/></a>
+                                    </div>
+                                    <div class="welcome en-font">
+                                        您好！<span>{$login.nickname|default=''}</span>
+                                        <a href="{url('User/logout')}" ><i style="color: red;" class="fa fa-sign-out" aria-hidden="true"></i></a>
+                                    </div>
+                                    <div class="time bline en-font">
+                                        <b></b>
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i><span class="showtime">{date_format='Y-m-d H:i:s'}</span>
+                                    </div>
+                                    <div class="info bline en-font">
+                                        真实姓名：<span class="c">{$login.username|default='请叫偶宝宝'}</span>
+                                    </div>
+                                    <div class="info bline en-font">
+                                        登录时间：<span class="c">{$login.login_time|default='上个世纪'}</span>
+                                    </div>
+                                    <div class="info bline en-font">
+                                        登录地址：<span class="c">{$login.login_ip|default='银河系'}</span>
+                                    </div>
+
+                                    <div class="notice">
+                                        <div class="con">
+                                            <div class="layui-btn-group skin">
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn" data-title="留言列表" data-icon="fa-pencil-square-o">留言<span class="layui-badge layui-bg-gray">{if empty($count.feedback)}0{elseif $count.feedback<99}{$count.feedback}{else}99+{/if}</span></a>
+                                                <a class="layui-btn" onclick="layer.msg('敬请期待')">订单<span class="layui-badge layui-bg-gray">0</span></a>
+                                                <a class="layui-btn" onclick="layer.msg('敬请期待')">消息<span class="layui-badge layui-bg-gray">0</span></a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="quick">
+                                        <div class="con">
+                                            <div class="layui-btn-group">
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary">下载日志</a>
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary" rel="simple_clear">清除日志</a>
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary" rel="switch_trace">{if config('app_trace')}关闭Trace{else}启用Trace{/if}</a>
+                                            </div>
+                                            <div class="layui-btn-group">
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary" rel="simple_clear">清除缓存</a>
+                                                <a onclick="layer.msg('敬请期待')" class="layui-btn layui-btn-primary" rel="simple_clear" >清临时文件</a>
+                                                <a href="{$dev.manual_url|default='http://andphp.com'}" target="_blank" class="layui-btn layui-btn-primary">培训手册</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 homeLeft">
+                                    <div class="cms_count layui-row">
+                                        <ul class="grid">
+                                            <li class="li-1 layui-col-xs6 layui-col-sm6 layui-col-md3">
+                                                <div class="info">
+                                                    <a href="{url('Article/lists')}" class="new_tab" data-title="文章列表" data-icon="fa-file-text">
+                                                        <i class="icon"><img  src="{$root|default='__ADMIN__/images/article.png'}" alt=""/></i>
+                                                        <span class="number en-font">{if empty($count.article)}0{elseif $count.article<999}{$count.article}{else}999+{/if}</span>
+                                                        <span class="name">文章</span>
+                                                    </a>
+                                                </div>
+
+                                            </li>
+                                            <li class="li-2 layui-col-xs6 layui-col-sm6 layui-col-md3">
+                                                <div class="info">
+                                                    <a href="{url('Product/lists')}" class="new_tab" data-title="产品列表" data-icon="fa-camera">
+                                                        <i class="icon"><img  src="{$root|default='__ADMIN__/images/product.png'}" alt=""/></i>
+                                                        <span class="number en-font">{if empty($count.product)}0{elseif $count.product<999}{$count.product}{else}999+{/if}</span>
+                                                        <span class="name">产品</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="li-3 layui-col-xs6 layui-col-sm6 layui-col-md3">
+                                                <div class="info">
+                                                    <a href="{url('Album/lists')}" class="new_tab" data-title="图集列表" data-icon="fa-image">
+                                                        <i class="icon"><img  src="{$root|default='__ADMIN__/images/album.png'}" alt=""/></i>
+                                                        <span class="number en-font">{if empty($count.album)}0{elseif $count.album<999}{$count.album}{else}999+{/if}</span>
+                                                        <span class="name">图集</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                            <li class="li-4 layui-col-xs6 layui-col-sm6 layui-col-md3">
+                                                <div class="info">
+                                                    <a href="{url('User/lists')}" class="new_tab" data-title="会员列表" data-icon="fa-user">
+                                                        <i class="icon"><img  src="{$root|default='__ADMIN__/images/user.png'}" alt=""/></i>
+                                                        <span class="number en-font">{if empty($count.user)}0{elseif $count.user<999}{$count.user}{else}999+{/if}</span>
+                                                        <span class="name">会员</span>
+                                                    </a>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="cms_info layui-row clearfix">
+                                        <div class="you layui-col-xs12 layui-col-sm6 layui-col-md6">
+                                            <div class="info">
+                                                <div class="title en-font">使用者：<a href="{url('Setting/lists')}"  class="new_tab" data-title="设置列表" data-icon=" fa-gears"><i class="fa fa-pencil-square-o"></i></a></div>
+                                                <div class="con">
+                                                    <ul class="list">
+                                                        <li><i class="fa fa-thumbs-up"></i>名称：<span>{$sys_config.corp_title|default='demo'}</span></li>
+                                                        <li><i class="fa fa-wifi"></i>网址：<span class="en-font"><a href="{$absroot|default='http://andphp.com'}" target="_blank">{$absroot|default='http://andphp.com'}</a></span></li>
+                                                        <li><i class="fa fa-phone"></i>电话：<span class="en-font">{$sys_config.tel|default='400404400'}</span></li>
+                                                        <li><i class="fa fa-envelope"></i>邮箱：<span class="en-font">{$sys_config.email|default='10000@andphp.com'}</span></li>
+                                                        <li><i class="fa fa-map-marker"></i> 地址：<span>{$sys_config.address|default='http://andphp.com'}</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="dev layui-col-xs12 layui-col-sm6 layui-col-md6">
+                                            <div class="info">
+                                                <div class="title en-font">开发者：</div>
+                                                <div class="con">
+                                                    <ul class="list">
+                                                        <li><i class="fa fa-thumbs-up"></i>名称：<span>{$dev.corp_title|default='大雄'}</span></li>
+                                                        <li><i class="fa fa-wifi"></i>网址：<span class="en-font"><a href="{$dev.site|default='www.andphp.com'}" target="_blank">{$dev.site|default='www.andphp.com'}</a></span></li>
+                                                        <li><i class="fa fa-phone"></i>电话：<span class="en-font">{$dev.tel|default='40040010010'}</span></li>
+                                                        <li><i class="fa fa-envelope"></i>邮箱：<span class="en-font">{$dev.email|default='10000@andphp.com'}</span></li>
+                                                        <li><i class="fa fa-map-marker"></i> 地址：<span>{$dev.address|default='重庆九龙坡区and幸福大街'}</span></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="cms_about layui-row clearfix">
+                                        <div class="server">
+                                            <div class="info">
+                                                <div class="con">
+                                                    <table class="layui-table">
+                                                        <tr>
+                                                            <th>存储配额限制</th>
+                                                            <th>配额已使用</th>
+                                                            <th>配额续费日期</th>
+                                                            <th>域名到期日期</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{$dev.storage_limit|default='不关心'}</td>
+                                                            <td  class="skin">
+                                                                <a href="{url('Tool/getSiteSize')}" class="javascript link" rel="get_site_size">『计算』 <span id="showSiteSize" class="layui-badge layui-bg-orange">0KB</span></a>
+                                                            </td>
+                                                            <td>{$dev.storage_expire|default='不关心'}</td>
+                                                            <td>{$dev.domain_expire|default='不关心'}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>操作系统</th>
+                                                            <th>服务器环境</th>
+                                                            <th>服务器IP</th>
+                                                            <th>上传最大限制</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{$dev.php_os|default='不关心'}</td>
+                                                            <td>{$dev.server_software|default='不关心'}</td>
+                                                            <td>{$dev.server_name|default='不关心'}</td>
+                                                            <td>{$dev.upload_max_filesize|default='不关心'}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>PHP版本</th>
+                                                            <th>MYSQL版本</th>
+                                                            <th>脚本超时时间</th>
+                                                            <th>CURL支持</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{$dev.php_version|default='不关心'}</td>
+                                                            <td>{$dev.mysql_version|default='不关心'}</td>
+                                                            <td>{$dev.max_execution_time|default='不关心'}</td>
+                                                            <td>{$dev.curl_extension|default='不关心'}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>系统官网</th>
+                                                            <th>建站手册</th>
+                                                            <th>检查更新</th>
+                                                            <th>系统版本</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="skin"><a href="{$dev.cms_site|default='http://www.andphp.com'}" class="link" target="_blank">『访问』</a></td>
+                                                            <td class="skin"><a href="{$dev.use_url|default='http://doc.andphp.com'}"  class="link" target="_blank">『查阅』</a></td>
+                                                            <td class="skin"><a href="{$dev.update_url|default='http://www.andphp.com'}" class="link" target="_blank">『求点赞』</a></td>
+                                                            <td>{$dev.cms_title|default='andphp.com'} V{$dev.cms_version|default='1.0'}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="left_bar">
+    <div id="site-tree-mobile" class="site-tree-mobile layui-hide layui-show-xs-block">
+        <i id="_icon" class="layui-icon">&#xe602;</i>
+    </div>
+</div>
+<div class="site-mobile-shade"></div>
+<!--锁屏模板 start-->
+<div id="lockScreen" {if $is_lock_screen }style="display: block;"{/if}>
+<div class="init">
+    <div class="relative">
+        <div class="lockTime en-font"></div>
+        <div class="pic"><img  src="__ADMIN__/images/default_headimg.png" alt=""/><p class="en-font">andphp</p></div>
+    </div>
+    <div class="wrbox">
+        <input  type="password" id="screenPwd" class="wrin" value="" autocomplete="off" placeholder="请输入密码解锁.."/><br /><button id="closeLock" class="layui-btn">立即解锁</button>
+    </div>
+</div>
+</div>
+<!--锁屏模板 end-->
+
+
+<script type="text/javascript">
+    var Tab;
+    layui.use(['element','tab'], function(){
+        var element = layui.element;
+
+        layer.config({
+            zIndex:10000
+        });
+
+        Tab = layui.tab({
+            elem: '.layui-tab' ,
+            maxSetting: {
+                max: 20,
+                tipMsg: '最多只能开启20个'
+            },
+            contextMenu:true,
+            autoRefresh:true
+        });
+
+    });
+
+    $('#gloMenu>li').each(function(){
+        var childLen  = $(this).find('.navC').find('li').length;
+        if(childLen) {
+            var html = $(this).find('.navT').find('a').html();
+            $(this).find('.navT').html('<span>'+html+'</span>') ;
+        }
+    });
+
+    $('#gloMenu').on('click','.navT',function(){
+        var parent  = $(this).closest('li');
+        var index   = parent.index();
+        if(parent.find('.navC').find('li').length){
+            if(parent.hasClass('open')){
+                parent.find('.navC').stop(true).slideUp(300,function(){ parent.removeClass('open')}) ;
+            }else{
+                var openLi  = $('#gloMenu').find('li.open') ;
+                openLi.removeClass('open').find('.navC').stop(true).slideUp(300) ;
+                parent.addClass('open').find('.navC').stop(true).slideDown(300) ;
+            }
+
+        }
+    });
+
+    $('#gloMenu').on('click','a',function(){
+        //if(!$(this).hasClass('isNav')) return false ;
+        var href  = $(this).attr('href');
+        var title = $(this).attr('data-title') || $(this).attr('title');
+        if(!title)  title=$(this).text();
+        var icon  = $(this).attr('data-icon') || $(this).find('i.fa').attr('data-icon');
+
+
+        $('#gloMenu').find('a.current').removeClass('current');
+        $(this).addClass('current') ;
+
+
+        Tab.tabAdd({
+            title: title,
+            href : href,
+            icon : icon
+        });
+        return false ;
+    });
+
+
+    $('#gloTop').find('.menuBar').click(function(){
+        if($('#gloBox').hasClass('menu_close')){
+            $('#gloBox').removeClass('menu_close') ;
+        }else{
+            $('#gloBox').addClass('menu_close') ;
+        }
+    });
+    $('#left_bar').find('.site-tree-mobile').click(function(){
+        if($('#gloBox').hasClass('menu_close')){
+            $('#_icon').html('&#xe603;') ;
+            $('#gloBox').removeClass('menu_close') ;
+        }else{
+            $('#_icon').html('&#xe602;') ;
+            $('#gloBox').addClass('menu_close') ;
+        }
+    });
+    // 自适应主页面大小
+     $(window).resize(function () {
+         initSize();
+     });
+    // 初始化主页面大小
+    function initSize() {
+        var screenWidth = $(window).width();// 窗口宽度
+    if(screenWidth < 992){
+        $('#gloBox').addClass('menu_close') ;
+    }
+        　
+     }
+
+    $('.skin-down').hover(function(){
+        $(this).find('.skin-show').stop(true,true).slideDown(300);
+    },function(){
+        $(this).find('.skin-show').stop(true,true).slideUp(300);
+    });
+
+    function change_skin(){
+        var skin  = $(this).attr('data-skin');
+        var url = "/admin/Tool/set_skin.html";
+        HKUC.ajax_request.call(this,url,{
+                    skin : skin
+                },
+                {
+                    'success':function(msg,data){
+                        $('#gloBox').removeClass().addClass(skin);
+                    },
+                    'error':function(msg,data){
+                        layer.closeAll();
+                        layer.msg(msg)
+                    }
+                }
+        );
+    }
+
+    function simple_clear(){
+        var url = $(this).attr('href');
+        $.get(url,function(data){
+                layer.closeAll();
+                layer.msg(data.msg)
+        });
+    }
+
+    function switch_trace(){
+        var url = $(this).attr('href');
+        HKUC.ajax_request.call(this,url,null,
+                {
+                    'success':function(msg,data){
+                        layer.closeAll();
+                        layer.msg(msg,{
+                            time:1000,
+                            end:function(){
+                                window.location.reload();
+                            }
+                        });
+                    },
+                    'error':function(msg,data){
+                        layer.closeAll();
+                        layer.msg(msg)
+                    }
+                }
+        );
+    }
+
+
+    function get_site_size(){
+        var url = $(this).attr('href');
+        layer.msg('查询中请稍后...',{ time:30*60*1000, shade :[0.01, '#393D49']});
+        HKUC.ajax_request.call(this,url,null,
+                {
+                    'success':function(msg,data){
+                        layer.closeAll();
+                        $('#showSiteSize').html(msg)
+                    },
+                    'error':function(msg,data){
+                        layer.closeAll();
+                        layer.msg(msg)
+                    }
+                }
+        );
+    }
+
+    function newTime(){
+        var now  = new Date();
+        var year = now.getFullYear() ;
+        var month = (now.getMonth()+1) >=10 ? (now.getMonth()+1): '0' + (now.getMonth()+1);
+        var date  = now.getDate() >=10 ? now.getDate(): '0' + now.getDate();
+        var hour = now.getHours() >=10 ? now.getHours(): '0' + now.getHours();
+        var minute = now.getMinutes() >=10 ? now.getMinutes(): '0' + now.getMinutes();
+        var second = now.getSeconds() >=10 ? now.getSeconds(): '0' + now.getSeconds();
+        var datetime = year + '-' + month + '-' + date + ' ' + hour + ':' + minute + ':' + second;
+        $('.showtime').html(datetime);
+        $('.lockTime').html(hour + ':' + minute + ':' + second)
+    }
+    newTime();
+    setInterval(newTime,1000);
+
+
+    //同时按下alt+L锁屏
+    document.onkeydown = function(event){
+        if (event.keyCode == 76 && event.altKey){
+            lockScreen()
+        }
+    };
+
+
+    //锁屏
+    function lockScreen(){
+        if($('#lockScreen').is(':visible')) return false ;
+        $('#screenPwd').val('');
+        $('#lockScreen').fadeIn(300, function(){
+            $('#closeLock').addClass('shake');
+            $('#site-tree-mobile').removeClass('site-tree-mobile');
+        });
+        var url = "/admin/Tool/lock_screen.html";
+        HKUC.ajax_request.call(this,url,null,
+                {
+                    'success':function(msg,data){
+                        layer.closeAll();
+                    },
+                    'error':function(msg,data){
+                        layer.closeAll();
+                        layer.msg(msg)
+                    }
+                }
+        );
+    }
+
+    $('#screenPwd').keyup(function(event){
+        if (event.keyCode == 13) {
+            $('#closeLock').trigger('click');
+        }
+    });
+
+    $('#closeLock').click(function(){
+        var url = "/admin/Tool/relieve_screen.html";
+        var pwd = $.trim($('#screenPwd').val());
+        if (!pwd) {
+            layer.msg('请先输入密码');
+            return false;
+        }
+        HKUC.ajax_request.call(this,url,{
+                    pwd : pwd
+                },
+                {
+                    'success':function(msg,data){
+                        layer.closeAll();
+                        $('#lockScreen').fadeOut(300, function(){
+                            $('#closeLock').removeClass('shake');
+                            $('#site-tree-mobile').addClass('site-tree-mobile');
+                        });
+                    },
+                    'error':function(msg,data){
+                        layer.closeAll();
+                        layer.msg(msg);
+                    }
+                }
+        );
+    });
+
+    //resize
+    $(window).resize(function(){
+        winWidth = $(window).width();
+        heiHeght = $(window).height();
+        $('#gloRght').height(heiHeght - 51);
+        $('#gloLeft,#gloSLeft').css('height',(heiHeght - 51) + 'px');
+        $('.layui-tab-content').height(heiHeght - 51 - 40);
+
+    }).trigger('resize');
+
+    //Tab
+    $(window).resize(function(){
+        if(typeof(Tab) != 'undefined') Tab.resize();
+    });
+
+    $('.tab-prev').unbind('click').bind('click',function(){
+        var left    = $('.layui-tab-title').position().left ;
+        left  = left+117 <0 ? left+117 :0 ;
+        $('.layui-tab-title').stop(true).animate({ left : left },500);
+    });
+
+    $('.tab-next').unbind('click').bind('click',function(){
+        var left    = $('.layui-tab-title').position().left ;
+        var boxWid  = $('.layui-tab-title').width() ;
+        var liWid   = 0;
+        $('.layui-tab-title').children('span').remove().end().find('li').each(function(){
+            liWid += $(this).outerWidth() ;
+        });
+        left  = left-117 > -(liWid-boxWid) ? left-117 :-(liWid-boxWid);
+        if(left>0)left =  0;
+        $('.layui-tab-title').stop(true).animate({ left : left },500);
+    });
+
+    function full_screen(){
+        var docElm = document.documentElement;
+        //W3C
+        if (docElm.requestFullscreen) {
+            docElm.requestFullscreen();
+        }
+        //FireFox
+        else if (docElm.mozRequestFullScreen) {
+            docElm.mozRequestFullScreen();
+        }
+        //Chrome等
+        else if (docElm.webkitRequestFullScreen) {
+            docElm.webkitRequestFullScreen();
+        }
+        //IE11
+        else if (docElm.msRequestFullscreen) {
+            docElm.msRequestFullscreen();
+        }
+    }
+
+    $('#logout').click(function () {
+        layer.closeAll();
+        layer.msg('正在注销...',{
+            shade: 0.5,
+            anim: 2,
+            offset: '200px'
+        });
+        setTimeout(function () {
+            $.post("{:url('admin/Login/logout')}", {}, function (data) {
+                var json = $.parseJSON(data);
+                if (json['result'] == 'success') {
+                    layer.msg(json['msg'],{
+                        shade: 0.5,
+                        offset: '200px'
+                    });
+                    setTimeout(function () {
+                        location.href = json['url'];
+                    }, 800)
+
+
+                } else {
+                    $('#login').animate({
+                        'margin-left': -180
+                    }, 200, 'easeOutQuint');
+                    $('.auth').removeClass('checking');
+                    setTimeout(function () {
+                        $('#login').removeClass('checking');
+                    }, 250);
+                    setTimeout(function () {
+                        layer.msg(json['msg'],{
+                            shade: 0.5,
+                            anim: 6,
+                            offset: '200px'
+                        });
+                    }, 550)
+                }
+            })
+        }, 1500)
+    })
+
+</script>
+
+</body>
+</html>

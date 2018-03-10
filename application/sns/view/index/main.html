@@ -1,0 +1,47 @@
+<div class="fly-panel" style="margin-bottom: 0;">
+    <div class="fly-panel-title fly-filter">
+        <a href="{:url('bbs/index/cate',array('cate_alias'=>$action=='cate'?session('forumcate_alias'):'all'))}?type=all" {if condition="$type eq 'all'" }class="layui-this" {/if}>新帖</a>
+        <span class="fly-mid"></span>
+        <a href="{:url('bbs/index/cate',array('cate_alias'=>$action=='cate'?session('forumcate_alias'):'all'))}?type=newreply" {if condition="$type eq 'newreply'" }class="layui-this" {/if}>新回复</a>
+        <span class="fly-mid"></span>
+        <a href="{:url('bbs/index/cate',array('cate_alias'=>$action=='cate'?session('forumcate_alias'):'all'))}?type=hot" {if condition="$type eq 'hot'" }class="layui-this" {/if}>热帖</a>
+        <span class="fly-mid"></span>
+        <a href="{:url('bbs/index/cate',array('cate_alias'=>$action=='cate'?session('forumcate_alias'):'all'))}?type=choice" {if condition="$type eq 'choice'" }class="layui-this" {/if}>精华</a></div>
+    <ul class="fly-list">
+        {volist name="tptcs" id="vo"}
+        <li>
+            <a href="{:url('user/index/home',array('id'=>$vo.userid))}" class="fly-avatar">
+                <img src="__ROOT__{$vo.userhead}" alt="{$vo.username}"></a>
+            <h2>
+                <a class="layui-badge">{$vo.name}</a>
+                <a href="{:url('bbs/index/thread',array('id'=>$vo.id))}">{if $vo.attach}<img src="__PUBLIC__images/attach.png" height="20" title="本帖带有附件"/>{/if}{$vo.title}</a></h2>
+            <div class="fly-list-info">
+
+                {if condition="$type eq 'newreply'"}
+
+                <cite>{$vo.username}</cite> 回复于
+                <span>{$vo.time|friendlyDate}</span> {else /}
+                <a href="{:url('user/index/home',array('id'=>$vo.userid))}" link>
+                    <cite>{$vo.username}</cite></a>
+                <span>{$vo.time|friendlyDate}</span>
+                <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻">
+                    <i class="iconfont icon-kiss"></i>20</span>-->
+                {/if}
+                <span class="fly-list-nums">
+                    <i class="iconfont icon-pinglun1" title="回答"></i>{$vo.reply}</span>
+            </div>
+            {if condition="$vo['settop'] eq 1"}
+            <div class="fly-list-badge"><span class="layui-badge layui-bg-black">置顶</span></div>
+            {/if} {if condition="$vo['choice'] eq 1"}
+            <div class="fly-list-badge"> <span class="layui-badge layui-bg-red">精帖</span> </div>
+            {/if}
+        </li>
+        {/volist}
+    </ul>
+    <div style="border-top: 1px dotted #e2e2e2; text-align: center;">
+        {$tptcs->render()}
+        <!-- {if condition="$action eq 'cate'"} {$tptcs->render()} {else /}
+        <div class="laypage-main"> <a href="{:url('index/cate',array('cate_alias'=>'all'))}?page=2" class="laypage-next">更多>></a> </div>
+        {/if} -->
+    </div>
+</div>

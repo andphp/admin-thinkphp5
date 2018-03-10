@@ -1,0 +1,104 @@
+{extend name="base" /}
+
+{block name="header"}
+<div class="admin_header_{$skin_name|default='default'} clearfix">
+  <div class="title"><i></i>{$title|default=""}</div>
+  <div class="action">
+    <b></b>
+    <div class="layui-btn-group layui-btn-group-only">
+      <a class="layui-btn  layui-btn-disabled layui-btn-sm "><i class="fa fa-reply"></i> 返 回 </a>
+    </div>
+  </div>
+</div>
+{/block}
+{block name="main"}
+
+<div class="layui-btn-group">
+    <a href="{:url('admin/auth_group/add')}" class="layui-btn layui-btn-primary"><i class="layui-icon" style="color: #ffffff;">&#xe608;</i>添加角色</a>
+</div>
+<div class="layui-form">
+<table class="layui-table" lay-even="" lay-skin="row" lay-size="sm">
+  <colgroup>
+    <col width="50">
+    <col width="100">
+    <col width="200">
+    <col width="200">
+    <col width="150">
+  </colgroup>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>角色标题</th>
+      <th>角色介绍</th>
+      <th>角色状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {volist name="role_list" id="vo"}
+    <tr>
+      <td>{$vo.id}</td>
+      <td>{$vo.title}</td>
+      <td>{$vo.intro}</td>
+      {eq name="$vo.id" value="1"}
+      <td> <input name="status" value="禁" title="超级管理员 特权" disabled="" type="radio"></td>
+      {else /}
+      <td><input type="checkbox" name="status" lay-skin="switch" lay-text="开启|禁用" lay-filter="switchStatus" value="{$vo.id}" {notempty name="$vo.status"}{eq name="$vo.status" value="1"}checked=""{/eq}{/notempty}></td>
+      {/eq}
+      {if ( $Think.session.adminUser.id != 1) AND ( $vo.id == 1)}
+      <td class="operation-menu skin">
+        <a href="" class="layui-btn layui-disabled layui-btn-xs"><i class="layui-icon"></i></a>
+        <a href="" class="layui-btn layui-disabled layui-btn-xs"><i class="layui-icon"></i></a>
+      </td>
+      {else /}
+      <td class="operation-menu skin">
+        <a href="{:url('admin/auth_group/edit',['id'=>$vo.id])}" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs"><i class="layui-icon"></i></a>
+        <a href="{:url('admin/auth_group/edit_rule',['id'=>$vo.id])}" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs"><i class="layui-icon"></i></a>
+      </td>
+      {/if}
+    </tr>
+    {/volist}
+  </tbody>
+</table>
+  </div>
+<div style="padding:0 20px;">{$role_list->render()}</div>
+{/block}
+
+{block name="script"}
+
+<script type="text/javascript">
+  layui.use(['form'],function(){
+    var form = layui.form
+            ,jq = layui.jquery;
+    //jq('.btable-paged').eq(1).hide();
+    var status=0;
+    form.on('switch(switchStatus)', function(data){
+      loading = layer.load(2, {
+        shade: [0.2,'#000']
+      });
+      if(data.elem.checked){
+        status=1;
+      }else{
+        status=0;
+      }
+      var url="{:url('admin/auth_group/update_status')}?id="+data.value+'&status='+status ;
+
+      jq.get(url,function(data){
+
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+            //  location.reload();
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+      return false;
+    });
+
+  });
+</script>
+{/block}

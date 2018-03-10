@@ -1,0 +1,50 @@
+{extend name="base" /} {block name="seo"}
+<title>{$site_config['site_title']}|{$site_config['seo_title']}</title>
+
+
+<meta name="keywords" content="{$site_config['seo_keyword']}">
+<meta name="description" content="{$site_config['seo_description']}"> {/block} {block name="body"} {include file="index/menu"}
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md8">
+
+            <div class="fly-panel">
+                <div class="fly-panel-title fly-filter">
+                    <a>置顶</a>
+                    <a href="#signin" class="layui-hide-sm layui-show-xs-block fly-right" id="LAY_goSignin" style="color: #FF5722;">去签到</a></div>
+                <ul class="fly-list">
+                    {volist name="tptc" id="vo"}
+                    <li>
+                        <a href="{:url('user/index/home',array('id'=>$vo.userid))}" class="fly-avatar">
+                            <img src="__ROOT__{$vo.userhead}" alt="{$vo.username}"></a>
+                        <h2>
+                            <a class="layui-badge">{$vo.name}</a>
+                            <a href="{:url('bbs/index/thread',array('id'=>$vo.id))}">{$vo.title}</a></h2>
+                        <div class="fly-list-info">
+                            <a href="{:url('user/index/home',array('id'=>$vo.userid))}" link>
+                                <cite>{$vo.username}</cite></a>
+                            <span>{$vo.time|friendlyDate}</span>
+                            <!--<span class="fly-list-kiss layui-hide-xs" title="悬赏飞吻">
+                    <i class="iconfont icon-kiss"></i>20</span>-->
+                            <span class="fly-list-nums">
+                    <i class="iconfont icon-pinglun1" title="回答"></i>{$vo.reply}</span>
+                        </div>
+                        {if condition="$vo['choice'] eq 1"}
+                        <div class="fly-list-badge"> <span class="layui-badge layui-bg-red">精帖</span> </div>
+                        {/if}
+                    </li>
+                    {/volist}
+                </ul>
+            </div>
+
+
+            {include file="index/main"}
+
+        </div>
+
+        {include file="index/right"}
+
+
+    </div>
+</div>
+{/block}

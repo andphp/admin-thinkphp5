@@ -1,0 +1,338 @@
+@charset "utf-8";
+body{ height: 100%;}
+.layui-nav .layui-nav-child{ padding: 0;}
+.layui-nav-child dd.layui-this{ background-color: #1E9FFF;opacity: 0.8;}
+.layui-nav-child dd.layui-this a{color: #fff;}
+
+#gloBox{ overflow: hidden;position: absolute;left: 0;top: 0;width: 100%;height: 100%;-webkit-box-sizing: border-box;-moz-box-sizing: border-box;box-sizing: border-box;padding-left: 210px;}
+#gloTop{ position: absolute;left: 0;top: 0;width: 100%;height: 50px;z-index: 999;background: rgba(52,57,66,0.9);
+background: linear-gradient(left , rgb(247,248,248) 1% , rgb(173,211,237) 99%);
+background: -o-linear-gradient(left , rgb(247,248,248) 1% , rgb(173,211,237) 99%);
+background: -ms-linear-gradient(left , rgb(247,248,248) 1% , rgb(173,211,237) 99%);
+background: -moz-linear-gradient(left , rgb(247,248,248) 1% , rgb(173,211,237) 99%);
+background: -webkit-linear-gradient(left , rgb(247,248,248) 1% , rgb(173,211,237) 99%);
+}
+#gloTop .gtLeft{ height: 50px;padding: 0 10px;float: left;}
+#gloTop .logo{ height: 42px;color: #fff;float: left;padding-top: 4px;padding-left: 5px;}
+#gloTop .logo.text{ line-height: 50px;height: 50px;padding-top: 0;font-size: 16px;color: rgba(255,255,255,0.9);}
+#gloTop .logo img{ height: 42px;}
+
+#gloTop .menuBar{ position: relative;top: 11px; left: 24px;border-radius: 50%; padding: 8px 4.5px 8px 6.5px;height: 12px;width: 17px; cursor: pointer;float: left;background:rgba(41,120,195,0.4);}
+#gloTop .menuBar ul{ margin-left: -1px;}
+#gloTop .menuBar .bar_line{ width: 17px;height: 2px;background: #ecebeb;margin-bottom: 3px;-webkit-transition:-webkit-transform .6s,opacity .3s;transition:transform .6s,opacity .3s;border-radius: 1px; }
+#gloBox.menu_close .menuBar{ padding-left: 8.5px;padding-right: 2.5px;}
+#gloBox.menu_close .menuBar .bar_line.bar_top{  -webkit-transform:rotate(39deg);-ms-transform:rotate(39deg);transform:rotate(38deg);-webkit-transform-origin:top left;-ms-transform-origin:top left;transform-origin:top left;}
+#gloBox.menu_close .menuBar .bar_line.bar_mid{ opacity: 0;}
+#gloBox.menu_close .menuBar .bar_line.bar_foot{  -webkit-transform:rotate(-39deg);-ms-transform:rotate(-39deg);transform:rotate(-38deg);-webkit-transform-origin:bottom left;-ms-transform-origin:bottom left;transform-origin:bottom left;}
+#gloTop .menuBar:hover .bar_line{ background: #fff;}
+
+
+
+
+#gloTop .gtRght{ float: right;}
+#gloTop .gtRght .layui-nav{ background: transparent; float: right;}
+#gloTop .gtRght .layui-nav .layui-nav-item{ height: 50px;line-height: 50px;position: relative;}
+#gloTop .gtRght .layui-nav a{ text-decoration: none;}
+#gloTop .gtRght .layui-nav .layui-nav-bar{ background: rgba(0,0,0,0.5);border-radius: 2px; height: 0;display: none;overflow: hidden;}
+#gloTop .gtRght .layui-nav .layui-this::after{ display: none;}
+#gloTop .gtRght .layui-nav .layui-nav-more{ top: 24px;right: 12px;}
+#gloTop .gtRght .layui-nav .layui-nav-item .layui-nav-mored{ top: 19px;}
+#gloTop .gtRght .layui-nav .layui-nav-item>a{ color: rgb(161, 164, 168);}
+#gloTop .gtRght .layui-nav .layui-nav-item:hover>a{ color: #d3d3d3;}
+#gloTop .gtRght .layui-nav .layui-nav-item .admin-user{ padding-right: 30px;height: 50px;line-height: 50px;border-left: 1px solid rgb(94, 95, 96);padding-left: 12px;}
+#gloTop .gtRght .layui-nav .layui-nav-item .admin-user:hover{ background: rgb(74, 75, 78);}
+#gloTop .gtRght .layui-nav .layui-nav-item .admin-user .admin-user-headpic{ display: inline-block;width: 34px;margin-right: 8px;position: relative;top: -2px;}
+#gloTop .gtRght .layui-nav .layui-nav-item .admin-user .admin-user-headpic img{ border-radius: 4px;}
+#gloTop .gtRght .layui-nav .layui-nav-item.circle>a{ position: relative; display:  inline-block;margin: 13px 12px  0 0; width: 24px;height: 24px;background: rgba(255,255,255,0.8);text-align: center;padding: 0;border-radius: 50%;box-shadow: 2px 2px 2px rgba(0,0,0,0.5);}
+#gloTop .gtRght .layui-nav .layui-nav-item.circle>a i{ color: #2d2d2d; position: absolute;left: 50%;top: 50%;margin: -7px 0 0 -7px;transition:all .4s ease;}
+#gloTop .gtRght .layui-nav .layui-nav-item.first{ border-left: 1px solid rgb(83, 84, 85);padding-left: 12px;}
+#gloTop .gtRght .layui-nav .layui-nav-item.circle.gohome a{ background:rgba(41,120,195,0.8); }
+#gloTop .gtRght .layui-nav .layui-nav-item.circle.gohome a i{ color: rgba(255,255,255,0.9);}
+#gloTop .gtRght .layui-nav .layui-nav-item.circle>a:hover{ background:#2d2d2d ;}
+#gloTop .gtRght .layui-nav .layui-nav-item.circle>a:hover i{ color: #d3d3d3;transform: rotate(360deg);}
+
+#gloTop .gtRght .layui-nav .layui-nav-child{ top: 57px;padding: 0;}
+#gloTop .gtRght .layui-nav .layui-nav-child i.i{  position: absolute;top: -7px;right: 7px;display: inline-block;border-right: 7px solid transparent;border-bottom: 7px solid #ccc;border-left: 7px solid transparent;border-bottom-color: rgba(0,0,0,.1);content: '';}
+#gloTop .gtRght .layui-nav .layui-nav-child .bt{ border-top: 1px solid #ddd;background: #fcfafa;}
+#gloTop .gtRght .layui-nav .layui-nav-child .fa{ margin-right: 4px;}
+
+#gloTop .layui-nav-item .skin-show{ display: none; position: absolute;top: 50px;background: rgba(0,0,0,0.02);left: 50%;width: 170px;margin-left: -91px;padding: 8px 5px;border: 1px solid #ccc;border-top: 0;}
+#gloTop .layui-nav-item .skin-show a{ cursor: pointer; display: inline-block;width: 22px;height: 22px;border: 1px solid #ddd;padding: 0;float: left;margin: 0 5px;border-radius: 2px;}
+
+
+#gloLeft{ position: absolute;left: 0;top: 50px;width: 210px; z-index: 990;background:#f5f7f9; border-right: 1px solid #ddd;}
+#gloMenu{ padding: 6px;border-bottom: 1px solid #ddd;border-radius: 0  0 8px 8px;position: relative;z-index: 991;padding-top: 12px;}
+#gloMenu>li{ margin-bottom: 4px;}
+#gloMenu>li.open{ background:rgba(0,0,0,0.07);border-radius: 3px;}
+#gloLeft ul li .navT{ border-bottom:1px solid transparent}
+#gloLeft ul li .navT a,#gloLeft ul li .navT span{ display: block;height: 40px;line-height: 40px; color: #393D49; text-decoration: none;padding: 0 10px;overflow: hidden;border-radius: 3px;font-size: 14px;}
+#gloLeft ul li .navT a i,#gloLeft ul li .navT span i{ min-width: 1.3em;font-size: 1.1em;}
+#gloLeft ul li .navT a:hover,#gloLeft ul li .navT span:hover{  background:rgba(0,0,0,0.08);color: #5EABE1;cursor: pointer;}
+#gloMenu>li.open .navT span:hover,#gloMenu>li.open .navT span{ background: transparent;color: #5EABE1;}
+#gloLeft ul li .navT a cite,#gloLeft ul li .navT span cite{ margin-left: 5px;font-style: normal;}
+#gloLeft ul li .navT a.current{ background: #5EABE1;color: #fff;text-shadow: 1px 1px 1px rgba(0,0,0,0.3);}
+#gloMenu>li.open .navT{ border-bottom:1px solid rgba(0,0,0,0.05);}
+#gloLeft ul li  a cite .layui-badge-dot{ position: relative;top: -4px;left: 5px;width: 4px;height: 4px;}
+
+#gloLeft ul li .navC{ padding:  7px 8px;display: none;}
+#gloLeft ul li .navC ul li{ padding: 1px 0 ;}
+#gloLeft ul li .navC ul li.s{ display: none;}
+#gloLeft ul li .navC ul li a{ display: block;height: 34px;line-height: 34px;text-decoration: none;padding: 0 10px 0 20px;font-size: 13px;border-radius: 2px;}
+#gloLeft ul li .navC ul li a i{ float: right;margin: 10px 0 0 0;}
+#gloLeft ul li .navC ul li a.current{ background: #5EABE1;color: #fff;text-shadow: 1px 1px 1px rgba(0,0,0,0.3);}
+#gloLeft ul li .navC ul li a:hover i,#gloLeft ul li .navT a:hover i,#gloLeft ul li .navT span:hover i{ -webkit-animation-name: swing;  animation-name: swing;}
+
+#gloLeft .leftbg{ position: absolute;left: 0;top: 0;width: 100%;height: 100%;background:#f5f7f9 url(../images/admin_menu_bg.jpg) center center no-repeat;background-size: cover;opacity: 0.2;}
+
+#leftBar{ position: absolute;left: 0;top: 0;width: 100%;height: 100%;}
+
+#gloBox.menu_close{ padding-left: 0;}
+#gloBox.menu_close #gloRght{ /*z-index: 1000;border-left: 2px solid #2381e9;*/}
+#gloBox.menu_close{ padding-left: 50px;}
+#gloBox.menu_close #gloLeft{ width: 50px;}
+#gloBox.menu_close #gloLeft .leftbg{ display: none;}
+#gloBox.menu_close #gloLeft ul li{ position: relative;}
+#gloBox.menu_close #gloLeft .navC{ }
+#gloBox.menu_close #gloLeft ul li .navC ul li.b{ display: none;}
+#gloBox.menu_close #gloLeft ul li .navC ul li.s{ display: block;text-align: center;}
+#gloBox.menu_close #gloLeft ul li .navC ul li.s a{ padding: 0;}
+#gloBox.menu_close #gloLeft ul li .navC ul li a i{ float:none;}
+#gloBox.menu_close #gloLeft ul li .navT a cite,#gloBox.menu_close #gloLeft ul li .navT span cite{ display: none;}
+#gloBox.menu_close #gloLeft ul li .navT{ text-align: center;}
+#gloBox.menu_close #gloLeft ul li .navT span{ padding: 0;}
+
+
+
+#gloRght{ margin-top: 50px;position: relative;z-index: 980;background: #fff;}
+#gloRght .layui-tab{  margin: 0;border-left: 0 solid #5EABE1 ;position: relative;overflow: hidden;}
+
+#gloRght .layui-tab .layui-tab-content{ padding: 0 0 0 0;overflow: hidden;position: relative;margin-top: 1px;}
+#gloRght .layui-tab .layui-tab-title{ border: 0;overflow: visible;transition: none;background: none;}
+#gloRght .layui-tab .layui-tab-title cite{ font-style: normal;margin-left: 5px;}
+#gloRght .layui-tab .layui-tab-title li{ height: 40px;overflow: hidden; border-right: 1px solid rgba(0,0,0,0.08);}
+#gloRght .layui-tab .layui-tab-title li:hover{ background: #F1F2F7;}
+#gloRght .layui-tab .layui-tab-title li.layui-this{ background: #5EABE1 ;color: #fff;text-shadow: 1px 1px 1px rgba(0,0,0,0.3);opacity: 0.95;}
+#gloRght .layui-tab .layui-tab-title li.layui-this:hover{ opacity: 1;}
+
+#gloRght .layui-tab .layui-tab-title .layui-this::after{ border-color: #5EABE1 ;border: 0;}
+#gloRght .layui-tab .layui-tab-content .admin_home{ position: absolute;width: 100%;height: 100%;overflow: auto;background: rgba(0,0,0,0.02);}
+#gloRght .layui-tab .layui-tab-content .admin_bg{ position: absolute; width: 100%;height: 100%; left: 0;top: 0; background: rgba(0,0,0,0.05) /* url(../images/login_cover1.jpg) center center no-repeat;background-size: cover;*/}
+#gloRght .layui-tab .layui-tab-content .admin_content{ position: relative;z-index: 10;}
+#gloRght .layui-tab .layui-tab-content .admin_content .admin_content_box{  margin: 10px 10px 10px 12px;}
+
+#admHome{ position: relative;padding-right: 242px;min-height: 100%;}
+#admHome .homeRght{ position: absolute;right: -10px;top: 0;width: 250px;height: 100%;background:rgba(0,0,0,0.01);border: 1px solid #E2E2E2;color: #464646;}
+#admHome .homeRght .headimg{ padding: 30px 0 0;}
+#admHome .homeRght .headimg img{ display: block;margin: 0 auto;width: 72px;border-radius: 50%;box-shadow: 2px 2px 2px rgba(0,0,0,0.4);}
+#admHome .homeRght .headimg img:hover{ border: 2px solid #5EABE1;width: 68px;}
+#admHome .homeRght .welcome{ text-align: center;}
+#admHome .homeRght .welcome span{font-size: 14px;margin-right: 5px;height: 36px;line-height: 36px;}
+#admHome .homeRght .welcome a{ font-size: 14px;margin: 0 3px;}
+#admHome .homeRght .time{ font-size: 15px;text-align: center;color: #FF5722;}
+#admHome .homeRght .time i{ color: #464646;margin-right: 10px;font-size: 14px;}
+#admHome .homeRght .time span{ /*text-shadow: 2px 2px 2px #FF5722;*/}
+#admHome .homeRght .bline{ position: relative;height: 32px;line-height: 32px;padding: 10px 15px 1px;border-bottom: 1px solid #E2E2E2;}
+#admHome .homeRght .bline span.c{ font-size: 13px;}
+#admHome .homeRght .notice,#admHome .homeRght .quick{ height: 38px;margin: 15px 4px 0;}
+#admHome .homeRght .notice .layui-btn-group,#admHome .homeRght .quick .layui-btn-group{ width: 100%;margin: 0;}
+#admHome .homeRght .notice a.layui-btn,#admHome .homeRght .quick a.layui-btn{  margin-top: -1px; padding: 0 ;text-align: center;width:33.333%;overflow: hidden;display: block;float: left;overflow: hidden;}
+#admHome .homeRght .quick a.layui-btn{ font-size: 12px;}
+#admHome .homeRght .layui-btn-primary,#admHome .homeRght .layui-btn-group .layui-btn-primary:first-child,#admHome .homeRght .layui-btn-group .layui-btn-primary:last-child{ border-color: #E2E2E2;}
+
+
+#admHome .homeLeft{ }
+#admHome .homeLeft .cms_count{}
+#admHome .homeLeft .cms_count ul li{ width: 25%;}
+#admHome .homeLeft .cms_count ul li.li-1 .info{ background-color:#FA2A00;}
+#admHome .homeLeft .cms_count ul li.li-1 .info:hover{ background-color:#7c1a06;}
+#admHome .homeLeft .cms_count ul li.li-2 .info{ background-color:#ffb400;}
+#admHome .homeLeft .cms_count ul li.li-2 .info:hover{ background-color:#85630f;}
+#admHome .homeLeft .cms_count ul li.li-3 .info{ background-color:#1ABC9C;}
+#admHome .homeLeft .cms_count ul li.li-3 .info:hover{ background-color:#006551;}
+#admHome .homeLeft .cms_count ul li.li-4 .info{ background-color:#22A7F0 ;}
+#admHome .homeLeft .cms_count ul li.li-4 .info:hover{ background-color:#353d47;}
+#admHome .homeLeft .cms_count ul li div.info{ transition: all .4s ease;-webkit-transition: all .4s ease; position: relative;padding-left: 100px;border: 0 solid #ccc; padding-right: 10px;overflow: hidden;margin-right: 10px;}
+#admHome .homeLeft .cms_count ul li div.info:hover{ opacity: 1;}
+#admHome .homeLeft .cms_count ul li i.icon{ position: absolute; width: 50px;left: 25px;top: 50%;margin-top: -25px;transition: all .4s ease;-webkit-transition: all .4s ease;-webkit-transform: scale(0.9);transform: scale(0.9);}
+#admHome .homeLeft .cms_count ul li div.info:hover i.icon{ -webkit-transform: scale(1) rotate(10deg);transform: scale(1) rotate(10deg);}
+
+#admHome .homeLeft .cms_count ul span.number{ color: #ffffff;text-shadow: 3px 3px 3px rgba(0,0,0,0.3);font-size: 30px;display: block;height: 40px;line-height: 40px;padding-top: 15px;overflow: hidden;color: #fff;}
+#admHome .homeLeft .cms_count ul span.name{ text-shadow: 2px 2px 2px rgba(0,0,0,0.3);color:#F2F2F2;display: block;font-size: 14px;height: 32px;line-height: 32px;margin-bottom: 15px;overflow: hidden;}
+#admHome .homeLeft .cms_info{ margin-top: 10px;}
+#admHome .homeLeft .cms_info .you,#admHome .homeLeft .cms_info .dev{ width: 50%;float: left;}
+#admHome .homeLeft .cms_info .info{ margin-right: 10px;border: 1px solid #E2E2E2;}
+#admHome .homeLeft .cms_info ul li{ line-height: 38px;margin: 0 10px;border-bottom: 1px dotted #dddddd;color: #464646;}
+#admHome .homeLeft .cms_info ul li:last-child{ border-bottom: 0;}
+#admHome .homeLeft .cms_info ul li span{ margin-left: 5px;color: #5EABE1;}
+#admHome .homeLeft .cms_info ul li span a{ color: #5EABE1;text-decoration: underline;}
+#admHome .homeLeft .cms_info ul li i.fa{ margin-right: 8px;color: rgba(0,0,0,0.4);}
+#admHome .homeLeft .cms_info .title{ text-transform: uppercase; background: rgba(0,0,0,0.03); color: #464646 ; height: 40px;line-height: 40px;padding: 0 10px;font-size: 14px;border-bottom: 1px solid #dddddd;}
+#admHome .homeLeft .cms_about{ margin:10px 10px 0 0;}
+#admHome .homeLeft .cms_about th{ background: rgba(0,0,0,0.03);text-align: left;font-size: 12px;color: #464646;}
+#admHome .homeLeft .cms_about td{ text-align: left;font-size: 12px;font-family: Arial,Verdana,sans-serif;color: #5EABE1;}
+#admHome .homeLeft a.link{ text-decoration: underline;color: #5EABE1;}
+
+
+.layui-tab .tab-bg{ position: absolute;width: 100%;top: 0;left: 0;height: 40px;border-bottom: 1px solid #0CC3F0;background:#FAFAFA;}
+.layui-tab .layui-tab-title{ position: relative;margin: 0 40px;}
+.layui-tab .layui-tab-title span.layui-tab-bar{ display: none;}
+.layui-tab .tab-prev{ position: absolute;left: 0;height: 32px;top: 0;z-index: 99;width: 39px;text-align: center;background:#fff;padding-top: 8px;border-right: 1px solid #E2E2E2;color: #5EABE1;}
+.layui-tab .tab-next{ position: absolute;right: 0;height: 32px;top: 0;z-index: 99;width: 39px;text-align: center;  background:#fff;padding-top: 8px;border-left: 1px solid #E2E2E2;color: #5EABE1;}
+.layui-tab .tab-prev:hover,.layui-tab .tab-next:hover{ background: #F1F2F7;}
+.layui-tab-content .layui-tab-item{ min-width: 980px;}
+
+
+#gloBox.green #gloTop{ /*background: rgba(0,166,90,0.3);*/
+    background: linear-gradient(left , rgb(247,248,248) 1% , rgb(128,208,172) 99%);
+    background: -o-linear-gradient(left , rgb(247,248,248) 1% , rgb(128,208,172) 99%);
+    background: -ms-linear-gradient(left , rgb(247,248,248) 1% , rgb(128,208,172) 99%);
+    background: -moz-linear-gradient(left , rgb(247,248,248) 1% , rgb(128,208,172) 99%);
+    background: -webkit-linear-gradient(left , rgb(247,248,248) 1% , rgb(128,208,172) 99%);
+}
+#gloBox.green #gloLeft ul li .navC ul li a.current{ background: rgba(0,166,90,1); }
+#gloBox.green #gloMenu > li.open .navT span:hover, #gloBox.green #gloMenu > li.open .navT span { color: rgba(0,166,90,1);}
+#gloBox.green #gloLeft ul li .navT a:hover,#gloBox.green #gloLeft ul li .navT span:hover{  color: rgba(0,166,90,1);}
+#gloBox.green #gloRght .layui-tab .layui-tab-title li.layui-this{ background: rgba(0,166,90,1);}
+#gloBox.green .layui-tab .tab-prev,#gloBox.green .layui-tab .tab-next{ color: rgba(0,166,90,1);}
+#gloBox.green .layui-tab .tab-bg{ border-bottom: 1px solid rgba(0,166,90,1);}
+
+#gloBox.green #gloTop .gtRght .layui-nav .layui-nav-item.first,#gloBox.green  #gloTop .gtRght .layui-nav .layui-nav-item .admin-user{ border-color: rgba(0,166,90,0.5);}
+#gloBox.green #gloTop .gtRght .layui-nav .layui-nav-item > a{ color:#20242A ;}
+#gloBox.green #gloTop .gtRght .layui-nav .layui-nav-item > a:hover{ background:rgba(0,166,90,0.7) ;}
+#gloBox.green #gloTop .gtRght .layui-nav .layui-nav-item.circle.gohome a{ background:rgba(0,166,90,0.7) ;}
+#gloBox.green #gloTop .menuBar{ background:rgba(0,166,90,0.7) ;}
+#gloBox.green #admHome .homeRght .headimg img:hover{ border-color: rgba(0,166,90,1);}
+
+#gloBox.green .skin .layui-btn{ background:rgba(0,166,90,1);}
+.and-bg-green{ background:rgba(0,166,90,1);}
+
+#gloBox.green #gloLeft ul li .navC ul li a.current:hover{ color: #fff;}
+#gloBox.green #gloLeft ul li .navC ul li a:hover,                
+#gloBox.green #admHome .homeLeft .cms_info ul li span,
+#gloBox.green #admHome .homeLeft .cms_info ul li span a,
+#gloBox.green #admHome .homeLeft .cms_about td,
+#gloBox.green #admHome .homeLeft a.link
+{ color: rgba(0,166,90,1);}
+
+#gloBox.pink #gloTop{ /*background: rgba(250,96,134,0.3);*/
+    background: linear-gradient(left , rgb(247,248,248) 1% , rgb(248,175,193) 99%);
+    background: -o-linear-gradient(left , rgb(247,248,248) 1% , rgb(248,175,193) 99%);
+    background: -ms-linear-gradient(left , rgb(247,248,248) 1% , rgb(248,175,193) 99%);
+    background: -moz-linear-gradient(left , rgb(247,248,248) 1% , rgb(248,175,193) 99%);
+    background: -webkit-linear-gradient(left , rgb(247,248,248) 1% , rgb(248,175,193) 99%);
+}
+#gloBox.pink #gloLeft ul li .navC ul li a.current{ background: rgba(250,96,134,1); }
+#gloBox.pink #gloMenu > li.open .navT span:hover, #gloBox.pink #gloMenu > li.open .navT span { color: rgba(250,96,134,1);}
+#gloBox.pink #gloLeft ul li .navT a:hover,#gloBox.pink #gloLeft ul li .navT span:hover{  color: rgba(250,96,134,1);}
+#gloBox.pink #gloRght .layui-tab .layui-tab-title li.layui-this{ background: rgba(250,96,134,1);}
+#gloBox.pink .layui-tab .tab-prev,#gloBox.pink .layui-tab .tab-next{ color: rgba(250,96,134,1);}
+#gloBox.pink .layui-tab .tab-bg{ border-bottom: 1px solid rgba(250,96,134,1);}
+
+#gloBox.pink #gloTop .gtRght .layui-nav .layui-nav-item.first,#gloBox.pink  #gloTop .gtRght .layui-nav .layui-nav-item .admin-user{ border-color: rgba(250,96,134,0.5);}
+#gloBox.pink #gloTop .gtRght .layui-nav .layui-nav-item > a{ color:#20242A ;}
+#gloBox.pink #gloTop .gtRght .layui-nav .layui-nav-item > a:hover{ background:rgba(250,96,134,0.7) ;}
+#gloBox.pink #gloTop .gtRght .layui-nav .layui-nav-item.circle.gohome a{ background:rgba(250,96,134,0.7) ;}
+#gloBox.pink #gloTop .menuBar{ background:rgba(250,96,134,0.7) ;}
+#gloBox.pink #admHome .homeRght .headimg img:hover{ border-color: rgba(250,96,134,1);}
+#gloBox.pink #gloTop .gtRght .layui-nav .layui-nav-item .admin-user:hover{ background:rgba(250,96,134,0.7) }
+
+#gloBox.pink .skin .layui-btn{ background:rgba(250,96,134,1);}
+.and-bg-pink{ background:rgba(250,96,134,1);}
+
+#gloBox.pink #gloLeft ul li .navC ul li a.current:hover{ color: #fff;}
+#gloBox.pink #gloLeft ul li .navC ul li a:hover,  
+#gloBox.pink #admHome .homeLeft .cms_info ul li span,
+#gloBox.pink #admHome .homeLeft .cms_info ul li span a,
+#gloBox.pink #admHome .homeLeft .cms_about td,
+#gloBox.pink #admHome .homeLeft a.link
+{ color: rgba(250,96,134,1);}
+
+#gloBox.yellow #gloTop{ /*background: rgba(255,154,30,0.4);*/
+    background: linear-gradient(left , rgb(247,248,248) 1% , rgb(251,203,143) 99%);
+    background: -o-linear-gradient(left , rgb(247,248,248) 1% , rgb(251,203,143) 99%);
+    background: -ms-linear-gradient(left , rgb(247,248,248) 1% , rgb(251,203,143) 99%);
+    background: -moz-linear-gradient(left , rgb(247,248,248) 1% , rgb(251,203,143) 99%);
+    background: -webkit-linear-gradient(left , rgb(247,248,248) 1% , rgb(251,203,143) 99%);
+}
+#gloBox.yellow #gloLeft ul li .navC ul li a.current{ background: rgba(255,154,30,1); }
+#gloBox.yellow #gloMenu > li.open .navT span:hover, #gloBox.yellow #gloMenu > li.open .navT span { color: rgba(255,154,30,1);}
+#gloBox.yellow #gloLeft ul li .navT a:hover,#gloBox.yellow #gloLeft ul li .navT span:hover{  color: rgba(255,154,30,1);}
+#gloBox.yellow #gloRght .layui-tab .layui-tab-title li.layui-this{ background: rgba(255,154,30,1);}
+#gloBox.yellow .layui-tab .tab-prev,#gloBox.yellow .layui-tab .tab-next{ color: rgba(255,154,30,1);}
+#gloBox.yellow .layui-tab .tab-bg{ border-bottom: 1px solid rgba(255,154,30,1);}
+
+#gloBox.yellow #gloTop .gtRght .layui-nav .layui-nav-item.first,#gloBox.yellow  #gloTop .gtRght .layui-nav .layui-nav-item .admin-user{ border-color: rgba(255,154,30,0.5);}
+#gloBox.yellow #gloTop .gtRght .layui-nav .layui-nav-item > a{ color:#20242A ;}
+#gloBox.yellow #gloTop .gtRght .layui-nav .layui-nav-item > a:hover{ background:rgba(255,154,30,0.7) ;}
+#gloBox.yellow #gloTop .gtRght .layui-nav .layui-nav-item.circle.gohome a{ background:rgba(255,154,30,0.7) ;}
+#gloBox.yellow #gloTop .menuBar{ background:rgba(255,154,30,0.7) ;}
+#gloBox.yellow #admHome .homeRght .headimg img:hover{ border-color: rgba(255,154,30,1);}
+#gloBox.yellow #gloTop .gtRght .layui-nav .layui-nav-item .admin-user:hover{ background:rgba(255,154,30,0.7) }
+
+#gloBox.yellow .skin .layui-btn{ background:rgba(255,154,30,1);}
+.and-bg-yellow{ background:rgba(255,154,30,1);}
+
+#gloBox.yellow #gloLeft ul li .navC ul li a.current:hover{ color: #fff;}
+#gloBox.yellow #gloLeft ul li .navC ul li a:hover,
+#gloBox.yellow #admHome .homeLeft .cms_info ul li span,
+#gloBox.yellow #admHome .homeLeft .cms_info ul li span a,
+#gloBox.yellow #admHome .homeLeft .cms_about td,
+#gloBox.yellow #admHome .homeLeft a.link
+{ color: rgba(255,154,30,1);}
+
+#gloBox.red #gloTop{ /*background: rgba(250,42,0,0.3);*/
+    background: linear-gradient(left , rgb(247,248,248) 1% , rgb(248,148,128) 99%);
+    background: -o-linear-gradient(left , rgb(247,248,248) 1% , rgb(248,148,128) 99%);
+    background: -ms-linear-gradient(left , rgb(247,248,248) 1% , rgb(248,148,128) 99%);
+    background: -moz-linear-gradient(left , rgb(247,248,248) 1% , rgb(248,148,128) 99%);
+    background: -webkit-linear-gradient(left , rgb(247,248,248) 1% , rgb(248,148,128) 99%);
+}
+#gloBox.red #gloLeft ul li .navC ul li a.current{ background: rgba(250,42,0,1); }
+#gloBox.red #gloMenu > li.open .navT span:hover, #gloBox.red #gloMenu > li.open .navT span { color: rgba(250,42,0,1);}
+#gloBox.red #gloLeft ul li .navT a:hover,#gloBox.red #gloLeft ul li .navT span:hover{  color: rgba(250,42,0,1);}
+#gloBox.red #gloRght .layui-tab .layui-tab-title li.layui-this{ background: rgba(250,42,0,1);}
+#gloBox.red .layui-tab .tab-prev,#gloBox.red .layui-tab .tab-next{ color: rgba(250,42,0,1);}
+#gloBox.red .layui-tab .tab-bg{ border-bottom: 1px solid rgba(250,42,0,1);}
+#gloBox.red #gloTop .gtRght .layui-nav .layui-nav-item.first,#gloBox.red  #gloTop .gtRght .layui-nav .layui-nav-item .admin-user{ border-color: rgba(250,42,0,0.5);}
+#gloBox.red #gloTop .gtRght .layui-nav .layui-nav-item > a{ color:#20242A ;}
+#gloBox.red #gloTop .gtRght .layui-nav .layui-nav-item > a:hover{ background:rgba(250,42,0,0.7) ;}
+#gloBox.red #gloTop .gtRght .layui-nav .layui-nav-item.circle.gohome a{ background:rgba(250,42,0,0.7) ;}
+#gloBox.red #gloTop .menuBar{ background:rgba(250,42,0,0.7) ;}
+#gloBox.red #admHome .homeRght .headimg img:hover{ border-color: rgba(250,42,0,1);}
+#gloBox.red #gloTop .gtRght .layui-nav .layui-nav-item .admin-user:hover{ background:rgba(250,42,0,0.7) }
+
+#gloBox.red .skin .layui-btn{ background:rgba(250,42,0,1);}
+.and-bg-red{ background:rgba(250,42,0,1);}
+
+#gloBox.red #gloLeft ul li .navC ul li a.current:hover{ color: #fff;}
+#gloBox.red #gloLeft ul li .navC ul li a:hover,
+#gloBox.red #admHome .homeLeft .cms_info ul li span,
+#gloBox.red #admHome .homeLeft .cms_info ul li span a,
+#gloBox.red #admHome .homeLeft .cms_about td,
+#gloBox.red #admHome .homeLeft a.link
+{ color: rgba(250,42,0,1);}
+
+
+#lockScreen{ position: absolute;left: 0;top: 0;width: 100%;height: 100%;min-height: 500px;  z-index: 9999;background:rgba(0,0,0,0.85) url(../images/lockscreenbg.jpg) center center no-repeat;background-size: cover;display: none;}
+#lockScreen .init{ 	width: 400px;height: 240px;text-align: center;background:rgba(255,255,255,0.4);border-radius: 4px;position: absolute;left: 50%;top: 50%;margin: -50px 0 0 -200px;}
+#lockScreen .init .relative{position: relative;top: -150px; }
+#lockScreen .init .lockTime{ color: #fff;font-size: 60px;padding-bottom: 20px;}
+#lockScreen .init .pic{ text-align: center;}
+#lockScreen .init .pic img{ display: block;border-radius: 50%;width: 80px;margin: 0 auto;border: 5px solid #fff;}
+#lockScreen .init .pic p{ font-size: 18px;color: #ffffff;}
+#lockScreen .init .wrbox{ text-align: center;position: relative;top: -130px;}
+#lockScreen .init .wrin{ height: 20px;line-height: 20px;margin: 0;width: 200px;padding: 8px 8px;border:1px solid rgba(0,0,0,0.4);background: #fff;opacity: 0.9;border-radius: 2px;color: #393D49;margin-right: 5px;position: relative;top: 1px;}
+#lockScreen .init .layui-btn{ margin-top: 20px;}
+#closeLock{ -webkit-animation-duration: 0.8s;  animation-duration: 0.8s;  -webkit-animation-fill-mode: both;  animation-fill-mode: both;}
+
+.and-bg-default{ background:#5EABE1;}
+
+@media screen and (max-width: 1199px) {
+    #admHome .homeLeft .cms_count ul li div.info{ padding-left:80px;}
+    #admHome .homeLeft .cms_count ul li i.icon{ width: 40px;left: 20px;top: 50%;margin-top: -20px;}
+}
+
+
+
+
+

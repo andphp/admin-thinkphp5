@@ -1,0 +1,123 @@
+{extend name="base" /}
+{block name="main"}
+<form class="layui-form" id="admin">
+    <input type="hidden" name="token" value="{$token}" />
+    <div class="layui-form-item and-bg-{$skin_name}">
+        <label class="layui-form-label">角色分组</label>
+        <div class="layui-input-inline">
+            <select name="id" lay-filter="aihao">
+
+                <option value="{$role.id}" selected="">{$role.title}</option>
+
+            </select>
+        </div>
+    </div>
+
+<div class="layui-btn-group">
+    <a data-href="" class="layui-btn layui-btn-warm post" href="javascript:void(0);">提交</a>
+    <a data-href="" class="layui-btn layui-btn-primary reset-all" href="javascript:void(0);">重置</a>
+    <a data-href="" class="layui-btn and-bg-{$skin_name} power-all" href="javascript:void(0);">全选</a>
+    <a data-href="" class="layui-btn and-bg-{$skin_name} power-all-reverse" href="javascript:void(0);">反选</a>
+</div>
+<table class="layui-table" lay-even="" lay-skin="row" lay-size="sm" id="menu_table">
+    <colgroup>
+        <col width="50">
+        <col width="50">
+        <col width="250">
+        <col width="300">
+        <col width="300">
+        <col width="100">
+        <col width="100">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>选择</th>
+        <th>ID</th>
+        <th>权限名称</th>
+        <th>权限方法</th>
+        <th>备注</th>
+        <th>类型</th>
+        <th>状态</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        {volist name="menus" id="vo"}
+        <tr>
+            {if in_array($vo['id'],$role['rules'])}
+            <td><input type="checkbox" name="rules[]" class="checkbox" value="{$vo.id}" checked></td>
+            {else}
+            <td><input type="checkbox" name="rules[]" class="checkbox" value="{$vo.id}"></td>
+            {/if}
+            <td>{$vo.id}</td>
+            <td>{$vo.str|raw}{$vo.title}</td>
+            <td>{$vo.name}</td>
+            <td>{$vo.description}</td>
+            <td>{eq name="$vo.type" value="1"}权限节点{else /}普通节点{/eq}</td>
+            <td>{eq name="$vo.status" value="1"}显示在左侧菜单{else /}只做为操作节点{/eq}</td>
+        </tr>
+        {/volist}
+
+    </tbody>
+</table>
+    <div class="layui-btn-group">
+        <a data-href="" class="layui-btn layui-btn-warm post" href="javascript:void(0);">提交</a>
+        <a data-href="" class="layui-btn layui-btn-primary reset-all" href="javascript:void(0);">重置</a>
+        <a data-href="" class="layui-btn and-bg-{$skin_name} power-all" href="javascript:void(0);">全选</a>
+        <a data-href="" class="layui-btn and-bg-{$skin_name} power-all-reverse" href="javascript:void(0);">反选</a>
+    </div>
+</form>
+
+
+{/block}
+
+{block name="script"}
+
+<script type="text/javascript">
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+    });
+    $('.reset-all').click(function(){
+        $('table').find('.layui-form-checkbox').removeClass('layui-form-checked');
+        $('table').find('input[type="checkbox"]').prop('checked',false);
+    });
+    $('.power-all').click(function(){
+        $('table').find('.layui-form-checkbox').addClass('layui-form-checked');
+        $('table').find('input[type="checkbox"]').prop('checked',true);
+    });
+    $('.power-all-reverse').click(function(){
+        var ch = document.getElementsByClassName("layui-unselect layui-form-checkbox");
+        for (var i = 0; i < ch.length; i++) {
+            if (ch[i].className == "layui-unselect layui-form-checkbox") {
+                ch[i].className = "layui-unselect layui-form-checkbox layui-form-checked";
+            }
+            else {
+                ch[i].className = "layui-unselect layui-form-checkbox";
+            }
+
+        }
+        return false;
+    });
+    $('.post').click(function(){
+        var id = $(this).attr('id');
+            $.ajax({
+                url:"{:url('admin/auth_group/update_rule')}",
+                data:$('#admin').serialize(),
+                type:'post',
+                async: false,
+                success:function(res) {
+                    if(res.code == 1) {
+                        layer.alert(res.msg, function(index){
+                            location.href = res.url;
+                        })
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+    })
+</script>
+
+{/block}

@@ -1,0 +1,18 @@
+<div class="fly-footer">
+    <p>
+        <a href="http://www.laysns.com/">LaySNS社区</a> 2018 &copy;
+        <a href="http://www.laysns.com/">LaySNS.COM</a> <br/>微信公众号：laysns_com QQ群 227552979
+    </p>
+
+    {volist name="nav" id="vo" }
+    <p>
+        {eq name="vo.pid" value="0"}
+        <a class="nav-this" href="{$vo.link}" target="{$vo.target}" title="{$vo.alias}">
+            <i class="iconfont icon-{$vo.icon}"></i>{$vo.name}
+        </a>
+        {/eq} {/volist}
+    </p>
+    <p>
+        {if condition="$site_config['site_copyright'] neq ''"} 版权信息:{$site_config['site_copyright']} {/if} {if condition="$site_config['site_tongji'] neq ''"} {$site_config['site_tongji']} {/if}
+    </p>
+</div>

@@ -1,0 +1,56 @@
+<div class="fly-panel fly-column">
+    <div class="layui-container">
+        <ul class="layui-clear">
+            <li class="layui-hide-xs {if $action neq 'cate'}layui-this{/if}">
+                <a href="{:url('bbs/index/index')}">首页</a>
+            </li>
+            {volist name="tpto" id="vo"}
+            <li {if $name eq $vo.name}class="layui-this" {/if}><a href="{:url('bbs/index/cate',array('cate_alias'=>$vo.alias))}">{$vo.name}</a></li>
+            {/volist}
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+                <span class="fly-mid"></span>
+            </li>
+            {if condition="session('userid') neq ''"}
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+                <a href="{:url('user/index/topic')}">我发表的贴</a></li>
+            <li class="layui-hide-xs layui-hide-sm layui-show-md-inline-block">
+                <a href="{:url('user/index/topic#user=collection')}">我收藏的贴</a></li>
+            {/if}
+        </ul>
+        <div class="fly-column-right layui-hide-xs">
+            <span class="fly-search">
+            <i class="layui-icon">&#xe615;</i></span>
+            <a href="{:url('bbs/forum/add')}" class="layui-btn">发表新帖</a></div>
+        <div class="layui-hide-sm layui-show-xs-block" style="margin-top: -10px; padding-bottom: 10px; text-align: center;">
+            <a href="{:url('bbs/forum/add')}" class="layui-btn">发表新帖</a></div>
+    </div>
+</div>
+<script>
+    layui.define(['layer'], function(exports) {
+        var $ = layui.jquery,
+            layer = layui.layer;
+        $('.fly-search').on('click', function() {
+            var url = "{:url('bbs/index/search')}";
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false,
+                shadeClose: true,
+                maxWidth: 10000,
+                skin: 'fly-layer-search',
+                content: ['<form action="' + url + '">', '<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="ks">', '</form>'].join(''),
+                success: function(layero) {
+                    var input = layero.find('input');
+                    input.focus();
+                    layero.find('form').submit(function() {
+                        var val = input.val();
+                        if (val.replace(/\s/g, '') === '') {
+                            return false;
+                        }
+                        input.val(input.val());
+                    });
+                }
+            })
+        });
+    });
+</script>

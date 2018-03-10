@@ -1,0 +1,146 @@
+{extend name="base" /}
+
+{block name="main"}
+<div class="box_form">
+
+    <div class="box_content">
+        <form class="layui-form" id="admin">
+            <input type="hidden" name="token" value="{$token}" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">上级菜单</label>
+                <div class="layui-input-inline">
+                    <select name="pid" lay-filter="aihao">
+                        <option value="0">作为顶级菜单</option>
+                        {volist name="$menus" id="vo"}
+                        <option value="{$vo.id|raw}" {notempty name="$menu.pid|raw"}{eq name="$menu.pid|raw" value="$vo.id|raw"} selected=""{/eq}{else /}{notempty name="$pid"}{eq name="$pid" value="$vo.id|raw"} selected=""{/eq}{/notempty}{/notempty}>{$vo.str|raw}{$vo.title|raw}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">标题</label>
+                <div class="layui-input-inline">
+                    <input name="title" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$menu.title"}value="{$menu.title}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">规则|模块名</label>
+                <div class="layui-input-inline">
+                    <input name="module" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$menu.module"}value="{$menu.module}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">规则|控制器名</label>
+                <div class="layui-input-inline">
+                    <input name="controller" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$menu.controller"}value="{$menu.controller}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">规则|方法名</label>
+                <div class="layui-input-inline">
+                    <input name="function" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$menu.function"}value="{$menu.function}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">参数</label>
+                <div class="layui-input-inline">
+                    <input name="condition" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$menu.parameter"}value="{$menu.parameter}"{/notempty}>
+                </div>
+                <div class="layui-form-mid layui-word-aux">请用'&'隔开，例如：name=tingyu&id=10</div>
+            </div>
+
+            <div class="layui-form-item layui-form-text">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-block" style="max-width:600px;">
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="description">{notempty name="$menu.description"}{$menu.description}{/notempty}</textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">图标</label>
+                <div class="layui-input-inline">
+                    <input name="icon" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$menu.icon"}value="{$menu.icon}"{/notempty}>
+                </div>
+                <div class="layui-form-mid layui-word-aux">例如：fa-asterisk <a class="layui-btn layui-btn-xs and-bg-{$skin_name|default='default'}" href="http://www.fontawesome.com.cn/faicons/" target="_blank" >》找找</a></div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">状态</label>
+                <div class="layui-input-inline">
+                    <select name="status" lay-filter="aihao">
+                        <option value="1" {notempty name="$menu.status"}{eq name="$menu.status" value="1"} selected=""{/eq}{/notempty}>显示在左侧菜单</option>
+                        <option value="2" {notempty name="$menu.status"}{eq name="$menu.status" value="2"} selected=""{/eq}{/notempty}>只做为操作节点</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline">
+                    <select name="type" lay-filter="aihao">
+                        <option value="1" {notempty name="$menu.type"}{eq name="$menu.type" value="1"} selected=""{/eq}{/notempty}>权限节点</option>
+                        <option value="2" {notempty name="$menu.type"}{eq name="$menu.type" value="2"} selected=""{/eq}{/notempty}>普通节点</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-inline">
+                    <input name="orders" placeholder="请输入" lay-verify="required|number" autocomplete="off" class="layui-input" type="text" value="0" {notempty name="$menu.orders"}value="{$menu.orders}"{/notempty} >
+                </div>
+            </div>
+
+            {notempty name="$menu"}
+            <input type="hidden" name="id" value="{$menu.id}">
+            {/notempty}
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn and-bg-{$skin_name|default='default'}" lay-submit lay-filter="admin">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{/block}
+
+
+{block name="script"}
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        $(window).on('load', function() {
+            form.on('submit(admin)', function(data) {
+                $.ajax({
+                    url:"{:url('admin/auth_rule/update')}",
+                    data:$('#admin').serialize(),
+                    type:'post',
+                    async: false,
+                    success:function(res) {
+                        if(res.code == 1) {
+                            layer.alert(res.msg, function(index){
+                               location.href = res.url;
+                                //parent.location.reload();
+                            })
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    });
+</script>
+{/block}

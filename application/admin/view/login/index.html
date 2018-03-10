@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-cn" >
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="Keywords" content="" />
+    <meta name="Description" content="" />
+    <title>{$title|default='AndPHP - 内容管理系统'}</title>
+
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/global.css" />
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/index.css" />
+    {block name="function"}{/block}
+
+    <script type="text/javascript">var wwwroot='/';var absroot=document.domain;</script>
+
+    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+    <script type="text/javascript" src="__ADMIN__/js/global.js"></script>
+    <script type="text/javascript" src="__ADMIN__/js/jquery.nicescroll.min.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/login.css"/>
+
+
+<!--[if lt IE 10]>
+<p style="text-align: center;padding-top:100px;">请使用高版本浏览器进入后台管理（建议浏览器：Firefox、Chrome）</p>
+<p><a href="http://www.firefox.com.cn/">下载Firefox浏览器</a></p>
+<p><a href="http://www.google.cn/chrome/browser//">下载Chrome浏览器</a></p>
+<div style="display:none">
+<![endif]-->
+<div class="container and">
+    <div class="content">
+        <div id="large-header" class="large-header">
+            <canvas id="demo-canvas"></canvas>
+            <div id="login">
+                <h1>
+                    <strong><span class="en-font">{$login.title}</span>管理系统后台</strong>
+                    <em class="en-font">Management System</em>
+                </h1>
+
+                <div class="user info">
+                    <label>U</label>
+                    <input type="text" name="data[User][username]" value="" id="UserUsername" class="en-font"
+                           placeholder="账号" autocomplete="off">
+                </div>
+                <div class="pwd info">
+                    <label>P</label>
+                    <input type="password" name="data[User][password]" value="" id="UserPassword" class="en-font"
+                           placeholder="密码" autocomplete="off">
+                </div>
+                <div class="code info">
+                    <label>V</label>
+                    <input type="text" name="captcha" value="" id="" class="en-font" autocomplete="off"
+                           placeholder="验证码">
+                    <span class="vimg"><img src="/captcha.html" class="tooltip"
+                                            onclick="this.src='/captcha.html?'+Math.random()"/></span>
+                </div>
+                <div class="__token__">
+                    <input type="hidden" name="__token__" value="{$Request.token}" id="__token__">
+                </div>
+                <div class="sub">
+                    <input type="submit" id="loginSubmit" value="立即登录"/>
+                </div>
+
+                <div class="copy">
+                    <p>{$login.copy} © <a href="javascript:;" style="color:white; font-size:18px;" target="_blank">{$login.www}</a></p>
+
+                </div>
+                <button class="btn randomize">重新绘制</button>
+            </div>
+            <div class="auth">
+                <div class="loading">
+                    <div class="loader-inner ball-clip-rotate-multiple"></div>
+                </div>
+                <p>验证中...</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    layui.use(['layer', 'carousel'], function () {
+        'use strict';
+        var layer = layui.layer;
+
+        {if !empty($error)}
+        layer.msg('{$error}');
+        {/if}
+
+    });
+
+    $('body').keydown(function (e) {
+        if (e.keyCode == 13) {
+            $('#loginSubmit').trigger('click');
+        }
+    });
+
+
+    $('#loginSubmit').click(function () {
+        layer.closeAll();
+        var username = $.trim($('#UserUsername').val());
+        if (!username) {
+            layer.msg('请填写用户名',{
+                anim: 1,
+                offset: '200px'
+            });
+            return false;
+        }
+        var password = $.trim($('#UserPassword').val());
+        if (!password) {
+            layer.msg('请填写密码',{
+                anim: 1,
+                offset: '200px'
+            });
+            return false;
+        }
+        var captcha = $.trim($('input[name="captcha"]').val());
+        if (!captcha) {
+            layer.msg('请填写验证码',{
+                anim: 1,
+                offset: '200px'
+            });
+            return false;
+        }
+        var __token__ = $.trim($('input[name="__token__"]').val());
+        if (!__token__) {
+            layer.msg('无效的令牌',{
+                anim: 1,
+                offset: '200px'
+            });
+            return false;
+        }
+        $('#login').addClass('checking');
+        setTimeout(function () {
+            $('#login').animate({
+                'margin-left': 450
+            }, 200, 'easeOutQuint');
+            $('.auth').addClass('checking');
+        }, 500);
+
+        setTimeout(function () {
+            $.post("{:url('Login/login_username')}", {
+                username: username,
+                password: password,
+                captcha: captcha,
+                __token__: __token__
+            }, function (data) {
+                var json = $.parseJSON(data);
+                if (json['result'] == 'success') {
+                    layer.msg(json['msg'],{
+                        offset: '200px'
+                    });
+                    setTimeout(function () {
+                        location.href = json['url'];
+                    }, 800)
+
+
+                } else {
+                    $('#login').animate({
+                        'margin-left': -180
+                    }, 200, 'easeOutQuint');
+                    $('.auth').removeClass('checking');
+                    setTimeout(function () {
+                        $('#login').removeClass('checking');
+                    }, 250);
+                    setTimeout(function () {
+                        layer.msg(json['msg'],{
+                            anim: 6,
+                            offset: '200px'
+                        });
+                    }, 550)
+                }
+            })
+        }, 1500)
+
+    })
+</script>
+<!--[if lt IE 10]>
+</div>
+<![endif]-->
+
+<script type="text/javascript" src="__PUBLIC__/sideshow/js/TweenLite.min.js"></script>
+<script type="text/javascript" src="__PUBLIC__/sideshow/js/EasePack.min.js"></script>
+
+<script type="text/javascript" src="__PUBLIC__/sideshow/js/demo-1.js"></script>
+
+

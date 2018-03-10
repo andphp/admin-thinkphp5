@@ -1,0 +1,109 @@
+<div class="fly-header layui-bg-green" style="border-bottom: 1px solid #01AAED;">
+    <div class="layui-container">
+        <a class="fly-logo" href="{:url('bbs/index/index')}" style="top: 0;">
+            <img src="__PUBLIC__images/logo_bbs.png" height="60" alt="layui"></a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item">
+                <a href="{:url('index/index/index')}" target="_self" title="">
+                    <i class="layui-icon"></i>CMS首页 </a>
+            </li>
+            {volist name="nav" id="vo" } {eq name="vo.pid" value="1"}
+            <li class="layui-nav-item">
+                <a href="{$vo.link|getnavlink=$vo.sid}" target="{$vo.target}" title="{$vo.alias}">
+                    <i class="layui-icon">{$vo.icon}</i>{$vo.name}
+                </a>
+            </li>
+            {/eq} {/volist}
+        </ul>
+        <ul class="layui-nav fly-nav-user">
+            {if condition="$Think.session.userid neq ''"}
+            <!-- 登入后的状态 -->
+            <li class="layui-nav-item">
+                <a class="fly-nav-avatar" href="javascript:;">
+                    <cite class="layui-hide-xs">{$Think.session.username}</cite>
+
+                    <img src="{$Think.session.userhead|getheadurl}"></a>
+
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="{:url('user/index/index')}">
+                            <i class="layui-icon">&#xe612;</i>个人中心</a>
+
+                    </dd>
+
+                    <dd>
+                        <a href="{:url('index/index/index')}">
+                            <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>CMS首页</a>
+                    </dd>
+                    <dd>
+                        <a href="{:url('user/index/home',array('id'=>$Think.session.userid))}">
+                            <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a>
+                    </dd>
+                    <hr style="margin: 5px 0;">
+                    <dd>
+                        <a data-url="{:url('user/login/logout')}" location-url="{:url('bbs/index/index')}" href="javascript:void(0)" class="logi_logout" style="text-align: center;">退出</a></dd>
+                </dl>
+                <!-- <a href="{:url('user/index/topic')}"><span class="layui-badge" id="number">0</span></a> -->
+            </li>
+            <!-- <span class="layui-nav-bar" style="left: 46.5px; top: 55px; width: 0px; opacity: 0;">22</span> -->
+            <!-- <li class="layui-nav-item" style="margin-right:15px" id="message" style="visibility: hidden">
+                <a href="{:url('user/index/topic')}"><span class="layui-badge" id="number">0</span></a>
+            </li> -->
+            <script>
+                layui.use(['jquery', 'layer'], function() {
+                    var $ = layui.jquery;
+                    var layer = layui.layer;
+
+                    function getmsgnum() {
+                        var elemUser = $('.fly-nav-user');
+                        $.getJSON("{:url('index/getmsgnum')}?", {
+                            _: new Date().getTime()
+                        }, function(res) {
+
+                            if (res.code == 200 && res.count > 0) {
+                                var msgurl = "{:url('user/index/message')}";
+                                var msg = $('<a class="fly-nav-msg" href="' + msgurl + '">' + res.count + '</a>');
+                                elemUser.append(msg);
+                                msg.on('mouseenter', function() {
+                                    layer.tips('你有 ' + res.count + ' 条未读消息，点击可查看', msg, {
+                                        tips: 3,
+                                        // tipsMore: true,
+                                        fixed: true,
+                                        time: 3000
+                                    });
+                                });
+                                // msg.on('click', function() {
+                                //     $.post("{:url('user/msgreadnum')}", {}, function(res) {
+                                //         if (res.status == 0) {
+                                //             location.href = '/user/index/topic/';
+                                //         }
+                                //     });
+                                // });
+                            }
+
+                        });
+                    }
+                    getmsgnum();
+                    //30秒执行一次
+                    setInterval(getmsgnum, 30000);
+
+                });
+            </script>
+            {else /}
+            <li class="layui-nav-item">
+                <a class="iconfont icon-touxiang layui-hide-xs" href="{:url('user/login/index')}"></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="{:url('user/login/index')}">登入</a></li>
+            <li class="layui-nav-item">
+                <a href="{:url('user/login/reg')}">注册</a></li>
+            <!-- <li class="layui-nav-item layui-hide-xs">
+                <a href="{:url('user/applogin/qqlogin')}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" title="QQ登入" class="iconfont icon-qq"></a>
+            </li> -->
+            <!--<li class="layui-nav-item layui-hide-xs">
+            <a href="/app/weibo/" onclick="layer.msg('正在通过微博登入', {icon:16, shade: 0.1, time:0})" title="微博登入" class="iconfont icon-weibo"></a>
+          </li>-->
+            {/if}
+        </ul>
+    </div>
+</div>

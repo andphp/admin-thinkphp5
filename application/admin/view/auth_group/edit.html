@@ -1,0 +1,82 @@
+{extend name="base" /}
+
+{block name="main"}
+<div class="box_form">
+
+    <div class="box_content">
+        <form class="layui-form" id="admin">
+
+            <input type="hidden" name="token" value="{$token}" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-inline">
+                    <input name="title" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$role.title"}value="{$role.title}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色介绍</label>
+                <div class="layui-input-inline">
+                    <input name="intro" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$role.intro"}value="{$role.intro}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">角色状态</label>
+                <div class="layui-input-inline">
+                    <select name="status" lay-filter="aihao">
+                        <option value="1" {notempty name="$role.status"}{eq name="$role.status" value="1"} selected=""{/eq}{/notempty}>正常</option>
+                        <option value="2" {notempty name="$role.status"}{eq name="$role.status" value="7"} selected=""{/eq}{/notempty}>禁止</option>
+                    </select>
+                </div>
+            </div>
+
+
+            {notempty name="$menu"}
+            <input type="hidden" name="id" value="{$role.id}">
+            {/notempty}
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn and-bg-{$skin_name|default='default'}" lay-submit lay-filter="admin">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{/block}
+
+
+{block name="script"}
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        $(window).on('load', function() {
+            form.on('submit(admin)', function(data) {
+                $.ajax({
+                    url:"{:url('admin/auth_group/update')}",
+                    data:$('#admin').serialize(),
+                    type:'post',
+                    async: false,
+                    success:function(res) {
+                        if(res.code == 1) {
+                            layer.alert(res.msg, function(index){
+                               location.href = res.url;
+                                //parent.location.reload();
+                            })
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    });
+</script>
+{/block}

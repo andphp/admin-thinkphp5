@@ -1,0 +1,138 @@
+{extend name="base" /}
+
+{block name="main"}
+<div class="box_form">
+    <div class="box_content">
+        <form class="layui-form" id="admin">
+            <input type="hidden" name="token" value="{$token}" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">分组名称</label>
+                <div class="layui-input-inline">
+                    <input name="group" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" value="{$config_data.keyword|default=''}">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">名称</label>
+                <div class="layui-input-inline">
+                    <input name="title" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" value="{$config_data.title|default=''}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">变量名</label>
+                <div class="layui-input-inline">
+                    <input name="vari" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" value="{$config_data.vari|default=''}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">数据值</label>
+                <div class="layui-input-inline">
+                    <input name="value" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" value="{$config_data.value|default=''}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">类型</label>
+                <div class="layui-input-inline and-bg-{$skin_name|default='default'}">
+                    <select name="type" lay-verify="select" class="and-bg-{$skin_name|default='default'}">
+                        <option value="{$config_data.type|default='null'}">
+                            {if condition="!empty($config_data.type)"}
+                            {switch name="config_data.type"}
+                            {case value="null"}请选择类型{/case}
+                            {case value="text"}文本{/case}
+                            {case value="textarea"}文本域{/case}
+                            {case value="file"}文件{/case}
+                            {case value="checkbox"}多选{/case}
+                            {case value="radio"}单选{/case}
+                            {case value="select"}选择框{/case}
+                            {case value="checker"}检验{/case}
+                            {case value="array"}数组{/case}
+                            {case value="password"}密码{/case}
+                            {case value="color"}颜色{/case}
+                            {/switch}
+                            {else /}请选择类型
+                            {/if}
+                        </option>
+                        <option value="text">文本</option>
+                        <option value="textarea">文本域</option>
+                        <option value="file">文件</option>
+                        <option value="checkbox">多选</option>
+                        <option value="radio">单选</option>
+                        <option value="select">选择框</option>
+                        <option value="checker">开关</option>
+                        <option value="array">数组</option>
+                        <!--<option value="keyvalue">关键字</option>-->
+                        <option value="password">密码</option>
+                        <option value="color">颜色</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">额外参数</label>
+                <div class="layui-input-inline">
+                    <input name="options"  placeholder="请输入" autocomplete="off" class="layui-input" type="text" value="{$config_data.options|default=''}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">备注</label>
+                <div class="layui-input-inline">
+                    <input name="info" placeholder="请输入" autocomplete="off" class="layui-input" type="text" value="{$config_data.info|default=''}">
+                </div>
+            </div>
+            <!--{notempty name="$info.user_lists"}-->
+            <!--<input type="hidden" name="id" value="{$info.user_lists.id}">-->
+            <!--{/notempty}-->
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn and-bg-{$skin_name|default='default'}" lay-submit lay-filter="config_btn">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        //自定义验证规则
+        form.verify({
+            select: function(value){
+                if(value=='null'){
+                return  '忘记选择类型了吧';
+                }
+            }
+        });
+        $(window).on('load', function() {
+            form.on('submit(config_btn)', function(data) {
+                $.ajax({
+                    url:"{:url('admin/system_config/save')}",
+                    data:$('#admin').serialize(),
+                    type:'post',
+                    async: false,
+                    success:function(res) {
+                        if(res.code == 1) {
+                            layer.alert(res.msg, function(index){
+                                //self.location=document.referrer;
+                                parent.location.reload();
+                            })
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    });
+</script>
+{/block}
