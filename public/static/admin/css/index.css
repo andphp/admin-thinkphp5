@@ -27,6 +27,11 @@ background: -webkit-linear-gradient(left , rgb(247,248,248) 1% , rgb(173,211,237
 #gloTop .menuBar:hover .bar_line{ background: #fff;}
 
 
+#gloTop .topMenu ul li{   -webkit-transition: all .4s ease-out;transition: all .4s ease-out; height: 38px;line-height: 38px;cursor: pointer;color: rgba(83,83,83,0.8);margin: 6px 5px 0;background: rgba(255,255,255,0.15);padding: 0 10px;border-radius: 5px;}
+#gloTop .topMenu ul li.current, #gloTop .topMenu ul li:hover{ background: rgba(255,255,255,0.5);color: #000;}
+#gloTop .topMenu ul li:last-child i{ font-size: 20px;position: relative;top: 2px;}
+#gloTop .topMenu ul li:last-child{ padding: 0 12px;}
+
 
 
 #gloTop .gtRght{ float: right;}

@@ -47,7 +47,8 @@
 </script>
 <div id="gloBox" class="layui-fluid {$skin_name}">
     <div id="gloTop" class="clearfix layui-row">
-        <div class="layui-col-xs6 layui-col-sm6 layui-col-md4 gtLeft clearfix">
+        <div id="loadLine" style="display: none;"><i class="ll"></i><i class="lr"></i></div>
+        <div class="layui-col-xs4 layui-col-sm4 layui-col-md4 gtLeft clearfix">
             <div class="logo "><img src="__ADMIN__/images/admin_logo.png" alt="AndPHP"/></div>
             <div class="menuBar layui-hide-xs">
                 <ul class="list">
@@ -57,8 +58,19 @@
                 </ul>
             </div>
         </div>
-
-        <div class="layui-col-xs6 layui-col-sm6 layui-col-md8 gtRght">
+        <div class="layui-col-xs4 layui-col-sm2 layui-col-md4 topMenu" id="topMenu">
+            <ul class="grid">
+                {volist name="menusGroup" id="group"}
+                 {if $key eq 0}
+                <li class="current">{$group.title}</li>
+                {else /}
+                <li>{$group.title}</li>
+                {/if}
+                {/volist}
+                <li><i class="fa-globe fa"></i></li>
+            </ul>
+        </div>
+        <div class="layui-col-xs4 layui-col-sm6 layui-col-md4 gtRght">
             <ul class="layui-nav list" lay-filter="">
                 <li class="layui-nav-item">
                     <a href="javascript:;" class="admin-user" >
@@ -95,8 +107,15 @@
     <div id="gloLeft" class="sizing site-tree">
         <div class="leftbg"></div>
         <div id="leftBar">
-            <ul class="list" id="gloMenu">
+            {volist name="menusGroup" id="group"}
+            {if $key eq 0}
+            <ul class="list gloMenu">
+            {else /}
+            <ul class="list gloMenu hidden">
+            {/if}
+
                 {volist name="menus" id="data"}
+                {if $data.group_id eq $group.id}
                 <li class="layui-nav-item ">
                     <div class="navT">
                         <a href="javascript:;"><i data-icon="{$data.icon}" class="fa {$data.icon}   animated" style="color: rgb({rand(50,200)},{rand(50,200)},{rand(50,200)}); "></i><cite>{$data.title}</cite></a>
@@ -111,8 +130,10 @@
                         </ul>
                     </div>
                 </li>
+                {/if}
                 {/volist}
             </ul>
+            {/volist}
         </div>
     </div>
     <div id="gloRght" lay-allowClose="true">
@@ -371,7 +392,7 @@
 
     });
 
-    $('#gloMenu>li').each(function(){
+    $('.gloMenu>li').each(function(){
         var childLen  = $(this).find('.navC').find('li').length;
         if(childLen) {
             var html = $(this).find('.navT').find('a').html();
@@ -379,14 +400,14 @@
         }
     });
 
-    $('#gloMenu').on('click','.navT',function(){
+    $('.gloMenu').on('click','.navT',function(){
         var parent  = $(this).closest('li');
         var index   = parent.index();
         if(parent.find('.navC').find('li').length){
             if(parent.hasClass('open')){
                 parent.find('.navC').stop(true).slideUp(300,function(){ parent.removeClass('open')}) ;
             }else{
-                var openLi  = $('#gloMenu').find('li.open') ;
+                var openLi  = $('.gloMenu').find('li.open') ;
                 openLi.removeClass('open').find('.navC').stop(true).slideUp(300) ;
                 parent.addClass('open').find('.navC').stop(true).slideDown(300) ;
             }
@@ -394,7 +415,7 @@
         }
     });
 
-    $('#gloMenu').on('click','a',function(){
+    $('.gloMenu').on('click','a',function(){
         //if(!$(this).hasClass('isNav')) return false ;
         var href  = $(this).attr('href');
         var title = $(this).attr('data-title') || $(this).attr('title');
@@ -402,8 +423,17 @@
         var icon  = $(this).attr('data-icon') || $(this).find('i.fa').attr('data-icon');
 
 
-        $('#gloMenu').find('a.current').removeClass('current');
+        $('.gloMenu').find('a.current').removeClass('current');
         $(this).addClass('current') ;
+
+        $('#loadLine').find('i').stop(true, true).animate({
+            width : '50%'
+        }, 800, function(){
+            var that = $(this);
+            $(this).delay(200).fadeOut(200, function(){
+                that.width(0).show();
+            })
+        });
 
 
         Tab.tabAdd({
@@ -413,7 +443,17 @@
         });
         return false ;
     });
+    $('#topMenu').find('li').click(function(){
+        var index = $(this).index();
+        var length = $('#topMenu').find('li').length;
+        if (index < length - 1) {
+            $('#leftBar').find('ul.gloMenu:visible').hide().end().find('ul.gloMenu:eq('+index+')').show();
+        } else {
+            $('#leftBar').find('ul.gloMenu').show();
+        }
+        $(this).closest('#topMenu').find('li.current').removeClass('current').end().find('li:eq('+index+')').addClass('current');
 
+    });
 
     $('#gloTop').find('.menuBar').click(function(){
         if($('#gloBox').hasClass('menu_close')){

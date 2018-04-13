@@ -17,6 +17,8 @@ namespace app\admin\controller;
 
 use app\auth\Auth;
 use app\common\controller\AdminBase;
+use app\common\model\AuthRule;
+use app\common\model\AuthRuleGroup;
 use think\Db;
 use think\facade\Session;
 
@@ -53,7 +55,8 @@ class Index extends AdminBase
      */
     public function index(){
 
-        $menu = Db::name('AuthRule')->where(['status'=>1])->order('orders asc')->select();
+        $menu =  Db::name('AuthRule')->where(['status'=>1])->order('orders asc')->select();
+        $RuleGroup = (new AuthRuleGroup())->where(['status'=>1])->order('orders asc')->select();
         //添加url
         foreach ($menu as $key => $value) {
 
@@ -63,6 +66,7 @@ class Index extends AdminBase
         $menus = $this->menuList($menu);
 
         $this->assign('menus',$menus);
+        $this->assign('menusGroup',$RuleGroup);
         //环境
         $this->assign('dev',$this->getSysInfo());
         //检查是否锁屏状态

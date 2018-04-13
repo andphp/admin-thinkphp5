@@ -7,10 +7,22 @@
         <form class="layui-form" id="admin">
             <input type="hidden" name="token" value="{$token}" />
             <div class="layui-form-item">
+                <label class="layui-form-label">菜单分组</label>
+                <div class="layui-input-inline">
+                    <select name="group_id">
+                        <option value=""></option>
+                        {volist name="menuGroup" id="vo"}
+                        <option value="{$vo.id|raw}" {notempty name="$menu.group_id|raw"}{eq name="$menu.group_id|raw" value="$vo.id|raw"} selected=""{/eq}{/notempty}>{$vo.title|raw}</option>
+                        {/volist}
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
                 <label class="layui-form-label">上级菜单</label>
                 <div class="layui-input-inline">
                     <select name="pid" lay-filter="aihao">
-                        <option value="0">作为顶级菜单</option>
+                        <option value="0">顶级菜单</option>
                         {volist name="$menus" id="vo"}
                         <option value="{$vo.id|raw}" {notempty name="$menu.pid|raw"}{eq name="$menu.pid|raw" value="$vo.id|raw"} selected=""{/eq}{else /}{notempty name="$pid"}{eq name="$pid" value="$vo.id|raw"} selected=""{/eq}{/notempty}{/notempty}>{$vo.str|raw}{$vo.title|raw}</option>
                         {/volist}

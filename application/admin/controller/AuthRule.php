@@ -18,6 +18,7 @@ namespace app\admin\controller;
 use app\admin\validate\AuthRule as AuthRuleValidate;
 use app\common\controller\AdminBase;
 use app\common\model\AuthRule as AuthRuleModel;
+use app\common\model\AuthRuleGroup;
 
 /**
  *权限控制器（包括后台菜单控制）
@@ -135,6 +136,8 @@ class AuthRule extends AdminBase
         $menu['controller']=$rule_name[1];
         $menu['function']=$rule_name[2];
         $this->assign('menu',$menu);
+        $RuleGroup = (new AuthRuleGroup())->where(['status'=>1])->order('orders asc')->select();
+        $this->assign('menuGroup',$RuleGroup);
         return $this->fetch();
     }
 
