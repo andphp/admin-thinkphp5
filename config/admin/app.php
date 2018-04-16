@@ -12,7 +12,19 @@
 // +----------------------------------------------------------------------
 // | 应用设置
 // +----------------------------------------------------------------------
+// 引用函数库文件
+$extra_file_list = \think\facade\Config::get('app.extra_file_list');
+$function_file_list = [
+    APP_PATH . 'common/function/form.php',
+    APP_PATH . 'common/function/list.php',
+    APP_PATH . 'common/function/html.php'
+];
 
+if (!empty($extra_file_list) and is_array($extra_file_list)) {
+$function_files = array_merge($extra_file_list, $function_file_list);
+}else{
+    $function_files=$function_file_list;
+}
 return [
     // 应用名称
     'app_name'               => '',
@@ -50,7 +62,8 @@ return [
     'class_suffix'           => false,
     // 控制器类后缀
     'controller_suffix'      => false,
-
+    // 函数库文件
+    'extra_file_list' => $function_files,
 
 
     // +----------------------------------------------------------------------

@@ -74,6 +74,9 @@ class Index extends AdminBase
         $this->assign('is_lock_screen',$is_lock_screen);
         //登录信息
         $this->assign('login',Session::get('adminUser'));
+        //
+        $this->addCss('admin/css/index');
+        $this->addCss('admin/css/animate.css');
       return $this->fetch();
 
     }

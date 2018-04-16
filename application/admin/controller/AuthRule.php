@@ -74,6 +74,8 @@ class AuthRule extends AdminBase
         $menu = $model->select();
         $menus = $model->menuList($menu);
         $this->assign('menus',$menus);
+        $RuleGroup = (new AuthRuleGroup())->where(['status'=>1])->order('orders asc')->select();
+        $this->assign('menuGroup',$RuleGroup);
         return $this->fetch();
     }
 

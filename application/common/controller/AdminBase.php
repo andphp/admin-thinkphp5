@@ -41,6 +41,16 @@ class AdminBase extends AppBase
         $this->userSession=Session::get('adminUser');
         $this->checkAuth('adminUser');
         $this->assign('skin_name', Cookie::get('skin_name'));
+
+        //===
+        $this->addCss('admin/css/global.css');
+        $this->addCss('public/layui/css/layui.css');
+        $this->addCss('public/font-awesome-4.0.7/css/font-awesome.css');
+
+        $this->addJs('admin/js/jquery');
+        $this->addJs('public/js/jquery-3.1.1.js');
+        $this->addJs('public/layui/layui.js');
+        $this->addJs('admin/js/global');
     }
 
     /**

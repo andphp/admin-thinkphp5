@@ -13,13 +13,13 @@
 // | 模板设置
 // +----------------------------------------------------------------------
 function get_theme(){
-    $theme_true=(new \app\common\model\SystemConfig())->cache('theme_true')->where(['vari'=>'home_theme_status'])->field('value')->find();
+    $theme_true=(new \app\common\model\SystemConfig())->cache(true)->where(['vari'=>'home_theme_status'])->field('value')->find();
     if($theme_true== false or $theme_true['value']==0){
         $return[1]='';
         $return[2]='/';
         return $return;
     }
-    $theme_default=(new \app\common\model\Theme())->cache('theme_default')->where(['status'=>1,'module'=>'home'])->field('name')->find();
+    $theme_default=(new \app\common\model\Theme())->cache(true)->where(['status'=>1,'module'=>'home'])->field('name')->find();
     if($theme_default== false or $theme_default['name']=='default'){
         $return[1]= './template/'.config('app.default_module').'/default/';
         $return[2]= '/template/'.config('app.default_module').'/default/';
@@ -34,6 +34,7 @@ return [
     'type'         => 'Think',
     // 模板路径
     'view_path'    => get_theme()[1],
+    '_view_path'    => get_theme()[2],
     // 模板后缀
     'view_suffix'  => 'html',
     // 模板文件名分隔符

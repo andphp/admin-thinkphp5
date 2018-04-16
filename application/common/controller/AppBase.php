@@ -18,6 +18,7 @@ namespace app\common\controller;
 use app\common\model\Log as LogModel;
 use app\common\model\SystemConfig as SystemConfigModel;
 use app\common\model\Attachment;
+use app\common\utility\Hash;
 use org\Auth;
 use think\Controller;
 use think\facade\Config;
@@ -37,6 +38,30 @@ class AppBase extends Controller
 {
     public $andConfig;
 
+    public $VarsReturned = false;
+    public $js = array();
+    public $css = array();
+    public $defer_js = array();
+
+    public $button = array();
+    public $cols = array();
+    public $formItem = array();
+    public $inputData = array();
+
+
+    public $assign;
+    public $local;
+    public $params;
+    public $args;
+    public $paginate;
+    public $helper = [
+//        'Auth' => [
+//            'userModel' => 'User',
+//            'contain' => ['UserGroup', 'Member']
+//        ],
+        'Form',
+        'Html'
+    ];
     /**
      * 自动加载类，初始化
      * @company    :WuYuZhong Co. Ltd
@@ -45,6 +70,24 @@ class AppBase extends Controller
      */
     protected function initialize()
     {
+        $GLOBALS['controller'] = $this;
+        ##加载助手类
+        if (!empty($this->helper)) {
+            $this->helper = Hash::normalize($this->helper);
+            foreach ($this->helper as $h => $h_option) {
+                $helper_name = 'app\\common\\helper\\' . $h;
+                $this->$h = new $helper_name();
+                if (!empty($h_option)) {
+                    foreach ($h_option as $pro_name => $pro) {
+                        $this->$h->$pro_name = $pro;
+                    }
+                }
+            }
+        }
+
+        ##加载公共方法
+//        loader();
+
         $this->systemConfig();
         $module = request()->module();
         $controller = request()->controller();
@@ -198,4 +241,197 @@ class AppBase extends Controller
         }
         return false;
     }
+
+    //=========================模板输出==================================
+    /**
+     * 加载js
+     * @param $path
+     * @param bool|false $defer
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-14 10:19
+     */
+    public function addJs($path, $defer = false)
+    {
+        if ($defer) {
+            if (!is_array($path)) {
+                array_push($this->defer_js, $path);
+            } else {
+                $this->defer_js = array_merge($this->defer_js, $path);
+            }
+            $this->assign('defer_js' , array_unique($this->defer_js));
+        } else {
+            if (!is_array($path)) {
+                array_push($this->js, $path);
+            } else {
+                $this->js = array_merge($this->js, $path);
+            }
+            $this->assign('js' , array_unique($this->js));
+        }
+
+    }
+
+    public function removeJs($path, $defer = false)
+    {
+        if ($defer) {
+            if (!is_array($path)) {
+                $this->assign('defer_js' , array_diff($this->defer_js, [$path]));
+            } else {
+                $this->assign('defer_js' , array_diff($this->defer_js, $path));
+            }
+
+        } else {
+            $this->assign('js' , array_diff($this->js, [$path]));
+        }
+    }
+
+    /**
+     * 加载css
+     * @param $path
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-14 10:19
+     */
+    public function addCss($path)
+    {
+        if (!is_array($path)) {
+            array_push($this->css, $path);
+        } else {
+            $this->css = array_merge($this->css, $path);
+        }
+        $this->assign('css' , array_unique($this->css));
+    }
+
+    public function removeCss($path)
+    {
+        if (!is_array($path)) {
+            $this->css = array_diff($this->css, [$path]);
+        } else {
+            $this->css = array_diff($this->css, $path);
+        }
+        $this->assign('css' , array_unique($this->css));
+    }
+
+    public function setMetaTitle($title){
+        $this->assign('title',$title);
+    }
+    public function addButton($title='',$href="",$id=null,$group=false,$class='',$icon="",$icon_value="",$extra_data=array()){
+
+            $Button=$this->button;
+
+            $Button[]=[
+                "href"=>$href,
+                "class"=>$class,
+                "id"=>$id,
+                "icon"=>$icon,
+                "icon_value"=>$icon_value,
+                "title"=>$title,
+                "extra_data"=>$extra_data,
+            ];
+
+            if($group==true){
+                $this->button = $Button;
+            }else{
+                if($id!=null){
+                    $this->assign($id , $Button);
+                }else{
+                    $this->assign('button' , $Button);
+                }
+
+            }
+    }
+    public function addTopButton($id,$class='',$extra_data=array()){
+        $Button=$this->button;
+        $buttonGroup=[
+            'id'=>$id,
+            'button'=>$Button,
+            'class'=>$class,
+            'extra_data'=>$extra_data
+        ];
+        $this->assign('buttonGroup' , $buttonGroup);
+        $this->button = null;
+    }
+    public function addButtonBar($id,$class='',$extra_data=array()){
+        $Button=$this->button;
+        $buttonGroup=[
+            'id'=>$id,
+            'button'=>$Button,
+            'class'=>$class,
+            'extra_data'=>$extra_data
+        ];
+        $this->assign('buttonBar' , $buttonGroup);
+        $this->button = null;
+    }
+    public function addTableColumn($field,$title,$minWidth=60,$align=null,$width=null,$templet=null,$type=null,$fixed='left',$toolbar=null,$LAY_CHECKED=false,$sort=false,$unresize=false,$event=null,$style=null,$colspan=1,$rowspan=1,$edit='text'){
+            $cols=$this->cols;
+            $cols[]=[
+               'field'=>$field,
+               'title'=>$title,
+               'type'=>$type,
+               'minWidth'=>$minWidth,
+               'width'=>$width,
+               'align'=>$align,
+               'templet'=>$templet,
+               'toolbar'=>$toolbar,
+               'LAY_CHECKED'=>$LAY_CHECKED,
+               'fixed'=>$fixed,
+               'sort'=>$sort,
+               'unresize'=>$unresize,
+               'event'=>$event,
+               'style'=>$style,
+               'colspan'=>$colspan,
+               'rowspan'=>$rowspan,
+               'edit'=>$edit,
+            ];
+            $this->cols=$cols;
+    }
+    public function addTable($id,$url=null,$extra_data=array(),$cellMinWidth=95,$page=false,$height='',$width='',$limits=[10,15,20,25],$limit=20,$cols=array(),$done='',$data=array(),$loading=true,$text='',$initSort='',$skin=''){
+            $Table=[
+                'url'=>$url,
+                'extra_data'=>$extra_data,
+                'id'=>$id,
+                'cellMinWidth'=>$cellMinWidth,
+                'page'=>$page,
+                'height'=>$height,
+                'width'=>$width,
+                'limits'=>$limits,
+                'limit'=>$limit,
+                'cols'=>$this->cols,
+                'done'=>$done,
+                'data'=>$data,
+                'loading'=>$loading,
+                'text'=>$text,
+                'initSort'=>$initSort,
+                'skin'=>$skin,
+            ];
+            $this->cols=null;
+        $this->assign('table' , $Table);
+    }
+    public function addInput($name,$value=null,$type='text',$title=null,$id=null,$class=null,$extra_data=array()){
+        $inputData=$this->inputData;
+        $inputData[]=[
+            'name'=>$name,
+            'value'=>$value,
+            'type'=>$type,
+            'title'=>$title,
+            'id'=>$id,
+            'class'=>$class,
+            'extra_data'=>$extra_data,
+        ];
+        $this->inputData=$inputData;
+    }
+
+    public function addFormItem($title=null,$id=null,$class=null){
+        $FormItem=$this->formItem;
+        $FormItem[]=[
+            'title'=>$title,
+            'id'=>$id,
+            'class'=>$class,
+            'inputData'=>$this->inputData,
+        ];
+        $this->formItem=$FormItem;
+        $this->assign('formItem' , $FormItem);
+        $this->inputData=null;
+    }
+    //===========================================================
 }

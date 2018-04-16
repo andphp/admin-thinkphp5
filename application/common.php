@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 
 // 应用公共文件
+
 /**
  * 根据附件表的id返回url地址
  * param  [type] $id [description]
@@ -144,4 +145,41 @@ function removeDir($dirName)
     closedir($handle);
 
     return rmdir($dirName) ;
+}
+/**
+ * 模板加载css
+ * @param $css
+ * @param bool|false $abs
+ * @return string
+ * @company    :WuYuZhong Co. Ltd
+ * @author     :BabySeeME <417170808@qq.com>
+ * @createTime :2018-04-12 21:55
+ */
+function displayCss($css,$abs = false){
+    return (new \app\common\helper\Html())->css($css, $abs = false);
+}
+
+/**
+ * 模板加载js
+ * @param $js
+ * @param bool|false $abs
+ * @return string
+ * @company    :WuYuZhong Co. Ltd
+ * @author     :BabySeeME <417170808@qq.com>
+ * @createTime :2018-04-12 21:55
+ */
+function displayScript($js,$abs = false){
+    return (new \app\common\helper\Html())->script($js, $abs = false);
+}
+function showButtonGroup($Button){
+    return (new \app\common\helper\Lists())->buttonGroup($Button);
+}
+function showButton($Button){
+    return (new \app\common\helper\Lists())->button($Button);
+}
+function showTable($table){
+    return (new \app\common\helper\Lists())->table($table);
+}
+function showFormItem($formItem){
+    return (new \app\common\helper\Form())->formItem($formItem);
 }
