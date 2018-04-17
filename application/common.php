@@ -183,3 +183,6 @@ function showTable($table){
 function showFormItem($formItem){
     return (new \app\common\helper\Form())->formItem($formItem);
 }
+function showFormBtn($formBtn){
+    return (new \app\common\helper\Form())->formBtn($formBtn);
+}

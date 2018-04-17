@@ -2,30 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf38c65d-8bb9-4cd6-b8da-cf9717868da3" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/admin/controller/AuthRuleGroup.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/admin/view/auth_rule_group/_list.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/admin/view/auth_rule_group/add.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/admin/view/public/Add.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/admin/view/public/_list.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/common/helper/Auth.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/common/helper/Form.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/common/helper/Html.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/common/helper/Lists.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/common/utility/Hash.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/application/common/utility/TpText.php" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/public/userList.json" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/application/admin/view/auth_rule_group/_list.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/application/admin/view/auth_rule_group/add.html" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/controller/AuthRule.php" afterPath="$PROJECT_DIR$/application/admin/controller/AuthRule.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/controller/Index.php" afterPath="$PROJECT_DIR$/application/admin/controller/Index.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/view/auth_rule/add.html" afterPath="$PROJECT_DIR$/application/admin/view/auth_rule/add.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/view/base.html" afterPath="$PROJECT_DIR$/application/admin/view/base.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/controller/AuthRuleGroup.php" afterPath="$PROJECT_DIR$/application/admin/controller/AuthRuleGroup.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/admin/view/public/_list.html" afterPath="$PROJECT_DIR$/application/admin/view/public/_list.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common.php" afterPath="$PROJECT_DIR$/application/common.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common/controller/AdminBase.php" afterPath="$PROJECT_DIR$/application/common/controller/AdminBase.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common/controller/AppBase.php" afterPath="$PROJECT_DIR$/application/common/controller/AppBase.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/admin/app.php" afterPath="$PROJECT_DIR$/config/admin/app.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/database.php" afterPath="$PROJECT_DIR$/config/database.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/config/template.php" afterPath="$PROJECT_DIR$/config/template.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/index.php" afterPath="$PROJECT_DIR$/public/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/application/common/helper/Form.php" afterPath="$PROJECT_DIR$/application/common/helper/Form.php" />
     </list>
     <ignored path="admin.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,11 +31,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="AuthRuleGroup.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="AuthRuleGroup.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthRuleGroup.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-16.15625">
-              <caret line="61" column="32" selection-start-line="61" selection-start-column="32" selection-end-line="61" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.5841808">
+              <caret line="78" column="38" selection-start-line="78" selection-start-column="38" selection-end-line="78" selection-end-column="38" />
               <folding>
                 <element signature="e#633#669#0#PHP" expanded="true" />
               </folding>
@@ -62,18 +46,40 @@
       <file leaf-file-name="add.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/admin/view/public/add.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-1.9166666">
-              <caret line="5" column="27" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="27" />
+            <state vertical-scroll-proportion="-0.38333333">
+              <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="83" />
+              <folding>
+                <element signature="n#style#0;n#form#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="_list.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/admin/view/auth_rule/_list.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-12.9375">
+              <caret line="126" column="11" selection-start-line="126" selection-start-column="11" selection-end-line="140" selection-end-column="15" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="add.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/admin/view/auth_rule_group/add.html">
+      <file leaf-file-name="common.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/common.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-11.5">
-              <caret line="16" column="50" selection-start-line="16" selection-start-column="50" selection-end-line="16" selection-end-column="50" />
+            <state vertical-scroll-proportion="-18.9375">
+              <caret line="185" column="31" selection-start-line="185" selection-start-column="31" selection-end-line="185" selection-end-column="31" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AdminBase.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/common/controller/AdminBase.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-4.435484">
+              <caret line="36" column="6" selection-start-line="36" selection-start-column="6" selection-end-line="36" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -82,8 +88,8 @@
       <file leaf-file-name="_list.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/admin/view/public/_list.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-20.125">
-              <caret line="31" column="2" selection-start-line="31" selection-start-column="2" selection-end-line="31" selection-end-column="26" />
+            <state vertical-scroll-proportion="-21.1875">
+              <caret line="148" column="51" selection-start-line="148" selection-start-column="51" selection-end-line="148" selection-end-column="51" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#form#0;n#!!top" expanded="true" />
               </folding>
@@ -91,23 +97,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="common.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/common.php">
+      <file leaf-file-name="AuthRule.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthRule.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-24.78125">
-              <caret line="183" column="52" selection-start-line="183" selection-start-column="44" selection-end-line="183" selection-end-column="52" />
+            <state vertical-scroll-proportion="-23.0">
+              <caret line="173" column="13" selection-start-line="167" selection-start-column="11" selection-end-line="173" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Form.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Form.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/common/helper/Form.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.3724928">
-              <caret line="72" column="5" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
+            <state vertical-scroll-proportion="-16.53125">
+              <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
               <folding>
-                <marker date="1523806201596" expanded="true" signature="900:948" placeholder="..." />
+                <marker date="1523976002501" expanded="true" signature="900:948" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -116,18 +122,8 @@
       <file leaf-file-name="Lists.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/common/helper/Lists.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.5">
-              <caret line="69" column="13" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Html.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/common/helper/Html.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state vertical-scroll-proportion="1.8125">
+              <caret line="60" column="35" selection-start-line="60" selection-start-column="35" selection-end-line="60" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -136,21 +132,11 @@
       <file leaf-file-name="AppBase.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/application/common/controller/AppBase.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.7582417">
-              <caret line="431" column="23" selection-start-line="431" selection-start-column="15" selection-end-line="431" selection-end-column="23" />
+            <state vertical-scroll-proportion="-3.483871">
+              <caret line="446" column="20" selection-start-line="446" selection-start-column="20" selection-end-line="446" selection-end-column="20" />
               <folding>
                 <element signature="e#633#670#0#PHP" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="_list.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/application/admin/view/auth_rule_group/_list.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.0">
-              <caret line="0" column="18" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="22" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -196,13 +182,13 @@
         <option value="$PROJECT_DIR$/application/common/controller/Builder.php" />
         <option value="$PROJECT_DIR$/config/admin/app.php" />
         <option value="$PROJECT_DIR$/application/common/helper/Lists.php" />
-        <option value="$PROJECT_DIR$/application/admin/view/public/_list.html" />
         <option value="$PROJECT_DIR$/application/admin/view/auth_rule_group/add.html" />
-        <option value="$PROJECT_DIR$/application/admin/view/public/add.html" />
         <option value="$PROJECT_DIR$/application/common.php" />
         <option value="$PROJECT_DIR$/application/common/controller/AppBase.php" />
-        <option value="$PROJECT_DIR$/application/admin/controller/AuthRuleGroup.php" />
+        <option value="$PROJECT_DIR$/application/admin/view/public/_list.html" />
+        <option value="$PROJECT_DIR$/application/admin/view/public/add.html" />
         <option value="$PROJECT_DIR$/application/common/helper/Form.php" />
+        <option value="$PROJECT_DIR$/application/admin/controller/AuthRuleGroup.php" />
       </list>
     </option>
   </component>
@@ -216,10 +202,10 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" />
   <component name="ProjectFrameBounds">
-    <option name="x" value="564" />
-    <option name="y" value="75" />
-    <option name="width" value="1260" />
-    <option name="height" value="869" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -540,7 +526,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="auth_rule_group" />
+              <option name="myItemId" value="auth_rule" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -634,10 +620,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="564" y="75" width="1260" height="869" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2210611" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14322917" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -824,14 +810,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/common/controller/AdminBase.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config/admin/template.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.0">
@@ -896,14 +874,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthRule.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.71875">
-          <caret line="76" column="8" selection-start-line="76" selection-start-column="8" selection-end-line="78" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/thinkphp/library/traits/controller/Jump.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.26666668">
@@ -936,40 +906,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/auth_rule_group/_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.0">
-          <caret line="0" column="18" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/auth_rule_group/add.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-11.5">
-          <caret line="16" column="50" selection-start-line="16" selection-start-column="50" selection-end-line="16" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/public/_list.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-20.125">
-          <caret line="31" column="2" selection-start-line="31" selection-start-column="2" selection-end-line="31" selection-end-column="26" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#form#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/application/common.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-24.78125">
-          <caret line="183" column="52" selection-start-line="183" selection-start-column="44" selection-end-line="183" selection-end-column="52" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/application/common/helper/Html.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -978,36 +914,78 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthRuleGroup.php">
+    <entry file="file://$PROJECT_DIR$/application/common.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-16.15625">
-          <caret line="61" column="32" selection-start-line="61" selection-start-column="32" selection-end-line="61" selection-end-column="32" />
-          <folding>
-            <element signature="e#633#669#0#PHP" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-18.9375">
+          <caret line="185" column="31" selection-start-line="185" selection-start-column="31" selection-end-line="185" selection-end-column="31" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/application/admin/view/public/add.html">
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/php/lib/php.jar!/com/jetbrains/php/lang/psi/stubs/data/standard_5.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-1.9166666">
-          <caret line="5" column="27" selection-start-line="5" selection-start-column="15" selection-end-line="5" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.34813753">
+          <caret line="136" column="9" selection-start-line="136" selection-start-column="9" selection-end-line="136" selection-end-column="9" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/common/helper/Lists.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.5">
-          <caret line="69" column="13" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
+        <state vertical-scroll-proportion="1.8125">
+          <caret line="60" column="35" selection-start-line="60" selection-start-column="35" selection-end-line="60" selection-end-column="35" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/view/auth_rule/_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-12.9375">
+          <caret line="126" column="11" selection-start-line="126" selection-start-column="11" selection-end-line="140" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/common/controller/AdminBase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.435484">
+          <caret line="36" column="6" selection-start-line="36" selection-start-column="6" selection-end-line="36" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthRule.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-23.0">
+          <caret line="173" column="13" selection-start-line="167" selection-start-column="11" selection-end-line="173" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/view/public/_list.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-21.1875">
+          <caret line="148" column="51" selection-start-line="148" selection-start-column="51" selection-end-line="148" selection-end-column="51" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#form#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/view/public/add.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.38333333">
+          <caret line="20" column="8" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="83" />
+          <folding>
+            <element signature="n#style#0;n#form#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/application/common/controller/AppBase.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.7582417">
-          <caret line="431" column="23" selection-start-line="431" selection-start-column="15" selection-end-line="431" selection-end-column="23" />
+        <state vertical-scroll-proportion="-3.483871">
+          <caret line="446" column="20" selection-start-line="446" selection-start-column="20" selection-end-line="446" selection-end-column="20" />
           <folding>
             <element signature="e#633#670#0#PHP" expanded="true" />
           </folding>
@@ -1016,10 +994,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/application/common/helper/Form.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.3724928">
-          <caret line="72" column="5" selection-start-line="72" selection-start-column="5" selection-end-line="72" selection-end-column="5" />
+        <state vertical-scroll-proportion="-16.53125">
+          <caret line="53" column="17" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="17" />
           <folding>
-            <marker date="1523806201596" expanded="true" signature="900:948" placeholder="..." />
+            <marker date="1523976002501" expanded="true" signature="900:948" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/application/admin/controller/AuthRuleGroup.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5841808">
+          <caret line="78" column="38" selection-start-line="78" selection-start-column="38" selection-end-line="78" selection-end-column="38" />
+          <folding>
+            <element signature="e#633#669#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

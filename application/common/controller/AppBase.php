@@ -43,7 +43,8 @@ class AppBase extends Controller
     public $css = array();
     public $defer_js = array();
 
-    public $button = array();
+    public $buttonA = array();
+    public $buttonB = array();
     public $cols = array();
     public $formItem = array();
     public $inputData = array();
@@ -315,9 +316,9 @@ class AppBase extends Controller
     public function setMetaTitle($title){
         $this->assign('title',$title);
     }
-    public function addButton($title='',$href="",$id=null,$group=false,$class='',$icon="",$icon_value="",$extra_data=array()){
+    public function addButtonA($title='',$href="",$id=null,$group=false,$class='',$icon="",$icon_value="",$extra_data=array()){
 
-            $Button=$this->button;
+            $Button=$this->buttonA;
 
             $Button[]=[
                 "href"=>$href,
@@ -330,7 +331,7 @@ class AppBase extends Controller
             ];
 
             if($group==true){
-                $this->button = $Button;
+                $this->buttonA = $Button;
             }else{
                 if($id!=null){
                     $this->assign($id , $Button);
@@ -340,8 +341,33 @@ class AppBase extends Controller
 
             }
     }
+    public function addButtonB($title='',$href="",$id=null,$group=false,$class='',$icon="",$icon_value="",$extra_data=array()){
+
+        $Button=$this->buttonB;
+
+        $Button[]=[
+            "href"=>$href,
+            "class"=>$class,
+            "id"=>$id,
+            "icon"=>$icon,
+            "icon_value"=>$icon_value,
+            "title"=>$title,
+            "extra_data"=>$extra_data,
+        ];
+
+        if($group==true){
+            $this->buttonB = $Button;
+        }else{
+            if($id!=null){
+                $this->assign($id , $Button);
+            }else{
+                $this->assign('button' , $Button);
+            }
+
+        }
+    }
     public function addTopButton($id,$class='',$extra_data=array()){
-        $Button=$this->button;
+        $Button=$this->buttonA;
         $buttonGroup=[
             'id'=>$id,
             'button'=>$Button,
@@ -349,10 +375,10 @@ class AppBase extends Controller
             'extra_data'=>$extra_data
         ];
         $this->assign('buttonGroup' , $buttonGroup);
-        $this->button = null;
+        $this->buttonA = null;
     }
     public function addButtonBar($id,$class='',$extra_data=array()){
-        $Button=$this->button;
+        $Button=$this->buttonA;
         $buttonGroup=[
             'id'=>$id,
             'button'=>$Button,
@@ -360,7 +386,18 @@ class AppBase extends Controller
             'extra_data'=>$extra_data
         ];
         $this->assign('buttonBar' , $buttonGroup);
-        $this->button = null;
+        $this->buttonA = null;
+    }
+    public function addButtonForm($id=null,$class=null,$extra_data=array()){
+        $Button=$this->buttonB;
+        $buttonGroup=[
+            'id'=>$id,
+            'button'=>$Button,
+            'class'=>$class,
+            'extra_data'=>$extra_data
+        ];
+        $this->assign('buttonForm' , $buttonGroup);
+        $this->buttonB = null;
     }
     public function addTableColumn($field,$title,$minWidth=60,$align=null,$width=null,$templet=null,$type=null,$fixed='left',$toolbar=null,$LAY_CHECKED=false,$sort=false,$unresize=false,$event=null,$style=null,$colspan=1,$rowspan=1,$edit='text'){
             $cols=$this->cols;
@@ -407,8 +444,11 @@ class AppBase extends Controller
             $this->cols=null;
         $this->assign('table' , $Table);
     }
-    public function addInput($name,$value=null,$type='text',$title=null,$id=null,$class=null,$extra_data=array()){
+    public function addInput($name,$value=null,$type='text',$title=null,$id=false,$class=null,$extra_data=array(),$pre=null){
         $inputData=$this->inputData;
+        if($id===false){
+            $id=$name;
+        }
         $inputData[]=[
             'name'=>$name,
             'value'=>$value,
@@ -417,6 +457,7 @@ class AppBase extends Controller
             'id'=>$id,
             'class'=>$class,
             'extra_data'=>$extra_data,
+            'pre'=>$pre,
         ];
         $this->inputData=$inputData;
     }

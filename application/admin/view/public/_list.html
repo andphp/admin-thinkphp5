@@ -44,40 +44,7 @@
                 $ = layui.jquery,
                 form = layui.form,
                 table = layui.table;
-        //添加用户
-        function addAction(edit){
-            var index = layui.layer.open({
-                title : "{$buttonAdd.0.title}",
-                type : 2,
-                content : "./add.html",
-                success : function(layero, index){
-                    var body = layui.layer.getChildFrame('body', index);
-                    if(edit){
-                        body.find(".id").val(edit.id);  //登录名
-                        body.find(".userEmail").val(edit.userEmail);  //邮箱
-                        body.find(".userSex input[value="+edit.userSex+"]").prop("checked","checked");  //性别
-                        body.find(".userGrade").val(edit.userGrade);  //会员等级
-                        body.find(".userStatus").val(edit.userStatus);    //用户状态
-                        body.find(".userDesc").text(edit.userDesc);    //用户简介
-                        form.render();
-                    }
-                    setTimeout(function(){
-                        layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
-                            tips: 3
-                        });
-                    },500)
-                }
-            });
-            layui.layer.full(index);
-            window.sessionStorage.setItem("index",index);
-            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
-            $(window).on("resize",function(){
-                layui.layer.full(window.sessionStorage.getItem("index"));
-            })
-        }
-        $(".addAction_btn").click(function(){
-            addAction();
-        });
+
         //列表操作
         table.on('tool({$table.id})', function(obj){
             var layEvent = obj.event,
@@ -168,6 +135,45 @@
             ]]
         });
 
+        //添加用户
+        function addAction(edit){
+            var index = layui.layer.open({
+                title : "{$buttonAdd.0.title}",
+                type : 2,
+                content : "./add.html",
+                success : function(layero, index){
+                    var body = layui.layer.getChildFrame('body', index);
+                    if(edit){
+                        {notempty name="$table"}
+                        {foreach $table.cols as $key=>$vo }
+                        {notempty name="$vo.field"}
+                        {if $vo.type eq "radio"}
+                        body.find(".{$vo.field}").prop("checked","checked");
+                        {else /}
+                        body.find("#{$vo.field}").val(edit.{$vo.field});
+                        {/if}
+                        {/notempty}
+                        {/foreach}
+                        {/notempty}
+                        form.render();
+                    }
+                    setTimeout(function(){
+                        layui.layer.tips('点击此处返回用户列表', '.layui-layer-setwin .layui-layer-close', {
+                            tips: 3
+                        });
+                    },500)
+                }
+            });
+            layui.layer.full(index);
+            window.sessionStorage.setItem("index",index);
+            //改变窗口大小时，重置弹窗的宽高，防止超出可视区域（如F12调出debug的操作）
+            $(window).on("resize",function(){
+                layui.layer.full(window.sessionStorage.getItem("index"));
+            })
+        }
+        $(".addAction_btn").click(function(){
+            addAction();
+        });
     });
 </script>
 {/block}
