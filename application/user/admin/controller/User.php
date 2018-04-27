@@ -83,9 +83,6 @@ class User extends AdminController
         }
     }
 
-    public function score_config(){
-
-    }
 
     /**
      * 会员签到配置信息渲染输出
@@ -377,10 +374,5 @@ class User extends AdminController
         }
     }
 
-    public function send(){
-
-    }
-    public function audit(){
-
-    }
+ 
 }
