@@ -15,12 +15,22 @@
 namespace app\admin\controller;
 
 
-use app\common\controller\AppBase;
+use app\common\controller\AppController;
 use app\common\model\AdminUser as AdminUserModel;
 use think\facade\Session;
 use app\admin\validate\AdminUser as AdminUserValidate;
 
-class Login extends AppBase
+/**
+ * 后台管理员登录控制器类
+ * +----------------------------------------------------------------------
+ * Class Login
+ * @package app\admin\controller
+ * +----------------------------------------------------------------------
+ * | author     :BabySeeME <417170808@qq.com>
+ * +----------------------------------------------------------------------
+ * | createTime :2018-04-27 20:30
+ */
+class Login extends AppController
 {
 	/**
 	 * 渲染登录页面
@@ -46,28 +56,37 @@ class Login extends AppBase
 	 * @author     :BabySeeME <417170808@qq.com>
 	 * @createTime :2018-03-05 19:11
 	 */
-	public function login_username(){
+	public function login(){
 		$model = new AdminUserModel();
 		if (!$this->request->isAjax()) {
-			return json_error( '不是一个正确的请求方式');
+			return ajax_json('error','不是一个正确的请求方式');
 		}
 		$post = $this->request->post();
 		//验证部分数据合法性
 		(new AdminUserValidate())->goCheck($post);
 		if (!captcha_check(input('post.captcha'))) {
-			return json_error('亲！验证码错误了哦');
+			return ajax_json('error','亲！验证码错误了哦');
 		}
-		$name = $model->where('username',$post['username'])->find();
+
+		$userStr = $post['username'];
+		//用户名、邮箱、手机号均可登陆
+		if (preg_match("/^1[34578]\d{9}$/", $userStr)) {
+			$map['phone'] = $userStr;
+		} else {
+			$map['username|email'] = $userStr;
+		}
+
+		$name = $model->where('status','gt',0)->where($map)->where('is_delete',0)->find();
 		if(empty($name)) {
 			//不存在该用户名
-			return json_error('用户名不存在');
+			return ajax_json('error','账户不存在或已被禁用');
 		} else {
 			//验证密码
 			$post['password'] = passwordMD5($post['password'],$name['salt']);
 			if($name['password'] != $post['password']) {
-				return json_error('密码错误');
+				return ajax_json('error','密码错误');
 			} elseif ($name['status'] != 1) {
-				return json_error('当前用户已禁用');
+				return ajax_json('error','当前用户已禁用');
 			}else{
 				$login_ip =  $this->request->ip();
 				$login_time = time();
@@ -82,8 +101,8 @@ class Login extends AppBase
 				Session::set("adminUser",$name); //保存新的,最长为2小时
 				//记录登录时间和ip
 				$model->where('id',$name['id'])->update(['last_login_ip' => $login_ip,'last_login_time' => $login_time]);
-				$this->add_log($name['id'],$name['username'],'登录于'.date('Y-m-d H:i:s',$login_time));
-				return json_success('登录成功,正在跳转...','/admin/Index/index');
+				//$this->add_log($name['id'],$name['username'],'登录于'.date('Y-m-d H:i:s',$login_time));
+				return ajax_json('success','登录成功,正在跳转...','/admin/Index/index');
 			}
 		}
 
@@ -99,8 +118,8 @@ class Login extends AppBase
 	public function logout(){
 		Session::delete('adminUser');
 		if(empty(Session::get('adminUser'))) {
-			return json_success('注销成功！正在跳转...','/admin/login/index');
+			return ajax_json('success','注销成功！正在跳转...','/admin/login/index');
 		}
-		return json_error('注销失败！');
+		return ajax_json('error','注销失败！');
 	}
 }

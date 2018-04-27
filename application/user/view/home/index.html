@@ -1,0 +1,44 @@
+{extend name="base" /}
+{block name="body"}
+<div class="fly-home fly-panel" style="background-image: url();">
+    <img src="{$userInfo.thumb_url}" alt="{$userInfo.nickname}" />
+    <h1> {$userInfo.nickname} <i class="iconfont {if $userInfo.sex eq 0}icon-nan{else /}icon-nv{/if} "></i>  </h1>
+    <p class="fly-home-info"> <i class="iconfont icon-kiss" title="飞吻"></i><span style="color: #FF7200;">飞吻</span> <i class="iconfont icon-shijian"></i><span>{$userInfo.create_time|strtotime|friendlyDate} 加入</span> <i class="iconfont icon-chengshi"></i><span>来自{$userInfo.address} </span> </p>
+    <p class="fly-home-sign">{$userInfo.description}</p>
+</div>
+<div class="layui-container">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md6 fly-home-jie">
+            <div class="fly-panel">
+                <h3 class="fly-panel-title">{$userInfo.nickname} 发布的帖子</h3>
+                <ul class="jie-row">
+                    {notempty name="$userInfo.forum"}
+                    {volist name="$userInfo.forum" id="vo"}
+                    <li> <a href="{:url('forum/post/index',['id'=>$vo['id']])}" class="jie-title">{$vo.title}</a> <i>{$vo.create_time|strtotime|friendlyDate}</i> <em class="layui-hide-xs">{$vo.view}阅/{$vo.reply}答</em> </li>
+                    {/volist}
+                    {else /}
+                    <span>够懒的，还没有一篇帖子。</span>
+                    {/notempty}
+                </ul>
+            </div>
+        </div>
+        <div class="layui-col-md6 fly-home-da">
+            <div class="fly-panel">
+                <h3 class="fly-panel-title">{$userInfo.nickname} 回复的评论</h3>
+                <ul class="home-jieda">
+                    <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;">
+                        <span>没有评论回复</span>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="/user/forum/add.html" class="site-tree-mobile-edit layui-hide">
+    <i class="iconfont icon-fabu"></i>
+</a>
+
+<!--页面JS脚本-->
+
+{/block}

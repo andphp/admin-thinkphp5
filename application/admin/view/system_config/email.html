@@ -1,0 +1,134 @@
+{extend name="base" /}
+{block name="header"}
+<div class="admin_header_{$skin_name|default='default'} clearfix">
+    <div class="title"><i></i>{$title|default=""}</div>
+    <div class="action">
+        <b></b>
+        <div class="layui-btn-group layui-btn-group-only">
+            <a class="layui-btn  layui-btn-disabled layui-btn-sm "><i class="fa fa-reply"></i> 返 回 </a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="main"}
+<div class="box_form">
+
+    <div class="box_content">
+        <form class="layui-form layui-form-pane" id="admin">
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">SMTP 服务器地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email_host" value="{$config_email.email_host|default=''}" placeholder="SMTP 服务器" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">SMTP服务器的端口号</label>
+                    <div class="layui-input-block">
+                        <input type="number" name="email_host_port" value="{$config_email.email_host_port|default=''}" placeholder="SMTP服务器的端口号" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">SMTP服务器用户名</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="email_host_username" value="{$config_email.email_host_username|default=''}" placeholder="SMTP服务器用户名" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">SMTP服务器密码</label>
+                    <div class="layui-input-block">
+                        <input type="password" name="email_host_password" value="{$config_email.email_host_password|default=''}" placeholder="SMTP服务器密码" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">邮箱激活邮件模板</label>
+                    <div class="layui-input-block">
+                        <textarea id="email_template_validate" placeholder="请输入内容" class="layui-textarea">
+                            {$config_email.email_template_validate|default=''}
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">找回密码邮件模板</label>
+                    <div class="layui-input-block">
+                        <textarea id="email_template_resetPassword" placeholder="请输入内容" class="layui-textarea">
+                            {$config_email.email_template_resetPassword|default=''}
+                        </textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">测试地址</label>
+                    <div class="layui-input-block">
+                        <input type="text" id="email_test" lay-verify="email" name="site_config[smtp_cs]" value="{$site_config.smtp_cs|default=''}" placeholder="邮件地址为空时，默认使用后台默认邮件测试地址" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <input type="button" id="send_email_test" value="发送测试邮件" class="layui-btn">
+                    <input type="button" id="save_email_config" value="提交配置信息" class="layui-btn">
+                </div>
+        </form>
+    </div>
+</div>
+
+
+{/block}
+
+
+{block name="script"}
+<script>
+    layui.use(['layer','layedit', 'form'], function() {
+        var ajax_email_test = "{:url('system/ajax_mail_test')}";
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form,
+                layedit = layui.layedit;
+        layedit.build('email_template_validate',{
+            height: 180 //设置编辑器高度
+        });
+        layedit.build('email_template_resetPassword',{
+            height: 180 //设置编辑器高度
+        });
+        $('#send_email_test').click(function() {
+            var email = $('#email_test').val();
+
+            if (email == '') {
+                layer.msg('邮箱为空', {
+                    icon: 2,
+                    time: 1000
+                }, function() {
+
+                });
+
+                //  return false;
+            }
+            $.post(ajax_email_test, {
+                email: email
+            }, function(result) {
+
+                if (result.code == 1) {
+
+                    layer.msg(result.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function() {
+
+                    });
+                } else {
+                    layer.msg(result.msg, {
+                        icon: 2,
+                        time: 1000
+                    }, function() {
+
+                    });
+                }
+            });
+        });
+
+    });
+</script>
+{/block}

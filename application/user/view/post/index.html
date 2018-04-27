@@ -1,0 +1,120 @@
+{extend name="base" /}
+
+{block name="body"}
+<div class="layui-container fly-marginTop fly-user-main">
+    {include file="index/menu"}
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title" id="LAY_mine">
+                <li data-type="mine-jie" lay-id="index" class="layui-this">我发的帖（
+                    <span>{$count}</span>）</li>
+                <li lay-id="collection">我收藏的帖（{$count_collect}）</li>
+                <li><a href="{:url('forum/post/add')}">发表新帖</a></li>
+            </ul>
+            <div class="layui-tab-content" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <table id="myForum" lay-filter="test"></table>
+                </div>
+                <div class="layui-tab-item">
+                    <table id="myCollection" lay-filter="test11"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    //帖子收藏
+    layui.use(['form', 'laytpl', 'form', 'element', 'table', 'util'], function() {
+        var form = layui.form,
+                jq = layui.jquery;
+        var util = layui.util;
+        var laytpl = layui.laytpl;
+
+        var element = layui.element;
+
+        var table = layui.table;
+
+        //我发表的帖
+        table.render({
+            elem: '#myForum',
+            url: "{:url('user/post/getMyForum')}" //数据接口
+            ,
+            method: 'post',
+            cols: [
+                [{
+                    field: 'title',
+                    title: '帖子标题',
+                    minWidth: 300,
+                    //   templet: '<div><a href="/bbs/thread/{{ d.id }}" target="_blank" class="layui-table-link">{{ d.title }}</a></div>'
+                }, {
+                    field: 'status',
+                    title: '状态',
+                    width: 100,
+                    align: 'center',
+                    templet: function(d) {
+                        if (d.status == 1) {
+                            return '<span style="color: #FF5722;">加精</span>';
+                        } else if (d.status == -1) {
+                            return '<span style="color: #ccc;">审核中</span>';
+                        } else {
+                            return '<span style="color: #999;">正常</span>'
+                        }
+                    }
+                }, {
+                    field: 'time',
+                    title: '发表时间',
+                    width: 120,
+                    align: 'center',
+                    templet: '<div>{{ layui.util.timeAgo(d.time*1000, 1) }}</div>'
+                }, {
+                    title: '数据',
+                    width: 150,
+                    templet: '<div><span style="font-size: 12px;">{{d.view}}阅/{{d.reply}}答</span></div>'
+                },
+                    // {
+                    //     title: '操作',
+                    //     width: 100,
+                    //     templet: function(d) {
+                    //         var url = "{:url('bbs/index/thread',array('id'=>'" + d.id + "'))}";
+                    //         return d.open == 1 ? '<a class="layui-btn layui-btn-sm" href="' + url + '" target="_blank">编辑</a>' : ''
+
+                    //     }
+                    // }
+                ]
+            ],
+            page: true,
+            skin: 'line'
+        });
+        //我收藏的帖
+        table.render({
+            elem: '#myCollection',
+            url: "{:url('user/post/getMyCollect')}" //数据接口
+            ,
+            method: 'post',
+            where: {
+                ctype: 1
+            },
+            cols: [
+                [{
+                    field: 'title',
+                    title: '帖子标题',
+                    minWidth: 300,
+                    templet: '<div><a href="/bbs/thread/{{ d.id }}" target="_blank" class="layui-table-link">{{ d.title }}</a></div>'
+                }, {
+                    field: 'time',
+                    title: '收藏时间',
+                    width: 120,
+                    align: 'center',
+                    templet: '<div>{{ layui.util.timeAgo(d.time*1000, 1) }}</div>'
+                }]
+            ],
+            page: true,
+            skin: 'line'
+        });
+
+    });
+</script>
+{/block}

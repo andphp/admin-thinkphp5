@@ -27,23 +27,39 @@
                 </div>
             </div>
 
+            {if $config_data.type eq 'image'}
+            <div class="layui-upload" id="upload-thumb">
+                <label class="layui-form-label">图片</label>
+                <button type="button" class="layui-btn and-bg-{$skin_name|default='default'}" id="thumb">上传图片</button>
+                <div class="layui-upload-list">
+                    <label class="layui-form-label"></label>
+                    <img class="layui-upload-img" id="demo1" width="150" height="150" {notempty name="$config_data.value"}src="{$config_data.value|get_url}"{/notempty}>
+                    <p id="demoText"></p>
+                </div>
+            </div>
+            {else /}
             <div class="layui-form-item">
                 <label class="layui-form-label">数据值</label>
                 <div class="layui-input-inline">
                     <input name="value" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" value="{$config_data.value|default=''}">
                 </div>
             </div>
+            {/if}
 
             <div class="layui-form-item">
                 <label class="layui-form-label">类型</label>
                 <div class="layui-input-inline and-bg-{$skin_name|default='default'}">
                     <select name="type" lay-verify="select" class="and-bg-{$skin_name|default='default'}">
+                        {if $config_data.type eq 'image'}
+                        <option value="image">图片</option>
+                        {else /}
                         <option value="{$config_data.type|default='null'}">
                             {if condition="!empty($config_data.type)"}
                             {switch name="config_data.type"}
                             {case value="null"}请选择类型{/case}
                             {case value="text"}文本{/case}
                             {case value="textarea"}文本域{/case}
+                            {case value="image"}图片{/case}
                             {case value="file"}文件{/case}
                             {case value="checkbox"}多选{/case}
                             {case value="radio"}单选{/case}
@@ -58,6 +74,7 @@
                         </option>
                         <option value="text">文本</option>
                         <option value="textarea">文本域</option>
+                        <option value="image">图片</option>
                         <option value="file">文件</option>
                         <option value="checkbox">多选</option>
                         <option value="radio">单选</option>
@@ -67,6 +84,7 @@
                         <!--<option value="keyvalue">关键字</option>-->
                         <option value="password">密码</option>
                         <option value="color">颜色</option>
+                        {/if}
                     </select>
                 </div>
             </div>
@@ -102,7 +120,7 @@
 
 {block name="script"}
 <script>
-    layui.use(['layer', 'form'], function() {
+    layui.use(['layer','upload', 'form'], function() {
         var layer = layui.layer,
                 $ = layui.jquery,
                 form = layui.form;
@@ -112,6 +130,30 @@
                 if(value=='null'){
                 return  '忘记选择类型了吧';
                 }
+            }
+        });
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#thumb' //绑定元素
+            ,url: "{:url('admin/Upload/upload_image')}" //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                if(res.code == 200) {
+                    $('#demo1').attr('src',res.path);
+                    $('#upload-thumb').append('<input type="hidden" name="thumb" value="'+ res.id +'">');
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
             }
         });
         $(window).on('load', function() {

@@ -1,0 +1,129 @@
+{extend name="base" /}
+
+{block name="body"}
+<div class="layui-container fly-marginTop fly-user-main">
+    {include file="index/menu"}
+    <div class="fly-panel fly-panel-user" pad20="" style="padding-top:20px;">
+        {notempty name="$email_is_verify"}
+        {if condition="($Think.session.status neq 2) and ($Think.session.status neq 5)"}
+        <div class="fly-msg" style="margin-bottom: 20px;">
+            您的邮箱尚未验证，这比较影响您的帐号安全，
+            <a href="{:url('user/set/index')}">立即去激活？</a>
+        </div>
+        {/if}
+        {/notempty}
+        <div class="layui-row layui-col-space20">
+            <div class="layui-col-md6">
+
+                {include file="index/sign"}
+
+            </div>
+            <div class="layui-col-md6">
+                <div class="fly-panel fly-panel-border">
+                    <div class="fly-panel-title">
+                        我的会员信息【当前{$score.0}为：{$user.count.point}{$score.1}】
+                    </div>
+                    <div class="fly-panel-main layui-text" style="padding: 0px 15px; height:86px;">
+                        <p>亲爱的{$user.nickname}:</p>
+                        <p>您当前角色：{$user.user_role_id|getRoleNameByID}</p>
+                        <p>您当前{$score.0}等级：{$user.count.point|getGradeNameByPoint}</p>
+                        {neq name="$user.user_level_id" value="0"}
+                        <p>您当前VIP等级：{$user.user_level_id|getLevelNameByID}</p>
+                        {/neq}
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md12" style="margin-top: -20px;">
+                <div class="fly-panel fly-panel-border">
+                    <div class="fly-panel-title">
+                        快捷方式
+                    </div>
+                    <div class="fly-panel-main">
+                        <ul class="layui-row layui-col-space10 fly-shortcut">
+                            <li class="layui-col-sm3 layui-col-xs4">
+                                <a href="{:url('user/set/index')}">
+                                    <i class="layui-icon"></i>
+                                    <cite>修改信息</cite>
+                                </a>
+                            </li>
+                            <li class="layui-col-sm3 layui-col-xs4">
+                                <a href="{:url('user/set/index')}#avatar">
+                                    <i class="layui-icon"></i>
+                                    <cite>修改头像</cite>
+                                </a>
+                            </li>
+                            <li class="layui-col-sm3 layui-col-xs4">
+                                <a href="{:url('user/set/index')}#pass">
+                                    <i class="layui-icon"></i>
+                                    <cite>修改密码</cite>
+                                </a>
+                            </li>
+                            <li class="layui-col-sm3 layui-col-xs4">
+                                <a href="{:url('user/set/index')}#bind">
+                                    <i class="layui-icon"></i>
+                                    <cite>帐号绑定</cite>
+                                </a>
+                            </li>
+                            <li class="layui-col-sm3 layui-col-xs4">
+                                <a href="{:url('forum/add')}">
+                                    <i class="layui-icon"></i>
+                                    <cite>发表新帖</cite>
+                                </a>
+                            </li>
+                            <li class="layui-col-sm3 layui-col-xs4 LAY_search">
+                                <a href="javascript:;">
+                                    <i class="layui-icon"></i>
+                                    <cite>搜索资源</cite>
+                                </a>
+                            </li>
+                            <li class="layui-col-sm3 layui-col-xs4">
+                                <a href="{:url('user/index/topic')}#collection">
+                                    <i class="layui-icon"></i>
+                                    <cite>我的收藏</cite>
+                                </a>
+                            </li>
+                            <li class="layui-col-sm3 layui-col-xs4">
+                                <a href="#">
+                                    <i class="layui-icon"></i>
+                                    <cite>关注公众号</cite>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    layui.define(['layer'], function(exports) {
+        var $ = layui.jquery,
+                layer = layui.layer;
+        $('.LAY_search').on('click', function() {
+            layer.open({
+                type: 1,
+                title: false,
+                closeBtn: false
+                //,shade: [0.1, '#fff']
+                ,
+                shadeClose: true,
+                maxWidth: 10000,
+                skin: 'fly-layer-search',
+                content: ['<form action="/bbs/search.html">', '<input autocomplete="off" placeholder="搜索内容，回车跳转" type="text" name="ks">', '</form>'].join(''),
+                success: function(layero) {
+                    var input = layero.find('input');
+                    input.focus();
+
+                    layero.find('form').submit(function() {
+                        var val = input.val();
+                        if (val.replace(/\s/g, '') === '') {
+                            return false;
+                        }
+                        input.val(input.val());
+                    });
+                }
+            })
+        });
+    });
+</script>
+{/block}

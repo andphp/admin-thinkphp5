@@ -18,7 +18,7 @@ class Upload extends ModelBase
         parent::initialize();
     }
 
-    public function upfile($type, $filename = 'file', $isthumb = false, $is_water = false,$id=0,$module='admin',$use='admin_thumb')
+    public function upFile($type, $filename = 'file', $isthumb = false, $is_water = false,$id=0,$module='admin',$use='admin_thumb')
     {
 
         // 获取表单上传文件
@@ -90,7 +90,7 @@ class Upload extends ModelBase
 
             } else {
                 $pathname='uploads'. "/" . $module . "/" . $use;
-                $info = $file->validate($validate)->rule('date')->move(ROOT_PATH . $pathname);
+                $info = $file->validate($validate)->rule('date')->move(WEB_PATH . $pathname);
 
                 if ($info) {
 
@@ -98,7 +98,7 @@ class Upload extends ModelBase
                    // Log::record('savename ' . $info->getSaveName(), 'info');
                     // if($type=='images' && $isthumb = true){
                     //     $path_arr= explode(DS,$info->getSaveName());
-                    //     $tmpdir=ROOT_PATH . 'uploads' . DS .'thumb';
+                    //     $tmpdir=WEB_PATH . 'uploads' . DS .'thumb';
                     //     $datedir=$tmpdir.DS.$path_arr[0];
                     //     Log::record('目录 ' . $datedir, 'info');
                     //     if(!is_dir($datedir))
@@ -160,62 +160,5 @@ class Upload extends ModelBase
 
     }
 
-/**
- * 获得content里的外部资源
- *
- * @access    public
- * @param     string  $content  文档内容
- * @return    string
- */
-    public function getCurContent($content)
-    {
-        //匹配图片地址
-        preg_match_all('/((http|https):\/\/)+(\w+\.)+(\w+)[\w\/\.\-]*(jpg|gif|png)/', $content, $img_array);
-        //移除重复的Url
-        $img_array = array_unique($img_array[0]);
-        if ($img_array != '') {
-            $imgUrl =  'uploads/' . date("Ymd") . '/';
-            $imgPath = ROOT_PATH . $imgUrl;
-            $htd = new Http();
-            foreach ($img_array as $key => $value) {
-
-                //获取hash
-                $md5 = strtolower($htd->getHash($value, true));
-                $filemode = Db::name('file');
-                $n = $filemode->where('md5', $md5)->find();
-                $realpath = '';
-                if (empty($n)) {
-                    $itype = substr(strrchr($value, '.'), 1);
-                    $milliSecondN = md5(microtime(true));
-
-                    $rndFileName = $imgPath . $milliSecondN . '.' . $itype;
-                    $fileurl = $imgUrl . $milliSecondN . '.' . $itype;
-
-                    $rs = $htd->http_down($value, $rndFileName);
-                    //抓取成功
-                    if ($rs) {
-                        $path = str_replace("\\", "/", $fileurl);
-                        $realpath = WEB_URL . $path;
-                        //写入数据库
-                        $data['sha1'] = sha1($rndFileName);
-                        $data['md5'] = md5($rndFileName);
-                        $data['create_time'] = time();
-                        $data['size'] = filesize($rndFileName);
-                        $data['name'] = $milliSecondN . '.' . $itype;
-                        $data['ext'] = $itype;
-                        $data['savepath'] = $realpath;
-                        $data['savename'] = $milliSecondN . '.' . $itype;
-                        $data['mime'] = mime_content_type($rndFileName);
-
-                        Db::name('file')->insert($data);
-                    }
-                } else {
-                    $realpath = $n['savepath'];
-                }
-                $content = str_replace($value, $realpath, $content);
-            }
-        }
-        return $content;
-    }
 
 }

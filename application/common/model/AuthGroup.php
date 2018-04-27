@@ -29,4 +29,15 @@ class AuthGroup extends ModelBase
     {
         return $this->belongsToMany('AdminUser','\app\common\model\AuthGroupAccess');
     }
+    /**
+     * 关联管理员用户表 多对多
+     * @return \think\model\relation\BelongsToMany
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-03-05 10:02
+     */
+    public function user()
+    {
+        return $this->belongsToMany('User','\app\common\model\AuthGroupAccess');
+    }
 }

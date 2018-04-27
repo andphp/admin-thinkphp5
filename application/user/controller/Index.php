@@ -15,11 +15,33 @@
 namespace app\user\controller;
 
 
-use app\common\controller\IndexBase;
+use app\common\controller\UserController;
+use app\common\model\AuthGroupAccess;
+use app\common\model\User as UserModel;
 
-class Index extends IndexBase
+class Index extends UserController
 {
     public function index(){
-        echo 444;
+        $this->assign('user_is_sign',$this->config['user_is_sign']);
+        $this->assign('email_is_verify',$this->config['email_is_verify']);
+
+        if(!$this->isLogin()){
+            $this->error('亲！请登录', url('user/login/index'));
+        }
+
+        $userModel = new UserModel();
+        $userData = $userModel->with('count')->where(['id'=>$this->uid])->find();
+        $this->assign('user',$userData);
+
+        $rolesModel = new AuthGroupAccess();
+        $userRoles = $rolesModel->where(['user_id'=>$this->uid])->select();
+        $this->assign('userRoles',$userRoles);
+
+        $score=explode(',',$this->config['point']);
+        $this->assign('score',$score);
+
+        return $this->fetch();
     }
+
+
 }

@@ -1,0 +1,272 @@
+{extend name="base" /}
+{block name="header"}
+<div class="admin_header_{$skin_name|default='default'} clearfix">
+  <div class="title"><i></i>{$title|default=""}</div>
+  <div class="action">
+    <b></b>
+    <div class="layui-btn-group layui-btn-group-only">
+      <a class="layui-btn  layui-btn-disabled layui-btn-sm "><i class="fa fa-reply"></i> 返 回 </a>
+    </div>
+  </div>
+</div>
+{/block}
+{block name="main"}
+
+<div class="layui-btn-group">
+  <a href="{:url('admin/user/add')}" class="layui-btn layui-btn-primary"><i class="layui-icon" style="color: #ffffff;">&#xe608;</i>添加新用户</a>
+  <a data-href="" class="layui-btn layui-btn-primary enable" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe652;</i>启用</a>
+  <a data-href="" class="layui-btn layui-btn-primary prohibit" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe651;</i>禁用</a>
+  <a data-href="" class="layui-btn layui-btn-primary delete_all" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe640;</i>删除</a>
+  <a data-href="" class="layui-btn layui-btn-primary reset_password" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe628;</i>密码重置</a>
+</div>
+<form class="layui-form" id="admin">
+<table class="layui-table" lay-even="" lay-skin="row" lay-size="sm">
+  <colgroup>
+    <col width="50">
+    <col width="50">
+    <col width="50">
+    <col width="250">
+    <col width="150">
+    <col width="150">
+    <col width="150">
+    <col width="150">
+    <col width="100">
+    <col width="100">
+    <col width="350">
+  </colgroup>
+  <thead>
+  <tr>
+    <th>选择</th>
+    <th>ID</th>
+    <th>头像</th>
+    <th>角色</th>
+    <th>用户名</th>
+    <th>昵称</th>
+    <th>创建时间</th>
+    <th>最后登录时间</th>
+    <th>最后登录IP</th>
+    <th>状态</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  {volist name="user_list" id="vo"}
+  <tr>
+    <td><input type="checkbox" name="user_id[]" class="checkbox" value="{$vo.id}"></td>
+    <td>{$vo.id}</td>
+    {if isset($vo['thumb_url'])== false }
+    <td><a href="__ADMIN__/images/default_headimg.png" class="tooltip"><img src="__ADMIN__/images/default_headimg.png" width="20" height="20"></a></td>
+    {else /}
+    <td><a href="{$vo.thumb_url}" class="tooltip"><img src="{$vo.thumb_url}" width="20" height="20"></a></td>
+    {/if}
+    <td>{$vo.title|raw}</td>
+    <td>{$vo.username}</td>
+    <td>{$vo.nickname}</td>
+    <td>{$vo.create_time}</td>
+    <td>{$vo.last_login_time|date="Y-m-d H:i:s"}</td>
+    <td>{$vo.last_login_ip}</td>
+    <td><input type="checkbox" name="status[]" lay-skin="switch" lay-text="开启|禁用" lay-filter="switchStatus" value="{$vo.status}" {notempty name="$vo.status"}{eq name="$vo.status" value="1"}checked=""{/eq}{/notempty}></td>
+    <td class="operation-menu">
+      <a href="{:url('admin/user/edit',['id'=>$vo.id])}" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs" id="{$vo.id}"><i class="layui-icon"></i></a>
+      <a href="{:url('admin/user/edit_roles',['id'=>$vo.id])}" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs a_menu"><i class="layui-icon"></i></a>
+      <a href="javascript:;" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs delete" id="{$vo.id}"><i class="layui-icon"></i></a>
+    </td>
+  </tr>
+  {/volist}
+  </tbody>
+</table>
+  </form>
+<div class="layui-btn-group">
+  <a href="{:url('admin/user/add')}" class="layui-btn layui-btn-primary"><i class="layui-icon" style="color: #ffffff;">&#xe608;</i>添加新用户</a>
+  <a data-href="" class="layui-btn layui-btn-primary enable" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe652;</i>启用</a>
+  <a data-href="" class="layui-btn layui-btn-primary prohibit" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe651;</i>禁用</a>
+  <a data-href="" class="layui-btn layui-btn-primary delete_all" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe640;</i>删除</a>
+  <a data-href="" class="layui-btn layui-btn-primary reset_password" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe628;</i>密码重置</a>
+  <div>{$user_list->render()|raw}</div>
+</div>
+
+{/block}
+
+{block name="script"}
+
+<script type="text/javascript">
+  $(function(){
+    var x = 10;
+    var y = 20;
+    $(".tooltip").mouseover(function(e){
+      var tooltip = "<div id='tooltip'><img src='"+ this.href +"' alt='预览图' height='200'/>"+"<\/div>"; //创建 div 元素
+      $("body").append(tooltip);  //把它追加到文档中
+      $("#tooltip")
+              .css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+              }).show("fast");    //设置x坐标和y坐标，并且显示
+    }).mouseout(function(){
+      $("#tooltip").remove();  //移除
+    }).mousemove(function(e){
+      $("#tooltip")
+              .css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+              });
+    });
+  });
+
+  $('.delete').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定要删除?', function(index) {
+      $.ajax({
+        url:"{:url('admin/user/delete')}",
+        data:{id:id},
+        success:function(res) {
+          layer.msg(res.msg);
+          if(res.code == 1) {
+            setTimeout(function(){
+              location.href = res.url;
+            },1500)
+          }
+        }
+      })
+    })
+  });
+  $('.a_menu').click(function(){
+    var url = $(this).attr('href');
+    var id = $(this).attr('id');
+    var a = true;
+    if(id) {
+      $.ajax({
+        url:url
+        ,async:false
+        ,data:{id:id}
+        ,success:function(res){
+          if(res.code == 0) {
+            layer.msg(res.msg);
+            a = false;
+          }
+        }
+      })
+    } else {
+      $.ajax({
+        url:url
+        ,async:false
+        ,success:function(res){
+          if(res.code == 0) {
+            layer.msg(res.msg);
+            a = false;
+          }
+        }
+      })
+    }
+    return a;
+  })
+</script>
+<script type="text/javascript">
+  layui.use(['layer', 'form'], function() {
+    var layer = layui.layer,
+            $ = layui.jquery,
+            form = layui.form;
+
+    var status=0;
+    form.on('switch(switchStatus)', function(data){
+      loading = layer.load(2, {
+        shade: [0.2,'#000']
+      });
+      if(data.elem.checked){
+        status=1;
+      }else{
+        status=0;
+      }
+      var url="{:url('admin/user/update_status')}?id="+data.value+'&status='+status ;
+
+      $.get(url,function(data){
+
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+            //  location.reload();
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+      return false;
+    });
+  });
+
+
+  $('.enable').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/user/enable')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.prohibit').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/user/prohibit')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.delete_all').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/user/delete_all')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.reset_password').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/user/reset_password')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+</script>
+{/block}

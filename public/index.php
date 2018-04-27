@@ -12,19 +12,18 @@
 // [ 应用入口文件 ]
 namespace think;
 
+define('WEB_PATH',__DIR__ . '/');
+
+define('ROOT_PATH',__DIR__ . '/../');
+
+define('APP_PATH',__DIR__ . '/../application/');
+
 // 定义URL
 if (!defined('WEB_URL')) {
     $url = rtrim(dirname(rtrim($_SERVER['SCRIPT_NAME'], '/')), '/');
     define('WEB_URL', (('/' == $url || '\\' == $url) ? '' : $url));
 }
-/**
- * 定义前台标记
- */
-define('MODULE_MARK', 'Home');
-// 定义应用目录
-define('APP_PATH',dirname(__DIR__) . '/application/');
-define('ROOT_PATH',__DIR__ . '/');
-define('BUILDER_DIR', APP_PATH . 'common/utility/lyf/builder/');
+
 // 加载基础文件
 require __DIR__ . '/../thinkphp/base.php';
 

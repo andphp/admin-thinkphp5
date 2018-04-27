@@ -34,7 +34,6 @@ return [
     'tpl_replace_string'  =>  [
         '__ROOT__'           => WEB_URL,
         '__UPLOADS__'        => WEB_URL.'/uploads',
-        '__PUBLIC__'         => WEB_URL.'/static/public',
         '__COMMON__'         => WEB_URL.'/static/common',
         '__ADMIN__'          => WEB_URL.'/static/admin',
     ],

@@ -13,15 +13,13 @@
     <meta name="format-detection" content="telephone=no">
 
     {$css|displayCss|raw}
-    {$js|displayScript|raw}
-
     {block name="css"}{/block}
-
     <script type="text/javascript">var wwwroot='/';var absroot=document.domain;</script>
+    {$js|displayScript|raw}
 
 
     <style type="text/css">
-        {if $skin_name eq 'green'}
+        {if $skin_name=='green'}
         .layui-form-checked span, .layui-form-checked:hover span {
             background-color: rgba(0,166,90,1);
         }
@@ -38,7 +36,7 @@
         .layui-form-radioed > i {
             color:rgba(0,166,90,1);
         }
-        {elseif $skin_name eq 'pink' /}
+        {elseif $skin_name=='pink' /}
         .layui-form-checked span, .layui-form-checked:hover span {
             background-color: rgba(250,96,134,1);
         }
@@ -107,6 +105,15 @@
             color: #5EABE1;
         }
         {/if}
+         .layui-form-label {
+            width: 200px;
+        }
+        .layui-form-pane .layui-input-block {
+            margin-left: 200px;
+        }
+        .layui-form-item .layui-input-block {
+            margin-left: 230px;
+        }
     </style>
     <script type="text/javascript">
         var layer;

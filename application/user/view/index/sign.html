@@ -1,0 +1,123 @@
+ {if condition="$user_is_sign eq 1"}
+
+<div id="signin" class="fly-panel fly-signin fly-panel-border">
+    <div class="fly-panel-title">签到
+        <i class="fly-mid"></i>
+        <a href="javascript:;" class="fly-link" id="LAY_signinHelp">说明</a>
+        <i class="fly-mid"></i>
+        <!--<a href="javascript:;" class="fly-link" id="LAY_signinTop">活跃榜<span class="layui-badge-dot"></span></a>-->
+        <span class="fly-signin-days"></span>
+    </div>
+    <div class="fly-panel-main fly-signin-main">
+        <i class="layui-icon fly-loading">&#xe63d;</i>
+    </div>
+</div>
+<script>
+    layui.use(['form', 'layer'], function() {
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        var jifenname = "{$score.0}({$score.1})";
+        var uid = "{$user.id}";
+        if (uid != '') {
+            $.get("{:url('user/sign/sign_data')}", function(data) {
+
+                $('.fly-signin-days').html('已连续签到<cite>' + data.days + '</cite>天');
+
+                if (data.is_sign == 1) {
+
+                    $('.fly-signin-main').html('<button class="layui-btn layui-btn-disabled">今日已签到</button><span>获得了<cite>' + data.score + '</cite>' + jifenname + '</span>');
+
+                } else {
+                    $('.fly-signin-main').html('<button id="LAY_signin" class="layui-btn layui-btn-danger">今日签到</button><span>可获得<cite>' + data.score + '</cite>' + jifenname + '</span>');
+
+                    $("#LAY_signin").on("click", function() {
+
+                        $.getJSON("{:url('user/sign/sign')}", function(data) {
+
+                            if (data.code == 200) {
+                                $('.fly-signin-days').html('已连续签到<cite>' + data.days + '</cite>天');
+                                $('.fly-signin-main').html('<button class="layui-btn layui-btn-disabled">今日已签到</button><span>获得了<cite>' + data.score + '</cite>' + jifenname + '</span>');
+                                if (data.msg != '') {
+                                    layer.msg(data.msg, {
+                                        icon: 6,
+                                        time: 3000
+                                    }, function(){
+                                        location.reload();
+                                    });
+
+                                }
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        });
+                    });
+                }
+            });
+        } else {
+            $('.fly-signin-main').html('<button class="layui-btn layui-btn-danger" id="LAY_signin">签到得' + jifenname + '</button>');
+            $("#LAY_signin").on("click", function() {
+                layer.msg('请先登录');
+            });
+        }
+
+        //查看签到积分规则
+        $("#LAY_signinHelp").on("click", function() {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            var url = "{:url('user/sign/sign_rule')}";
+
+
+            $.getJSON(url, function(data) {
+                $str = '';
+                $.each(data.msg, function(k, v) {
+                    $str += '<tr><td>≥' + v.days + '</td><td>' + v.score + '</td></tr>';
+                });
+                var content = '<div class="layui-text" style="padding: 20px;">' +
+                    '<blockquote class="layui-elem-quote">“签到”可获得' + jifenname + '，规则如下</blockquote>' +
+                    '<table class="layui-table">' +
+                    '<thead>' +
+                    '<tr><th>连续签到天数</th><th>每天可获' + jifenname + '</th></tr>' +
+                    '</thead>' +
+                    '<tbody>' +
+                    $str +
+                    '</tbody>' +
+                    '</table>' +
+                    '<ul>' +
+                    '<li>中间若有间隔，则连续天数重新计算</li>' +
+                    // '<li style="color: #FF5722;">不可利用程序自动签到，否则' + jifenname + '清零</li>' +
+                    '</ul></div>'
+                layer.open({
+                    type: 1,
+                    title: '签到说明',
+                    area: '300px',
+                    shade: 0.8,
+                    shadeClose: true,
+                    content: content,
+                    success: function(index, layero) {
+                        //do something
+                        layer.close(loading); //如果设定了yes回调，需进行手工关闭
+                    }
+                });
+            });
+        });
+
+        //查看积分榜单
+//        $("#LAY_signinTop").on("click", function() {
+//
+//            var signlisturl = "{:url('user/sign/lists')}";
+//
+//            layer.open({
+//                type: 2,
+//                title: '签到活跃榜 - TOP 20',
+//                shade: 0.8,
+//                area: ['300px', '430px'], //宽高
+//                scrollbar: false,
+//                shadeClose: true,
+//                content: signlisturl,
+//            });
+//        });
+    });
+</script>
+
+{/if}

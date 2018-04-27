@@ -1,0 +1,159 @@
+{extend name="base" /}
+{block name="body"}
+<div class="layui-container fly-marginTop">
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+
+                <li class="layui-this">注册</li>
+            </ul>
+            <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form layui-form-pane">
+                        <form class="layui-form">
+                            {if $register==false}
+                            <blockquote class="layui-elem-quote layui-text">
+                                管理员已关闭会员注册功能
+                            </blockquote>
+                            {/if}
+                            <div class="layui-form-item">
+                                <label for="nickname" class="layui-form-label">昵称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="nickname" name="nickname" required lay-verify="required" autocomplete="off" class="layui-input {if $register==false}layui-disabled{/if}" {if $register==false}disabled{/if}>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">2至10个字符【汉字、字母、数字或_及-】</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="password" class="layui-form-label">密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" id="password" name="password" required lay-verify="required|pass" autocomplete="off" class="layui-input {if $register==false}layui-disabled{/if}" {if $register==false}disabled{/if}>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">6至16个字符</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="password_confirm" class="layui-form-label">重复密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" id="password_confirm" name="password_confirm" required lay-verify="required|pass" autocomplete="off" class="layui-input {if $register==false}layui-disabled{/if}" {if $register==false}disabled{/if}>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">跟刚刚输入的保持一样</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="email" class="layui-form-label">邮箱</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="email" name="email" lay-verify="required|email" autocomplete="off" class="layui-input {if $register==false}layui-disabled{/if}" {if $register==false}disabled{/if}>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">忘记密码的时候使用</div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="phone" class="layui-form-label">电话</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="phone" name="phone" autocomplete="off" class="layui-input {if $register==false}layui-disabled{/if}" {if $register==false}disabled{/if}>
+                                </div>
+                                <div class="layui-form-mid layui-word-aux">忘记密码的时候使用</div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label for="captcha" class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline" style="width:140px;">
+                                    <input style="width:140px;float:left;margin-right: 10px;" type="text" name="captcha" placeholder="验证码" required lay-verify="required" autocomplete="off" class="layui-input {if $register==false}layui-disabled{/if}" {if $register==false}disabled{/if}>
+                                </div>
+                                <div class="">
+                                    <img src="/captcha.html" onclick="this.src='/captcha.html?'+Math.random()" style="float:left; height:38px;cursor:pointer;" id="captcha" alt="captcha" />
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <button class="layui-btn {if $register==false}layui-disabled{/if}" {if $register==false}disabled{/if} lay-filter="join" lay-submit>立即注册</button>
+                                <a href="{:url('/user/login')}" class="layui-btn layui-btn-primary" lay-filter="login_index">登录</a>
+                            </div>
+
+                            <!--<div class="layui-form-item fly-form-app">-->
+                                <!--<span>或者直接使用社交账号快捷登录</span>-->
+                                <!--<a href="{:url('user/applogin/qqlogin')}" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>-->
+                            <!--</div>-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__COMMON__/js/jquery.md5.js"></script>
+{/block}
+{block name="script"}
+<script>
+    layui.use(['form', 'layer', 'jquery', 'element', 'util'], function() {
+        var form = layui.form,
+                layer = layui.layer,
+                element = layui.element,
+                util = layui.util,
+                $ = layui.jquery;
+        $('.login_logout').click(function() {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            var url = $(this).data('url');
+            var locationUrl = $(this).attr('location-url');
+            $.getJSON(url, function(data) {
+                if (data.code == 200) {
+                    layer.close(loading);
+                    layer.msg(data.msg, { icon: 1, time: 1000 }, function() {
+                        location.href = locationUrl;
+                    });
+                } else {
+                    layer.close(loading);
+                    layer.msg(data.msg, { icon: 2, anim: 6, time: 1000 });
+                }
+            });
+        });
+        form.on('submit(join)', function(data) {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            var param = data.field;
+            param.password=encrypt(param.password);
+            param.password_confirm=encrypt(param.password_confirm);
+            $.post('{:url("user/Join/add")}', param, function(data) {
+                if (data.code == 200) {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    },function(){
+                        location.href = '{:url("user/login/index")}';
+                    });
+                } else {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        anim: 6,
+                        time: 2000
+                    });
+                }
+            });
+            return false;
+        });
+        form.verify({
+            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            content: function(value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+        $(window).on('scroll',function() {
+            var scroll = $(window).scrollTop();
+            if (scroll > 5) {
+                $(".fly-header").addClass("shadow");
+            }else{
+                $(".fly-header").removeClass("shadow");
+            }
+        });
+
+    });
+    function encrypt(pwd) {
+        return  $.md5(pwd);
+    }
+</script>
+{/block}

@@ -5,8 +5,8 @@ class Html
 {
     private $root;
     private $absroot;
-    public $cssDir = 'static';
-    public $jsDir = 'static';
+    public $cssDir = '/static';
+    public $jsDir = '/static';
     private $cssFile = [];
     private $jsFile = [];
     

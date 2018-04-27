@@ -1,0 +1,100 @@
+{extend name="base" /}
+{block name="header"}
+{/block}
+{block name="main"}
+
+
+    <form class="layui-form" style="width:80%;" id="formData">
+
+        <div id="" class="layui-form-item ">
+            <label class="layui-form-label">积分名称</label>
+            <div class="layui-input-block">
+                <input id=""   value="{$scoreName}" lay-verify="required"  class="layui-input" type="text" name="scoreName" title="禁止" >
+            </div>
+        </div>
+        <div id="" class="layui-form-item ">
+            <label class="layui-form-label">积分单位</label>
+            <div class="layui-input-block">
+                <input id=""   value="{$scoreUnit}" lay-verify="required"  class="layui-input" type="text" name="scoreUnit" title="禁止" >
+            </div>
+        </div>
+        <div id="" class="layui-form-item ">
+            <label class="layui-form-label">积分图标</label>
+            <div class="layui-input-block">
+                <input id=""   value="{$scoreIcon|default='fa-star-half-o'}" class="layui-input" type="text" name="scoreIcon" title="禁止" >
+                <div class="layui-form-mid layui-word-aux">例如：fa-asterisk <a class="layui-btn layui-btn-xs and-bg-{$skin_name|default='default'}" href="http://www.fontawesome.com.cn/faicons/" target="_blank" >》找找</a></div>
+                <i class="fa {$scoreIcon|default='fa-star-half-o'}" aria-hidden="true"></i>
+            </div>
+        </div>
+        <div id="" class="layui-form-item ">
+            <label class="layui-form-label">积分默认（注册）值</label>
+            <div class="layui-input-block">
+                <input id=""   value="{$scoreValue|default='0'}" class="layui-input" type="text" name="scoreValue" title="禁止" >
+            </div>
+        </div>
+        <div class="layui-form-item" id="config_add" ><div class="layui-input-block">
+            <button lay-submit  lay-filter="add" class="layui-btn config_add_0 layui-btn-sm" ><i class="fa " aria-hidden="true"></i>提交</button>
+            <button lay-submit  type="reset" class="layui-btn config_add_1 layui-btn-sm" ><i class="fa " aria-hidden="true"></i>重置</button>
+        </div>
+        </div>
+
+
+    </form>
+
+
+{/block}
+{block name="script"}
+<script type="text/javascript">
+    layui.use(['form','layer'],function(){
+        var form = layui.form,
+                layer = parent.layer === undefined ? layui.layer : top.layer,
+                $ = layui.jquery;
+
+        form.on("submit(add)",function(data){
+            //弹出loading
+            var index = layer.msg('数据提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.ajax({
+                url:"/admin/site/score_config_update.html",
+                data:$('#formData').serialize(),
+                type:'post',
+                async: false,
+                success:function(res) {
+                    if(res.code == 1) {
+                        setTimeout(function(){
+                            layer.msg(res.msg);
+                            if(res.url == 1){
+                                layer.close(index);
+
+                                layer.closeAll("iframe");
+                                //刷新父页面
+
+                                parent.location.reload();
+                            }
+                            if(res.url != null || res.url != 1){
+                                location.href = res.url;
+                            }
+
+                        },1000);
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+            return false;
+        });
+
+        //格式化时间
+        function filterTime(val){
+            if(val < 10){
+                return "0" + val;
+            }else{
+                return val;
+            }
+        }
+        //定时发布
+        var time = new Date();
+        var submitTime = time.getFullYear()+'-'+filterTime(time.getMonth()+1)+'-'+filterTime(time.getDate())+' '+filterTime(time.getHours())+':'+filterTime(time.getMinutes())+':'+filterTime(time.getSeconds());
+
+    })
+</script>
+{/block}

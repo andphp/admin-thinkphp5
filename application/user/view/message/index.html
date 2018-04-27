@@ -1,0 +1,169 @@
+{extend name="base" /}
+
+{block name="body"}
+<div class="layui-container fly-marginTop fly-user-main">
+    {include file="index/menu"}
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user" id="LAY_msg" style="margin-top: 15px;">
+
+            <div id="LAY_minemsg" style="margin-top: 10px;">
+
+                {empty name="data"}
+                <div class="fly-none">您暂时没有未读消息</div>
+                {else /}
+                <button class="layui-btn layui-btn-danger" id="LAY_delallmsg" data-url="{:url('user/message/delete_all')}">清空全部消息</button>
+                <ul class="mine-msg">
+                    {volist name="data" id="vo"}
+                    {if condition="$vo['type'] eq 2"}
+                    <li class="messagelist">
+                        <blockquote class="layui-elem-quote">
+                            <a href="{:url('user/home/index',array('id'=>$vo.user_id))}" target="_blank"><cite>{$vo.to_user_id}</cite></a>回复了您的帖子<a target="_blank" href="{:url('forum/post/index',array('id'=>$vo['content']))}"><cite>{$vo.content}</cite></a>
+                        </blockquote>
+                        <p><span>{$vo.create_time|friendlyDate}</span><a href="javascript:;" data-url="{:url('user/message/delete',array('id'=>$vo['id']))}" class=" elementdel layui-btn layui-btn-sm layui-btn-danger fly-delete">删除</a></p>
+                    </li>
+                    {elseif condition="$vo['type'] eq 3" /}
+                    <li class="messagelist">
+                        <blockquote class="layui-elem-quote">
+                            <a href="{:url('user/home/index',array('id'=>$vo.user_id))}" target="_blank"><cite>{$vo.username}</cite></a>回复了帖子<a target="_blank" href="{:url('forum/post/index',array('id'=>$vo['content']))}"><cite>{$vo.content}</cite></a>中你的评论
+                        </blockquote>
+                        <p><span>{$vo.create_time|friendlyDate}</span><a href="javascript:;" data-url="{:url('user/message/delete',array('id'=>$vo['id']))}" class=" elementdel layui-btn layui-btn-sm layui-btn-danger fly-delete">删除</a></p>
+                    </li>
+
+                    {else /}
+                    <li class="messagelist">
+                        <blockquote class="layui-elem-quote">
+                            系统消息：{$vo.content|raw}
+                        </blockquote>
+                        <p><span>{$vo.create_time|friendlyDate}</span><a href="javascript:;" data-url="{:url('user/message/delete',array('id'=>$vo['id']))}" class=" elementdel layui-btn layui-btn-sm layui-btn-danger fly-delete">删除</a></p>
+                    </li>
+                    {/if} {/volist}
+
+
+                </ul>
+                <div style="text-align: center;">
+
+
+                    {$data->render()|raw}</div>
+
+
+                {/empty}
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use(['layer', 'jquery', 'form'], function() {
+        var layer = layui.layer,
+                form = layui.form,
+                jq = layui.jquery;
+
+        jq('#LAY_delallmsg').click(function() {
+            var url = jq(this).data('url');
+
+            if (jq('.messagelist').length > 0) {
+                layer.confirm('你确定要删除所有消息吗?', {
+                    icon: 3,
+                    title: '删除提示'
+                }, function(index) {
+                    loading = layer.load(2, {
+                        shade: [0.2, '#000']
+                    });
+
+
+                    jq.getJSON(url, function(data) {
+                        if (data.code == 200) {
+                            layer.close(loading);
+                            layer.msg(data.msg, {
+                                icon: 1,
+                                time: 1000
+                            }, function() {
+                                // 
+
+                                location.reload();
+
+
+                            });
+                        } else {
+                            layer.close(loading);
+                            layer.msg(data.msg, {
+                                icon: 2,
+                                anim: 6,
+                                time: 1000
+                            });
+                        }
+                    });
+
+                });
+            } else {
+                layer.msg('您无任何消息可删除', {
+                    icon: 2,
+                    anim: 6,
+                    time: 1000
+                });
+            }
+
+
+
+        });
+
+        jq('.elementdel').click(function() {
+
+            //  var id= jq(this).data('id');
+            var url = jq(this).data('url');
+
+
+            //alert(locationurl);
+            // alert(window.location.href);
+            layer.confirm('你确定要删除该条消息吗?', {
+                icon: 3,
+                title: '删除提示'
+            }, function(index) {
+                loading = layer.load(2, {
+                    shade: [0.2, '#000']
+                });
+
+
+                jq.getJSON(url, function(data) {
+                    if (data.code == 200) {
+                        layer.close(loading);
+                        layer.msg(data.msg, {
+                            icon: 1,
+                            time: 1000
+                        }, function() {
+                            // 
+
+                            location.reload();
+
+
+                        });
+                    } else {
+                        layer.close(loading);
+                        layer.msg(data.msg, {
+                            icon: 2,
+                            anim: 6,
+                            time: 1000
+                        });
+                    }
+                });
+
+            });
+
+
+
+        });
+
+
+
+
+    });
+</script>
+{/block}

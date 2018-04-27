@@ -8,7 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
+use think\facade\Env;
 // +----------------------------------------------------------------------
 // | 应用设置
 // +----------------------------------------------------------------------
@@ -19,11 +19,9 @@ return [
     // 应用地址
     'app_host'               => '',
     // 应用调试模式
-    'app_debug'              => true,
+    'app_debug'              => Env::get('APP_DEBUG','false'),
     // 应用Trace
-    'app_trace'              => false,
-    // 应用模式状态
-    'app_status'             => '',
+    'app_trace'              => Env::get('APP_TRACE','false'),
     // 是否支持多模块
     'app_multi_module'       => true,
     // 入口自动绑定模块
@@ -39,7 +37,7 @@ return [
     // 默认JSONP处理方法
     'var_jsonp_handler'      => 'callback',
     // 默认时区
-    'default_timezone'       => 'PRC',
+    'default_timezone'       => 'Asia/Shanghai',
     // 是否开启多语言
     'lang_switch_on'         => false,
     // 默认全局过滤方法 用逗号分隔多个
@@ -51,13 +49,12 @@ return [
     // 控制器类后缀
     'controller_suffix'      => false,
 
-
     // +----------------------------------------------------------------------
     // | 模块设置
     // +----------------------------------------------------------------------
 
     // 默认模块名
-    'default_module'=>'home',
+    'default_module'         => 'index',
     // 禁止访问模块
     'deny_module_list'       => ['common'],
     // 默认控制器名
@@ -67,7 +64,7 @@ return [
     // 默认验证器
     'default_validate'       => '',
     // 默认的空模块名
-    'empty_module'           => 'error',
+    'empty_module'           => '',
     // 默认的空控制器名
     'empty_controller'       => 'Error',
     // 操作方法前缀
@@ -99,6 +96,8 @@ return [
     'url_lazy_route'         => false,
     // 是否强制使用路由
     'url_route_must'         => false,
+    // 合并路由规则
+    'route_rule_merge'       => false,
     // 路由是否完全匹配
     'route_complete_match'   => false,
     // 使用注解路由
@@ -123,8 +122,8 @@ return [
     'request_cache_except'   => [],
 
     // 默认跳转页面对应的模板文件
-    'dispatch_success_tmpl'  => Env::get('think_path') . 'tpl/dispatch_jump.tpl',
-    'dispatch_error_tmpl'    => Env::get('think_path') . 'tpl/dispatch_jump.tpl',
+    'dispatch_success_tmpl'  =>  './tpl/dispatch_jump.tpl',
+    'dispatch_error_tmpl'    =>  './tpl/dispatch_jump.tpl',
 
     // 异常页面的模板文件
     'exception_tmpl'         => Env::get('think_path') . 'tpl/think_exception.tpl',
@@ -135,10 +134,5 @@ return [
     'show_error_msg'         => false,
     // 异常处理handle类 留空使用 \think\exception\Handle
     'exception_handle'       => '',
-
-    // +----------------------------------------------------------------------
-    // | 自定义全局设置
-    // +----------------------------------------------------------------------
-
 
 ];

@@ -1,0 +1,150 @@
+{extend name="base" /}
+{block name="header"}
+<div class="admin_header_{$skin_name|default='default'} clearfix">
+    <div class="title"><i></i>{$title|default=""}</div>
+    <div class="action">
+        <b></b>
+        <div class="layui-btn-group layui-btn-group-only">
+            <a class="layui-btn  layui-btn-disabled layui-btn-sm "><i class="fa fa-reply"></i> 返 回 </a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="main"}
+
+<div class="layui-btn-group">
+    <a href="{:url('admin/nav/add',['group_id'=>$group_id])}" class="layui-btn layui-btn-primary"><i class="layui-icon" style="color: #ffffff;">&#xe608;</i>添加新导航</a>
+</div>
+
+<table class="layui-table layui-form" lay-even="" lay-skin="row" lay-size="sm">
+    <colgroup>
+        <col width="50">
+        <col width="50">
+        <col width="50">
+        <col width="200">
+        <col width="100">
+        <col width="150">
+        <col width="100">
+        <col width="100">
+        <col width="100">
+        <col width="200">
+        <col width="150">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>排序</th>
+        <th>ID</th>
+        <th>图标</th>
+        <th>名称</th>
+        <th>别名</th>
+        <th>链接地址</th>
+        <th>是否外链</th>
+        <th>打开方式</th>
+        <th>状态</th>
+        <th>会员分组ID[半角逗号分隔]</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <form class="layui-form" id="admin">
+        {volist name="navList" id="vo"}
+        <tr>
+            <td><input type="text" name="orders[]" value="{$vo.orders}" style="width: 20px;" class="orders">
+                <input type="hidden" name="id[]" value="{$vo.id}">
+            </td>
+            <td>{$vo.id}</td>
+            <td><i class="fa {$vo.icon}" aria-hidden="true"></i></td>
+            <td><span style="font-weight:500;">{$vo.str|raw}</span>{$vo.name}</td>
+            <td>{$vo.alias}</td>
+            <td>{$vo.value}</td>
+            <td>{eq name="$vo.is_link" value="1"}是{else /}不是{/eq}</td>
+            <td>{$vo.target}</td>
+            <td><input type="checkbox" name="status" lay-skin="switch" lay-text="显示|隐藏" lay-filter="switchStatus" value="{$vo.id}" {notempty name="$vo.status"}{eq name="$vo.status" value="1"}checked=""{/eq}{/notempty}></td>
+            <td>{$vo.level_id}</td>
+            <td class="operation-menu skin">
+                <a href="{:url('admin/nav/edit',['id'=>$vo.id,'group_id'=>$group_id])}" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs a_menu"><i class="layui-icon"></i></a>
+                <a href="{:url('admin/nav/add',['pid'=>$vo.id,'group_id'=>$group_id])}" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs a_menu"><i class="layui-icon"></i></a>
+                <a href="javascript:;" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs delete" id="{$vo.id}"><i class="layui-icon"></i></a>
+            </td>
+        </tr>
+        {/volist}
+    </form>
+    </tbody>
+</table>
+
+<button class="layui-btn layui-btn-sm and-bg-{$skin_name}" lay-submit lay-filter="admin">更新排序</button>
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    $('.delete').click(function(){
+        var id = $(this).attr('id');
+        layer.confirm('确定要删除?', function(index) {
+            $.ajax({
+                url:"{:url('admin/nav/delete')}",
+                data:{id:id},
+                success:function(res) {
+                    layer.msg(res.msg);
+                    if(res.code == 1) {
+                        setTimeout(function(){
+                            location.href = res.url;
+                        },1500)
+                    }
+                }
+            })
+        })
+    })
+</script>
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        form.on('submit(admin)', function(data) {
+            $.ajax({
+                url:"{:url('admin/nav/orders')}",
+                data:$('#admin').serialize(),
+                type:'post',
+                async: false,
+                success:function(res) {
+                    if(res.code == 1) {
+                        layer.alert(res.msg, function(index){
+                            location.href = res.url;
+                        })
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+            return false;
+        });
+        var status=0;
+        form.on('switch(switchStatus)', function(data){
+            loading = layer.load(2, {
+                shade: [0.2,'#000']
+            });
+            if(data.elem.checked){
+                status=1;
+            }else{
+                status=0;
+            }
+            var url="{:url('admin/nav/update_status')}?id="+data.value+'&status='+status ;
+
+            $.get(url,function(data){
+
+                if(data.code == 200){
+                    layer.close(loading);
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+                        //  location.reload();
+                    });
+                }else{
+                    layer.close(loading);
+                    layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

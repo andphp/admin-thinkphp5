@@ -1,0 +1,536 @@
+{extend name="base" /}
+{block name="css"}
+<style type="text/css">
+    .phone_confirm_show{
+        display: block !important;
+    }
+    .send_btn{
+        display: none !important;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="layui-container fly-marginTop fly-user-main">
+    {include file="index/menu"}
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" lay-filter="user">
+            <ul class="layui-tab-title" id="LAY_mine">
+                <li class="layui-this" lay-id="info">我的资料</li>
+                <li lay-id="avatar">头像</li>
+                <li lay-id="pass">密码</li>
+                <li lay-id="bind">帐号绑定</li>
+            </ul>
+            <div class="layui-tab-content" style="padding: 20px 0;">
+                <div class="layui-form layui-form-pane layui-tab-item layui-show">
+                    <form method="post">
+                        <div class="layui-form-item">
+                            <div class="layui-form-item">
+                                <label for="_city" class="layui-form-label">用户名</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="username" value="{$member.username}" readonly class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="_city" class="layui-form-label">昵  称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="nickname" value="{$member.nickname}" class="layui-input">
+                                </div>
+                            </div>
+                            {if $member.phone neq null}
+                            {if condition="($member.status eq 3) OR ($member.status eq 5)"}
+                            <div class="layui-form-item">
+                                <label for="_city" class="layui-form-label">手机号</label>
+                                {notempty name="sms_is_verify"}
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phone" readonly value="{$member.phone_hide}" class="layui-input">
+                                </div>
+                                {else /}
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phone"  value="{$member.phone}" class="layui-input">
+                                </div>
+                                {/notempty}
+                            </div>
+                            {else /}
+                            <div class="layui-form-item">
+                                <label for="_city" class="layui-form-label">手机号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phone" id="_phone" value="{$member.phone}" class="layui-input">
+                                </div>
+                                {notempty name="sms_is_verify"}
+                                <div class="layui-form-mid layui-word-aux" id="send_btn">检测到您的手机未验证，是否现在<a href="javascript:;" style="font-size: 12px; color: #4f99cf;" id="activation_phone">发送短信验证码</a>。</div>
+                                {/notempty}
+                            </div>
+                            <div class="layui-form-item" id="phone_confirm" style="display: none;">
+                                <label for="_city" class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phone_confirm" id="_code" placeholder="请输入短信验证码" class="layui-input">
+                                </div>
+                                <button class="layui-btn layui-btn-sm get-code" id="_getCode">获取验证码</button>
+                                <button class="layui-btn layui-btn-sm layui-btn-disabled reset-code" disabled id="_resetCode" style="display:none;"><span id="_second">60</span>秒后重发</button>
+                            </div>
+                            {/if}
+                            {else /}
+                            <div class="layui-form-item">
+                                <label for="_city" class="layui-form-label">手机号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phone" id="_phone" value="{$member.phone}" lay-verify="phone" placeholder="手机号绑定" class="layui-input">
+                                </div>
+                                {notempty name="sms_is_verify"}
+                                <div class="layui-form-mid layui-word-aux" id="send_btn">手机号码绑定，需要短信验证：立即<a href="javascript:;" style="font-size: 12px; color: #4f99cf;" id="activation_phone"> 发送短信验证码</a>。</div>
+                                {/notempty}
+                            </div>
+                            <div class="layui-form-item" id="phone_confirm" style="display: none;">
+                                <label for="_city" class="layui-form-label">验证码</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="phone_confirm" id="_code" placeholder="请输入短信验证码" class="layui-input">
+                                </div>
+                                <button class="layui-btn layui-btn-sm get-code" id="_getCode">获取验证码</button>
+                                <button class="layui-btn layui-btn-sm layui-btn-disabled reset-code" disabled id="_resetCode" style="display:none;"><span id="_second">60</span>秒后重发</button>
+                            </div>
+                            {/if}
+                            <label for="_email" class="layui-form-label">邮箱</label>
+
+                            {if condition="($member.status eq 2) OR ($member.status eq 5)"}
+                            <div class="layui-input-inline">
+                                <input type="text" id="_email" name="email" required lay-verify="email" autocomplete="off" value="{$member.email|hideEmail}" class="layui-input" {if condition="($member.status eq 2) OR ($member.status eq 5)" }disabled{/if}>
+                            </div>
+                            {notempty name="$email_is_verify"}
+                            <div class="layui-form-mid layui-word-aux">如果您在邮箱已激活的情况下，变更了邮箱，需
+                                <a href="javascript:;" style="font-size: 12px; color: #4f99cf;" id="reactivation_email">重新验证邮箱</a>。</div>
+                            {/notempty}
+                            {else /}
+                            <div class="layui-input-inline">
+                                <input type="text" id="_email" name="email" required lay-verify="email" autocomplete="off" value="{$member.email}" class="layui-input">
+                            </div>
+                            {notempty name="$email_is_verify"}
+                            <div class="layui-form-mid layui-word-aux">检测到您的邮箱未激活，是否现在<a href="javascript:;" style="font-size: 12px; color: #4f99cf;" id="activation_email">激活邮箱</a>。</div>
+                            {/notempty}
+                            {/if}
+
+
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">性别</label>
+
+                            <div class="layui-input-block">
+                                <input type="radio" name="sex" value="0" title="男" {if condition="$member['sex'] eq 0" }checked{/if}>
+                                <input type="radio" name="sex" value="1" title="女" {if condition="$member['sex'] eq 1" }checked{/if}>
+                            </div>
+
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="_city" class="layui-form-label">城市</label>
+                            <div class="layui-input-inline">
+                                <input type="text" id="_city" name="address" value="{$member.address}" autocomplete="off" value="" class="layui-input">
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item layui-form-text">
+                            <label for="_sign" class="layui-form-label">签名</label>
+                            <div class="layui-input-block">
+                                <textarea placeholder="随便写些什么刷下存在感" id="_sign" name="description" autocomplete="off" class="layui-textarea" style="height: 80px;">{$member.description}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn" key="set-mine" lay-filter="user_set" lay-submit>修改</button>
+                        </div>
+
+
+                </div>
+
+                <div class="layui-form layui-form-pane layui-tab-item">
+                    <form method="post">
+                        <div class="layui-form-item">
+                            <div class="avatar-add">
+                                <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过50KB</p>
+
+                                <button id="image" type="button" class="layui-btn upload-img"> <i class="layui-icon"></i>上传头像 </button>
+                                <input type="hidden" name="thumb_url" value="{$member.thumb_url}" class="layui-input">
+
+                                <img id="head_edit" src="{$member.thumb_url|httpUrl}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn" lay-submit="" lay-filter="user_head_edit">确认修改</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="layui-form layui-form-pane layui-tab-item">
+                    <form method="post">
+
+                        {if condition="$member.password neq 0"}
+                        <div class="layui-form-item">
+                            <label for="_nowPass" class="layui-form-label">当前密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="_nowPass" name="nowPass" required lay-verify="pass" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        {else /}
+                        <input type="hidden" value="0" name="nowPass">
+                        {/if}
+                        <div class="layui-form-item">
+                            <label for="_pass" class="layui-form-label">新密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="_pass" name="password" required lay-verify="pass" autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">6到12个字符</div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label for="_repass" class="layui-form-label">确认密码</label>
+                            <div class="layui-input-inline">
+                                <input type="password" id="_repass" name="password_confirm" required lay-verify="pass" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <button class="layui-btn" key="set-mine" lay-filter="user_setEdit" lay-submit>确认修改</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="layui-form layui-form-pane layui-tab-item">
+                    <ul class="app-bind">
+                        <li class="fly-msg app-havebind">
+                            <i class="iconfont icon-qq"></i>
+                            {if condition="$userInfo eq 0"}
+                            <a href="javascript:;" onclick="layer.msg('敬请期待！')" class="acc-bind" type="qq_id">立即绑定</a>
+                            <span>，即可使用QQ帐号登录本社区</span> {else /}
+                            <span>已成功绑定，您可以使用QQ帐号直接登录本社区。当然，您也可以</span>
+                            <a href="javascript:;" class="acc-unbind" id="unbind" data-id="{$userInfo.openid}" type="qq_id">解除绑定</a> {/if}
+                        </li>
+                        <script>
+                            layui.use('form', function() {
+                                var form = layui.form,
+                                        jq = layui.jquery;
+
+                                var url = "{:url('applogin/unbind')}";
+                                jq('#unbind').click(function() {
+                                    var openid = jq(this).data('id');
+                                    layer.confirm('您确定要解除绑定吗,解绑前请确定已填写邮箱和密码?', {
+                                        icon: 3,
+                                        title: '提示'
+                                    }, function(index) {
+                                        jq.post(url, {
+                                            openid: openid
+                                        }, function(data) {
+
+                                            if (data.code == 200) {
+                                                layer.msg(data.msg, {
+                                                    icon: 1,
+                                                    time: 1000
+                                                }, function() {
+                                                    location.reload();
+                                                });
+                                            } else {
+
+                                                layer.msg(data.msg, {
+                                                    icon: 2,
+                                                    anim: 6,
+                                                    time: 1000
+                                                });
+                                            }
+                                        });
+
+                                        layer.close(index);
+                                    });
+                                });
+                            });
+                        </script>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript" src="__COMMON__/js/jquery.md5.js"></script>
+{/block}
+{block name="script"}
+<script>
+    function encrypt(pwd) {
+        return  $.md5(pwd);
+    }
+    layui.use(['form', 'upload', 'element'], function() {
+        var form = layui.form,
+                upload = layui.upload,
+                element = layui.element,
+                jq = layui.jquery;
+        form.verify({
+        phone: [
+                /^$|^1\d{10}$/
+                ,'请输入正确的手机号'
+            ]
+        });
+        var n = 1;
+        jq('.site-tree-phone').click(function() {
+
+            if (n == 2) {
+                jq('.layui-nav').animate({
+                    left: '-300px'
+                }, "fast");
+                jq(this).find('.layui-icon').html('&#xe602;');
+                n = 1;
+            } else {
+                n = 2;
+                jq('.layui-nav').animate({
+                    left: '0px'
+                }, "fast");
+                jq(this).find('.layui-icon').html('&#xe603;');
+            }
+        });
+
+        upload.render({
+            elem: '#image',
+            url: '{:url("user/upload/up_image")}',
+            done: function(res) {
+                //如果上传失败
+
+                if (res.code == '200') {
+                    jq('input[name=thumb_url]').val(res.path);
+                    head_edit.src = res.headpath;
+                    return layer.msg('上传成功');
+                } else {
+                    //上传成功
+                    return layer.msg(res.msg);
+                }
+
+            }
+        });
+        jq('#activation_email').click(function() {
+            //激活邮箱直接变成disable，然后发送邮件。邮件验证成功后，该status变为2或者5
+
+            var email = jq('#_email').val();
+            var url = "{:url('user/email/send_validate')}";
+
+            if (email == '') {
+                layer.msg('邮箱不能为空', {
+                    icon: 2,
+                    anim: 6,
+                    time: 1000
+                });
+                return false;
+            }
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            jq.post(url, {
+                'email': email
+            }, function(data) {
+                layer.close(loading);
+                if (data.code == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function() {
+                        jq('#_email').attr('disabled', 'disabled');
+                    });
+                } else {
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        anim: 6,
+                        time: 1000
+                    });
+                }
+            });
+        });
+        jq('.get-code').click(function(){
+            jq('#activation_phone').trigger('click');
+        });
+        jq('#activation_phone').click(function() {
+            var phone = jq('#_phone').val();
+            var url = "{:url('user/Sms/send_validate')}";
+
+            if (phone == '') {
+                layer.msg('手机号码不能为空', {
+                    icon: 2,
+                    anim: 6,
+                    time: 1000
+                });
+                return false;
+            }
+            jq('#phone_confirm').addClass("phone_confirm_show");
+            jq('#send_btn').addClass("send_btn");
+            jq('#_code').attr('lay-verify', 'required');
+            $('#_getCode').hide();
+            $('#_second').html('60');
+            $('#_resetCode').show();
+            var second = 60;
+            var timer = null;
+            timer = setInterval(function(){
+                second -= 1;
+                if(second >0 ){
+                    $('#_second').html(second);
+                }else{
+                    clearInterval(timer);
+                    $('#_getCode').show();
+                    $('#_resetCode').hide();
+                }
+            },1000);
+
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            jq.post(url, {
+                'phone': phone
+            }, function(data) {
+                layer.close(loading);
+                if (data.code == 1) {
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function() {
+                        jq('#_phone').attr('disabled', 'disabled');
+                    });
+                } else {
+
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        anim: 6,
+                        time: 1000
+                    });
+                }
+            });
+        });
+        var emailold = '';
+
+        jq('#reactivation_email').click(function() {
+
+            var url = "{:url('user/email/send_validate')}";
+
+            if (jq(this).html() == '立即激活') {
+                var reemail = jq('#_email').val();
+                if (reemail == emailold) {
+                    layer.msg('请更改邮箱进行验证', {
+                        icon: 2,
+                        anim: 6,
+                        time: 1000
+                    });
+                } else {
+                    loading = layer.load(2, {
+                        shade: [0.2, '#000']
+                    });
+                    jq.post(url, {
+                        'email': reemail
+                    }, function(data) {
+
+                        if (data.code == 1) {
+                            layer.close(loading);
+                            layer.msg(data.msg, {
+                                icon: 1,
+                                time: 1000
+                            }, function() {
+                                //
+                                jq('#_email').attr('disabled', 'disabled');
+
+                            });
+                        } else {
+                            layer.msg(data.msg, {
+                                icon: 2,
+                                anim: 6,
+                                time: 1000
+                            });
+                        }
+                    });
+                }
+
+
+            } else {
+                emailold = jq('#_email').val();
+                jq('#_email').removeAttr('disabled');
+                jq(this).html('立即激活');
+
+            }
+
+        });
+        form.on('submit(user_set)', function(data) {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            var param = data.field;
+            jq.post('{:url("user/set/update_info")}', param, function(data) {
+                if (data.code == 200) {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                            }, function() {
+                                location.href = '{:url("user/set/index")}';
+                            }
+                    );
+                } else {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        anim: 6,
+                        time: 1000
+                    });
+                }
+            });
+            return false;
+        });
+
+        form.on('submit(user_setEdit)', function(data) {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            var param = data.field;
+            param.nowPass=encrypt(param.nowPass);
+            param.password=encrypt(param.password);
+            param.password_confirm=encrypt(param.password_confirm);
+            jq.post('{:url("user/set/update_password")}', param, function(data) {
+                if (data.code == 200) {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    });
+                } else {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        anim: 6,
+                        time: 1000
+                    });
+                }
+            });
+            return false;
+        });
+        form.verify({
+            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            content: function(value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+        form.on('submit(user_head_edit)', function(data) {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            console.log(data);
+            var param = data.field;
+            jq.post('{:url("user/set/update_head")}', param, function(data) {
+                if (data.code == 200) {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    });
+                    location.reload();
+                } else {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        anim: 6,
+                        time: 1000
+                    });
+                }
+            });
+            return false;
+        });
+
+    });
+</script>{/block}

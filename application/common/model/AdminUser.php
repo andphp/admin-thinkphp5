@@ -8,16 +8,18 @@
  * +----------------------------------------------------------------------
  * | author    :BabySeeME <417170808@qq.com>
  * +----------------------------------------------------------------------
- * | createTime :2018/3/5 00059:24
+ * | createTime :2018/4/19 001915:52
  * +----------------------------------------------------------------------
  */
 
 namespace app\common\model;
 
 
+
+
+
 class AdminUser extends ModelBase
 {
-
     /**
      * 关联角色模型 多对多
      * @return \think\model\relation\BelongsToMany
@@ -57,4 +59,5 @@ class AdminUser extends ModelBase
         $user = $this::get($id);
         return $user->roles()->saveAll($roles);
     }
+
 }

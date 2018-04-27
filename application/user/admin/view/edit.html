@@ -1,0 +1,123 @@
+{extend name="base" /}
+
+{block name="main"}
+
+<div class="box_form">
+
+    <div class="box_content">
+        <form class="layui-form" id="admin">
+            <input type="hidden" name="token" value="{$token}" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input name="username" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$user_info.username"}value="{$user_info.username}"{/notempty}><input type="hidden" name="id" value="{$user_info.id}">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">昵称</label>
+                <div class="layui-input-inline">
+                    <input name="nickname" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$user_info.nickname"}value="{$user_info.nickname}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">邮箱地址</label>
+                <div class="layui-input-inline">
+                    <input name="email" lay-verify="required|email" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$user_info.email"}value="{$user_info.email}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">电话号码</label>
+                <div class="layui-input-inline">
+                    <input name="phone" lay-verify="required|phone" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$user_info.phone"}value="{$user_info.phone}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-upload" id="upload-thumb">
+                <input type="hidden" name="thumb" value="{$user_info.thumb}">
+                <label class="layui-form-label">头像</label>
+                <button type="button" class="layui-btn and-bg-{$skin_name|default='default'}" id="thumb">上传头像</button>
+                <div class="layui-upload-list">
+                    <label class="layui-form-label"></label>
+                    <img class="layui-upload-img" id="and1" width="150" height="150" {notempty name="$user_info.thumb"}src="{$user_info.thumb|get_url}"{/notempty}>
+                    <p id="demoText"></p>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn and-bg-{$skin_name|default='default'}" lay-submit lay-filter="admin">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+{/block}
+
+{block name="script"}
+<script>
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#thumb' //绑定元素
+            ,url: "{:url('admin/Upload/upload_image')}" //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                if(res.code == 200) {
+                    $('#and1').attr('src',res.path);
+                    $('#upload-thumb').append('<input type="hidden" name="thumb" value="'+ res.id +'">');
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        form.verify({
+            pass: [
+                /^[\S]{6,12}$/
+                ,'密码必须6到12位，且不能出现空格'
+            ]
+        });
+        $(window).on('load', function() {
+            form.on('submit(admin)', function(data) {
+                $.ajax({
+                    url:"{:url('admin/User/update')}",
+                    data:$('#admin').serialize(),
+                    type:'post',
+                    async: false,
+                    success:function(res) {
+                        if(res.code == 1) {
+                            layer.alert(res.msg, function(index){
+                                location.href = res.url;
+                            })
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    });
+</script>
+{/block}

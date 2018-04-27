@@ -15,6 +15,16 @@
             </div>
 
             <div class="layui-form-item">
+                <label class="layui-form-label">前台/后台</label>
+                <div class="layui-input-inline">
+                    <select name="" lay-filter="aihao">
+                        <option value="0" {notempty name="$role.is_admin"}{eq name="$role.is_admin" value="0"}selected{/eq}{/notempty}>前台</option>
+                        <option value="1" {notempty name="$role.is_admin"}{eq name="$role.is_admin" value="1"}selected{/eq}{/notempty}>后台</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
                 <label class="layui-form-label">角色介绍</label>
                 <div class="layui-input-inline">
                     <input name="intro" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$role.intro"}value="{$role.intro}"{/notempty}>

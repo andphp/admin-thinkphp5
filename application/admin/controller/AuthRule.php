@@ -16,7 +16,7 @@ namespace app\admin\controller;
 
 
 use app\admin\validate\AuthRule as AuthRuleValidate;
-use app\common\controller\AdminBase;
+use app\common\controller\AdminController;
 use app\common\model\AuthRule as AuthRuleModel;
 use app\common\model\AuthRuleGroup;
 
@@ -30,7 +30,7 @@ use app\common\model\AuthRuleGroup;
  * +----------------------------------------------------------------------
  * | createTime :2018-03-02 19:02
  */
-class AuthRule extends AdminBase
+class AuthRule extends AdminController
 {
 
     /**
@@ -44,7 +44,7 @@ class AuthRule extends AdminBase
         $menu = $model->order('id asc,orders asc')->select();
         $menus = $model->menuList($menu);
         $this->assign('menus',$menus);
-        return $this->fetch();
+        return $this->fetch('_list');
     }
 
     /**
@@ -79,6 +79,12 @@ class AuthRule extends AdminBase
         return $this->fetch();
     }
 
+    /**
+     * 提交新增操作
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 19:55
+     */
     public function save(){
         //新增操作
         if($this->request->isPost()) {
@@ -102,7 +108,7 @@ class AuthRule extends AdminBase
                 $this->error('添加权限失败');
             } else {
                 //记录日志
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'添加权限规则：'.$post['name']);
+                ////$this->add_log($this->userSession['id'],$this->userSession['username'],'添加权限规则：'.$post['name']);
                 $this->success('添加权限成功','admin/auth_rule/_list');
             }
         }else{
@@ -143,6 +149,13 @@ class AuthRule extends AdminBase
         return $this->fetch();
     }
 
+
+    /**
+     * 提交更新操作
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 19:55
+     */
     public function update(){
         //是修改操作
         if($this->request->isPost()) {
@@ -157,11 +170,11 @@ class AuthRule extends AdminBase
             }
             $post['name']=$post['module'].'/'.$post['controller'].'/'.$post['function'];
             //验证菜单是否存在
-            $menu = $model->where(['title'=>$post['title'],['id','neq',$post['id']]])->find();
+            $menu = $model->where(['title'=>$post['title']])->where('id','neq',$post['id'])->find();
             if(!empty($menu)) {
                 $this->error('该规则标题已经存在');
             }
-            $menu = $model->where(['name'=>$post['name'],['id','neq',$post['id']]])->find();
+            $menu = $model->where(['name'=>$post['name']])->where('id','neq',$post['id'])->find();
             if(!empty($menu)) {
                 $this->error('该规则方法已经存在');
             }
@@ -169,7 +182,7 @@ class AuthRule extends AdminBase
                 $this->error('修改失败');
             } else {
                 //记录日志
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'修改权限规则ID:'.$post['id']);
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'修改权限规则ID:'.$post['id']);
                 $this->success('修改权限信息成功','admin/auth_rule/_list');
             }
         }else{
@@ -192,7 +205,7 @@ class AuthRule extends AdminBase
                     $this->error('删除失败');
                 } else {
                     //记录日志
-                    $this->add_log($this->userSession['id'],$this->userSession['username'],'删除权限规则ID:'.$id);
+                    //$this->add_log($this->userSession['id'],$this->userSession['username'],'删除权限规则ID:'.$id);
                     $this->success('删除成功','admin/auth_rule/_list');
                 }
             } else {

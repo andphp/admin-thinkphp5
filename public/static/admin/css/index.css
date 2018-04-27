@@ -33,7 +33,6 @@ background: -webkit-linear-gradient(left , rgb(247,248,248) 1% , rgb(173,211,237
 #gloTop .topMenu ul li:last-child{ padding: 0 12px;}
 
 
-
 #gloTop .gtRght{ float: right;}
 #gloTop .gtRght .layui-nav{ background: transparent; float: right;}
 #gloTop .gtRght .layui-nav .layui-nav-item{ height: 50px;line-height: 50px;position: relative;}
@@ -337,6 +336,18 @@ background: -webkit-linear-gradient(left , rgb(247,248,248) 1% , rgb(173,211,237
     #admHome .homeLeft .cms_count ul li i.icon{ width: 40px;left: 20px;top: 50%;margin-top: -20px;}
 }
 
+
+/*区分版块的颜色块*/
+.hero-0, .nav-0{background-color:#999 !important;}
+.hero-1, .nav-1{background-color:#99A0C8 !important;}
+.hero-2, .nav-2{background-color:#67CCEA !important;}
+.hero-3, .nav-3{background-color:#FEB54D !important;}
+.hero-4, .nav-4{background-color:#9ACEC7 !important;}
+.hero-5, .nav-5{background-color:#C6B0E3 !important;}
+.hero-6, .nav-6{background-color:#E2C783 !important;}
+.hero-7, .nav-7{background-color:#B59E8C !important;}
+.hero-8, .nav-8{background-color:#D09696 !important;}
+.hero-9, .nav-9{background-color:#6DBB3E !important;}
 
 
 

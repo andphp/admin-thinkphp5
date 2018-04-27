@@ -14,8 +14,7 @@
 
 namespace app\admin\controller;
 
-
-use app\common\controller\AdminBase;
+use app\common\controller\AdminController;
 use app\common\model\AuthGroup as AuthGroupModel;
 use app\admin\validate\AuthGroup as AuthGroupValidate;
 use app\common\model\AuthRule as AuthRuleModel;
@@ -30,7 +29,7 @@ use app\common\model\AuthRule as AuthRuleModel;
  * +----------------------------------------------------------------------
  * | createTime :2018-03-05 9:21
  */
-class AuthGroup extends AdminBase
+class AuthGroup extends AdminController
 {
     /**
      * 渲染输入角色类列表
@@ -43,7 +42,7 @@ class AuthGroup extends AdminBase
         $model = new AuthGroupModel();
         $role_list = $model->paginate(20);
         $this->assign('role_list',$role_list);
-        return $this->fetch();
+        return $this->fetch('_list');
     }
 
     /**
@@ -69,7 +68,7 @@ class AuthGroup extends AdminBase
             if(false == $model->allowField(true)->save($post)) {
                 $this->error('添加角色失败');
             } else {
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'添加角色：'.$post['title']);
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'添加角色：'.$post['title']);
                 $this->success('添加角色成功','admin/auth_group/_list');
             }
         }else{
@@ -121,7 +120,7 @@ class AuthGroup extends AdminBase
             if(false == $model->allowField(true)->save($post,['id'=>$post['id']])) {
                 $this->error('修改失败');
             } else {
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'修改角色ID:'.$post['id'].'角色信息');
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'修改角色ID:'.$post['id'].'角色信息');
                 $this->success('修改权限信息成功','admin/auth_group/_list');
             }
         }else {
@@ -155,6 +154,12 @@ class AuthGroup extends AdminBase
         return $this->fetch();
     }
 
+    /**
+     * 提交更新操作
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 19:54
+     */
     public function update_rule(){
         //是修改操作
         if($this->request->isPost()) {
@@ -165,7 +170,7 @@ class AuthGroup extends AdminBase
             if (false == $model->allowField(true)->save($save, ['id' => $post['id']])) {
                 $this->error('修改规则失败');
             } else {
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'修改角色ID:'.$post['id'].'规则');
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'修改角色ID:'.$post['id'].'规则');
                 $this->success('修改规则信息成功','admin/auth_group/_list');
             }
         }else{
@@ -184,7 +189,7 @@ class AuthGroup extends AdminBase
             $get = $this->request->get();
             $model = new AuthGroupModel();
             if ($model->where('id', $get['id'])->update(['status' =>$get['status']]) !== false) {
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'更新角色ID：'.$get['id'].'状态');
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'更新角色ID：'.$get['id'].'状态');
                 //  $this->success('更新成功');
                 return json(array('code' => 200, 'msg' => '更新成功'));
             }

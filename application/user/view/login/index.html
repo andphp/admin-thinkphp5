@@ -1,10 +1,107 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-sdf
-</body>
-</html>
+{extend name="base" /}
+{block name="body"}
+<div class="layui-container fly-marginTop">
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+                <li class="layui-this">登录</li>
+
+            </ul>
+            <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <div class="layui-form layui-form-pane">
+                        <form method="post">
+                            <div class="layui-form-item">
+                                <label for="username" class="layui-form-label">帐号</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" id="username" name="username" required lay-verify="required" placeholder="帐号/手机号/邮箱" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label for="password" class="layui-form-label">密码</label>
+                                <div class="layui-input-inline">
+                                    <input type="password" id="password" name="password" required lay-verify="required|pass" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+
+                                <!-- <div class="layui-input-inline">
+                  <input id="un-login" type="checkbox" name="un-login" title="十天内免登录" lay-skin="primary">
+                  
+                </div> -->
+                                <div class="layui-form-mid layui-word-aux"><a href="/forget.html">忘记密码？</a></div>
+                            </div>
+                            <div class="layui-form-item">
+                                <button class="layui-btn" lay-filter="login_into" lay-submit>立即登录</button>
+                                <a href="/user/join.html" class="layui-btn layui-btn-primary" lay-filter="login_index">注册账号</a>
+                            </div>
+                            <!--<div class="layui-form-item fly-form-app">-->
+                                <!--<span>或者使用社交账号登录</span>-->
+                                <!--<a href="/user/applogin/qqlogin.html" onclick="layer.msg('正在通过QQ登入', {icon:16, shade: 0.1, time:0})" class="iconfont icon-qq" title="QQ登入"></a>-->
+                            <!--</div>-->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+<!--页面JS脚本-->
+{block name="js"}
+<script type="text/javascript" src="__COMMON__/js/jquery.md5.js"></script>
+<script src="__USER__/js/user.js"></script>
+{/block}
+<!--页面JS脚本-->
+{block name="script"}
+<script>
+    function encrypt(pwd) {
+        return  $.md5(pwd);
+    }
+    layui.use('form', function() {
+        var form = layui.form,
+                jq = layui.jquery;
+
+        form.verify({
+            emailss: function(value) {
+                if (value.length > 32) {
+                    return '邮箱必须小于32位';
+                }
+            },
+            pass: [/(.+){6,12}$/, '密码必须6到12位'],
+            content: function(value) {
+                layedit.sync(editIndex);
+            }
+        });
+
+        form.on('submit(login_into)', function(data) {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            var param = data.field;
+            param.password=encrypt(param.password);
+            jq.post("{:url('user/login/into')}", param, function(data) {
+                if (data.code == 200) {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1000
+                    }, function() {
+                        location.href = data.url;
+                    });
+                } else {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        anim: 6,
+                        time: 1000
+                    });
+                    jq('#captcha').attr('src', "/user/index/captcha.html?" + Math.random());
+                }
+            });
+            return false;
+        });
+
+    })
+</script>
+{/block}

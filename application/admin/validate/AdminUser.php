@@ -15,7 +15,7 @@
 namespace app\admin\validate;
 
 
-class AdminUser extends ValidateBase
+class AdminUser extends AdminValidate
 {
     /**
      * 校验规则

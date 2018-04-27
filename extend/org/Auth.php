@@ -12,8 +12,8 @@ namespace org;
 
 use think\Db;
 use think\facade\Config;
-use think\facade\Session;
 use think\facade\Request;
+use think\facade\Session;
 use think\Loader;
 
 /**
@@ -91,7 +91,7 @@ class Auth
         'auth_group'        => 'auth_group', // 用户组数据表名
         'auth_group_access' => 'auth_group_access', // 用户-用户组关系表
         'auth_rule'         => 'auth_rule', // 权限规则表
-        'auth_user'         => 'admin_user', // 用户信息表
+        'auth_user'         => '', // 用户信息表
     ];
 
     /**
@@ -104,8 +104,9 @@ class Auth
         if ($auth = Config::get('auth.')) {
             $this->config = array_merge($this->config, $auth);
         }
+
         // 初始化request
-        $this->request = Request::instance();
+        //$this->request = Request::instance();
     }
 
     /**
@@ -151,8 +152,9 @@ class Auth
         }
 
         $list = []; //保存验证通过的规则名
+        $REQUEST = []; //保存验证通过的规则名
         if ('url' == $mode) {
-            $REQUEST = unserialize(strtolower(serialize($this->request->param())));
+            $REQUEST = unserialize(strtolower(serialize(request()->param())));
         }
         foreach ($authList as $auth) {
             $query = preg_replace('/^.+\?/U', '', $auth);
@@ -209,7 +211,7 @@ class Auth
         // 执行查询
         $user_groups  = Db::view($auth_group_access, $view)
             ->view($auth_group, 'title,rules', "{$auth_group_access}.$auth_group_id={$auth_group}.id", 'LEFT')
-            ->where("{$auth_group_access}.$auth_user_id='{$uid}' and {$auth_group}.status='1'")
+            ->where("{$auth_group_access}.$auth_user_id='{$uid}' and {$auth_group_access}.status='1' and {$auth_group}.status='1'")
             ->select();
 
         $groups[$uid] = $user_groups ?: [];

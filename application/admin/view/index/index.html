@@ -4,8 +4,8 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="Keywords" content="{$keywords|default=''}" />
-    <title>{$title|default='AndPHP后台管理系统'}</title>
+    <meta name="Keywords" content="" />
+    <title>《AndPHP站点应用管理系统》</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -13,21 +13,21 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
 
-    <link rel="shortcut icon" href="__COMMON__/images/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" media="all" />
-    <link rel="stylesheet" type="text/css" href="__PUBLIC__/font-awesome-4.7.0/css/font-awesome.min.css" />
+    <link rel="shortcut icon" href="/static/common/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/static/common/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" type="text/css" href="/static/common/font-awesome-4.7.0/css/font-awesome.min.css" />
 
-    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/global.css" />
-    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/animate.css" />
-    <link rel="stylesheet" type="text/css" href="__ADMIN__/css/index.css" />
-    {block name="css"}{/block}
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/global.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/animate.css" />
+    <link rel="stylesheet" type="text/css" href="/static/admin/css/index.css" />
+
 
     <script type="text/javascript">var wwwroot='/';var absroot=document.domain;</script>
 
-    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
-    <script type="text/javascript" src="__ADMIN__/js/global.js"></script>
-    <script type="text/javascript" src="__ADMIN__/js/jquery.nicescroll.min.js"></script>
+    <script type="text/javascript" src="/static/common/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="/static/common/layui/layui.js"></script>
+    <script type="text/javascript" src="/static/admin/js/global.js"></script>
+    <script type="text/javascript" src="/static/admin/js/jquery.nicescroll.min.js"></script>
 
     <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
     <!--[if lt IE 9]>
@@ -61,7 +61,7 @@
         <div class="layui-col-xs4 layui-col-sm2 layui-col-md4 topMenu" id="topMenu">
             <ul class="grid">
                 {volist name="menusGroup" id="group"}
-                 {if $key eq 0}
+                {if $key eq 0}
                 <li class="current">{$group.title}</li>
                 {else /}
                 <li>{$group.title}</li>
@@ -86,10 +86,10 @@
             </ul>
             <ul class="layui-nav list layui-hide-xs" lay-filter="">
                 <li class="layui-nav-item circle gohome first"><a class="tooltip and-bg-{$skin_name|default='default'}}" data-tip-text="访问前台" data-tip-type="3" href="/" target="_blank"><i class="fa fa-home"></i></a></li>
-                <li class="layui-nav-item circle gohome"><a class="tooltip and-bg-{$skin_name|default='default'}}" data-tip-text="访问SNS" data-tip-type="3" href="/sns" target="_blank"><i class="fa fa-comments"></i></a></li>
+                <li class="layui-nav-item circle gohome"><a class="tooltip and-bg-{$skin_name|default='default'}}" data-tip-text="访问论坛" data-tip-type="3" href="/forum" target="_blank"><i class="fa fa-comments"></i></a></li>
                 <li class="layui-nav-item circle"><a class="tooltip javascript" rel="full_screen" data-tip-text="F11全屏" data-tip-type="3" href="javascript:void(0);"><i class="fa fa-arrows "></i></a></li>
                 <li class="layui-nav-item circle"><a class="tooltip javascript" rel="simple_clear" data-tip-text="清除缓存" data-tip-type="3" href="{:url('admin/Tool/clear_cache')}"><i class="fa fa-remove" style="margin: -7px 0 0 -5px;"></i></a></li>
-                <li class="layui-nav-item circle"><a target="_blank" class="tooltip" data-tip-text="培训手册" data-tip-type="3" href="https://kancloud.andphp.com"><i class="fa fa-book" style="margin: -7px 0 0 -7px;"></i></a></li>
+                <li class="layui-nav-item circle"><a target="_blank" class="tooltip" data-tip-text="培训手册" data-tip-type="3" href="http://kancloud.andphp.com"><i class="fa fa-book" style="margin: -7px 0 0 -7px;"></i></a></li>
                 <li class="layui-nav-item circle skin-down"><a  href="javascript:void(0);"><i class="fa fa-yelp" style="margin: -7px 0 0 -6px;"></i></a>
                     <div class="skin-show clearfix">
                         <a data-skin="default" rel="change_skin"  style="background: #5EABE1;" class="javascript"></a>
@@ -110,30 +110,30 @@
             {volist name="menusGroup" id="group"}
             {if $key eq 0}
             <ul class="list gloMenu">
-            {else /}
-            <ul class="list gloMenu hidden">
-            {/if}
+                {else /}
+                <ul class="list gloMenu hidden">
+                    {/if}
 
-                {volist name="menus" id="data"}
-                {if $data.group_id eq $group.id}
-                <li class="layui-nav-item ">
-                    <div class="navT">
-                        <a href="javascript:;"><i data-icon="{$data.icon}" class="fa {$data.icon}   animated" style="color: rgb({rand(50,200)},{rand(50,200)},{rand(50,200)}); "></i><cite>{$data.title}</cite></a>
-                    </div>
+                    {volist name="menus" id="data"}
+                    {if $data.group_id eq $group.id}
+                    <li class="layui-nav-item ">
+                        <div class="navT">
+                            <a href="javascript:;"><i data-icon="{$data.icon}" class="fa {$data.icon}   animated" style="color: rgb({rand(50,200)},{rand(50,200)},{rand(50,200)}); "></i><cite>{$data.title}</cite></a>
+                        </div>
 
-                    <div class="navC">
-                        <ul class="list">
-                            {notempty name="$data.list"}{volist name="$data.list" id="vo"}
-                            <li class="b"><a href="{$vo.url}" data-url="{$vo.url}" data-icon="{$vo.icon}" data-title="{$vo.title}" kit-target data-id='{$vo.id}'><i data-icon="{$vo.icon|default=$vo.icon}" class="fa fa-angle-right fa-lg animated"></i><cite>{$vo.title}</cite></a></li>
-                            <li class="s"><a href="{$vo.url}" class="tooltip" data-tip-text="{$vo.title}" data-tip-bg="#66AFE2" data-title="{$vo.title}" data-icon="{$vo.icon|default=$vo.icon}"><i class="fa fa-reorder"></i></a></li>
-                            {/volist}{/notempty}
-                        </ul>
-                    </div>
-                </li>
-                {/if}
+                        <div class="navC">
+                            <ul class="list">
+                                {notempty name="$data.list"}{volist name="$data.list" id="vo"}
+                                <li class="b"><a href="{$vo.url}" data-url="{$vo.url}" data-icon="{$vo.icon}" data-title="{$vo.title}" kit-target data-id='{$vo.id}'><i data-icon="{$vo.icon|default=$vo.icon}" class="fa fa-angle-right fa-lg animated"></i><cite>{$vo.title}</cite></a></li>
+                                <li class="s"><a href="{$vo.url}" class="tooltip" data-tip-text="{$vo.title}" data-tip-bg="#66AFE2" data-title="{$vo.title}" data-icon="{$vo.icon|default=$vo.icon}"><i class="fa fa-reorder"></i></a></li>
+                                {/volist}{/notempty}
+                            </ul>
+                        </div>
+                    </li>
+                    {/if}
+                    {/volist}
+                </ul>
                 {/volist}
-            </ul>
-            {/volist}
         </div>
     </div>
     <div id="gloRght" lay-allowClose="true">
@@ -149,8 +149,6 @@
             </ul>
             <div class="layui-tab-content">
                 <!--{include file="index/welcome" /}-->
-
-
                 <div class="layui-tab-item layui-show admin_home">
                     <div class="admin_content">
                         <div class="admin_content_box">
@@ -241,7 +239,7 @@
                                                 <div class="info">
                                                     <a href="{url('User/lists')}" class="new_tab" data-title="会员列表" data-icon="fa-user">
                                                         <i class="icon"><img  src="{$root|default='__ADMIN__/images/user.png'}" alt=""/></i>
-                                                        <span class="number en-font">{if empty($count.user)}0{elseif $count.user<999}{$count.user}{else}999+{/if}</span>
+                                                        <span class="number en-font">{notempty name="$countUser"}{if $countUser <= 999}{$countUser}{else /}{$countUser/1000}K{/if}{else /}0{/notempty}</span>
                                                         <span class="name">会员</span>
                                                     </a>
                                                 </div>
@@ -357,16 +355,16 @@
 </div>
 <div class="site-mobile-shade"></div>
 <!--锁屏模板 start-->
-<div id="lockScreen" {if $is_lock_screen }style="display: block;"{/if}>
-<div class="init">
-    <div class="relative">
-        <div class="lockTime en-font"></div>
-        <div class="pic"><img  src="__ADMIN__/images/default_headimg.png" alt=""/><p class="en-font">andphp</p></div>
+<div id="lockScreen" >
+    <div class="init">
+        <div class="relative">
+            <div class="lockTime en-font"></div>
+            <div class="pic"><img  src="/static/admin/images/default_headimg.png" alt=""/><p class="en-font">andphp</p></div>
+        </div>
+        <div class="wrbox">
+            <input  type="password" id="screenPwd" class="wrin" value="" autocomplete="off" placeholder="请输入密码解锁.."/><br /><button id="closeLock" class="layui-btn">立即解锁</button>
+        </div>
     </div>
-    <div class="wrbox">
-        <input  type="password" id="screenPwd" class="wrin" value="" autocomplete="off" placeholder="请输入密码解锁.."/><br /><button id="closeLock" class="layui-btn">立即解锁</button>
-    </div>
-</div>
 </div>
 <!--锁屏模板 end-->
 
@@ -472,17 +470,17 @@
         }
     });
     // 自适应主页面大小
-     $(window).resize(function () {
-         initSize();
-     });
+    $(window).resize(function () {
+        initSize();
+    });
     // 初始化主页面大小
     function initSize() {
         var screenWidth = $(window).width();// 窗口宽度
-    if(screenWidth < 992){
-        $('#gloBox').addClass('menu_close') ;
+        if(screenWidth < 992){
+            $('#gloBox').addClass('menu_close') ;
+        }
+
     }
-        　
-     }
 
     $('.skin-down').hover(function(){
         $(this).find('.skin-show').stop(true,true).slideDown(300);
@@ -511,8 +509,8 @@
     function simple_clear(){
         var url = $(this).attr('href');
         $.get(url,function(data){
-                layer.closeAll();
-                layer.msg(data.msg)
+            layer.closeAll();
+            layer.msg(data.msg)
         });
     }
 
@@ -694,7 +692,7 @@
             offset: '200px'
         });
         setTimeout(function () {
-            $.post("{:url('admin/Login/logout')}", {}, function (data) {
+            $.post("/admin/login/logout.html", {}, function (data) {
                 var json = $.parseJSON(data);
                 if (json['result'] == 'success') {
                     layer.msg(json['msg'],{

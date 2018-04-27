@@ -25,7 +25,7 @@ namespace app\admin\validate;
  * +----------------------------------------------------------------------
  * | createTime :2018-03-03 11:21
  */
-class AuthRule extends ValidateBase
+class AuthRule extends AdminValidate
 {
 
     /**

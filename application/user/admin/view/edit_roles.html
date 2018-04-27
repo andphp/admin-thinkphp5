@@ -1,0 +1,113 @@
+{extend name="base" /}
+{block name="main"}
+
+
+    <div class="layui-form-item and-bg-{$skin_name}">
+        <label class="layui-form-label">当前用户：</label>
+        <div class="layui-input-block">
+            <input type="text" name="title" required  lay-verify="required" placeholder="{$username.username}" autocomplete="off" class="layui-input" disabled>
+        </div>
+    </div>
+
+<div class="layui-btn-group">
+    <a data-href="" class="layui-btn layui-btn-warm post" href="javascript:void(0);">提交</a>
+    <a data-href="" class="layui-btn layui-btn-primary reset-all" href="javascript:void(0);">重置</a>
+    <a data-href="" class="layui-btn and-bg-{$skin_name} power-all" href="javascript:void(0);">全选</a>
+    <a data-href="" class="layui-btn and-bg-{$skin_name} power-all-reverse" href="javascript:void(0);">反选</a>
+</div>
+    <form class="layui-form" id="admin">
+        <input type="hidden" name="token" value="{$token}" />
+<table class="layui-table" lay-even="" lay-skin="row" lay-size="sm" id="menu_table">
+    <colgroup>
+        <col width="50">
+        <col width="100">
+        <col width="300">
+        <col width="400">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>选择</th>
+        <th>ID</th>
+        <th>角色标题</th>
+        <th>角色介绍</th>
+    </tr>
+    </thead>
+    <tbody>
+
+        {volist name="role_group" id="vo"}
+        <tr>
+            {if in_array($vo['id'],$user_roles)}
+            <td><input type="checkbox" name="roles[]" class="checkbox" value="{$vo.id}" checked></td>
+            {else}
+            <td><input type="checkbox" name="roles[]" class="checkbox" value="{$vo.id}"></td>
+            {/if}
+            <td>{$vo.id}</td>
+            <td>{$vo.title}</td>
+            <td>{$vo.intro}</td>
+        </tr>
+        {/volist}
+        <input type="hidden" name="id" value="{$username.id}">
+    </tbody>
+</table>
+        </form>
+    <div class="layui-btn-group">
+        <a data-href="" class="layui-btn layui-btn-warm post" href="javascript:void(0);">提交</a>
+        <a data-href="" class="layui-btn layui-btn-primary reset-all" href="javascript:void(0);">重置</a>
+        <a data-href="" class="layui-btn and-bg-{$skin_name} power-all" href="javascript:void(0);">全选</a>
+        <a data-href="" class="layui-btn and-bg-{$skin_name} power-all-reverse" href="javascript:void(0);">反选</a>
+    </div>
+
+
+
+{/block}
+
+{block name="script"}
+
+<script type="text/javascript">
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+    });
+    $('.reset-all').click(function(){
+        $('table').find('.layui-form-checkbox').removeClass('layui-form-checked');
+        $('table').find('input[type="checkbox"]').prop('checked',false);
+    });
+    $('.power-all').click(function(){
+        $('table').find('.layui-form-checkbox').addClass('layui-form-checked');
+        $('table').find('input[type="checkbox"]').prop('checked',true);
+    });
+    $('.power-all-reverse').click(function(){
+        var ch = document.getElementsByClassName("layui-unselect layui-form-checkbox");
+        for (var i = 0; i < ch.length; i++) {
+            if (ch[i].className == "layui-unselect layui-form-checkbox") {
+                ch[i].className = "layui-unselect layui-form-checkbox layui-form-checked";
+            }
+            else {
+                ch[i].className = "layui-unselect layui-form-checkbox";
+            }
+
+        }
+        return false;
+    });
+    $('.post').click(function(){
+        var id = $(this).attr('id');
+            $.ajax({
+                url:"{:url('admin/User/edit_roles')}",
+                data:$('#admin').serialize(),
+                type:'post',
+                async: false,
+                success:function(res) {
+                    if(res.code == 1) {
+                        layer.alert(res.msg, function(index){
+                            location.href = res.url;
+                        })
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            })
+    })
+</script>
+
+{/block}

@@ -1,0 +1,45 @@
+{extend name="base" /}
+{block name="css"}
+<style type="text/css">
+    .home-jieda li .mine-edit {
+        margin-left: 15px;
+        padding: 4px 6px;
+        background-color: #8FCDA0;
+        color: #fff;
+        font-size: 12px;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="layui-container fly-marginTop fly-user-main">
+    {include file="index/menu"}
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title">
+
+                <li class="layui-this"><a href="{:url('user/comment/index')}">我的回复</a></li>
+            </ul>
+            <div class="layui-tab-content" style="padding: 20px 0;">
+                <div class="fly-panel">
+                    <ul class="home-jieda">
+                        {volist name="data" id="vo"}
+                        <li>
+                            <p>
+                                <span>{$vo.create_time|time_format}</span> 在
+                                <a href="{:url('forum/post/index',array('id'=>$vo.post_id))}#quick_reply_form" target="_blank">{$vo.post_id|getPostNameByPostId}</a>中回答
+                            </p>
+                            <div class="home-dacontent">
+                                {$vo['content']|raw|msubstr=0,50}
+
+                            </div>
+
+                        </li>
+                        {/volist}
+                    </ul>
+                </div>
+                <div style="text-align: center;">{$data->render()|raw}</div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

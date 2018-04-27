@@ -6,17 +6,17 @@
     <meta name="Description" content="" />
     <title>{$title|default='AndPHP - 内容管理系统'}</title>
 
-    <link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" />
+    <link rel="stylesheet" type="text/css" href="__COMMON__/layui/css/layui.css" />
     <link rel="stylesheet" type="text/css" href="__ADMIN__/css/global.css" />
     <link rel="stylesheet" type="text/css" href="__ADMIN__/css/animate.css" />
-    <link rel="stylesheet" type="text/css" href="__PUBLIC__/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="__COMMON__/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="__ADMIN__/css/index.css" />
     {block name="function"}{/block}
 
     <script type="text/javascript">var wwwroot='/';var absroot=document.domain;</script>
 
-    <script type="text/javascript" src="__PUBLIC__/js/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+    <script type="text/javascript" src="__COMMON__/js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="__COMMON__/layui/layui.js"></script>
     <script type="text/javascript" src="__ADMIN__/js/global.js"></script>
     <script type="text/javascript" src="__ADMIN__/js/jquery.nicescroll.min.js"></script>
 
@@ -141,7 +141,7 @@
         }, 500);
 
         setTimeout(function () {
-            $.post("{:url('Login/login_username')}", {
+            $.post("{:url('Login/login')}", {
                 username: username,
                 password: password,
                 captcha: captcha,
@@ -155,8 +155,6 @@
                     setTimeout(function () {
                         location.href = json['url'];
                     }, 800)
-
-
                 } else {
                     $('#login').animate({
                         'margin-left': -180
@@ -181,9 +179,9 @@
 </div>
 <![endif]-->
 
-<script type="text/javascript" src="__PUBLIC__/sideshow/js/TweenLite.min.js"></script>
-<script type="text/javascript" src="__PUBLIC__/sideshow/js/EasePack.min.js"></script>
+<script type="text/javascript" src="__COMMON__/sideshow/js/TweenLite.min.js"></script>
+<script type="text/javascript" src="__COMMON__/sideshow/js/EasePack.min.js"></script>
 
-<script type="text/javascript" src="__PUBLIC__/sideshow/js/demo-1.js"></script>
+<script type="text/javascript" src="__COMMON__/sideshow/js/demo-1.js"></script>
 
 

@@ -60,6 +60,12 @@
         <input type="radio" name="{$vo.vari}" lay-skin="switch" title="{$key_value}" lay-filter="radioStatus" value="{$vo.id}&value={$key}" {notempty name="$vo.value"}{eq name="$vo.value" value="$key"}checked=""{/eq}{/notempty}>
          {/foreach}
          </td>
+          {elseif $vo.type=='image'}
+      {if $vo.value==0 }
+      <td><a href="__ADMIN__/images/default_headimg.png" class="tooltip"><img src="__ADMIN__/images/default_headimg.png" width="20" height="20"></a></td>
+      {else /}
+      <td><a href="{$vo.value|get_url}" class="tooltip"><img src="{$vo.value|get_url}" width="20" height="20"></a></td>
+      {/if}
           {elseif $vo.type=='checkbox'}
           {php}$box=explode(',',$vo['value']);{/php}
          <td>
@@ -97,6 +103,27 @@
 
 {block name="script"}
 <script type="text/javascript">
+  $(function(){
+    var x = 10;
+    var y = 20;
+    $(".tooltip").mouseover(function(e){
+      var tooltip = "<div id='tooltip'><img src='"+ this.href +"' alt='预览图' height='200'/>"+"<\/div>"; //创建 div 元素
+      $("body").append(tooltip);  //把它追加到文档中
+      $("#tooltip")
+              .css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+              }).show("fast");    //设置x坐标和y坐标，并且显示
+    }).mouseout(function(){
+      $("#tooltip").remove();  //移除
+    }).mousemove(function(e){
+      $("#tooltip")
+              .css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+              });
+    });
+  });
   $('.delete').click(function(){
     var id = $(this).attr('id');
     layer.confirm('确定要删除?', function(index) {
@@ -236,7 +263,11 @@
     $(document).ready(function(){
       $(".textareaValue'.$i.'").blur(function(){
         if( textareaValue != $(this).val()){
-          $.get("'.url('admin/system_config/update_value').'?id="+$(this).attr("id")+"&value="+$(this).val()+"&type=textarea",function(data,status){
+          $.post("'.url('admin/system_config/update_value').'", {
+            id:$(this).attr("id"),
+            value:$(this).val(),
+            type:"textarea"
+          },function(data,status){
             if(data.code == 200){
               layer.close(loading);
               layer.msg(data.msg, {icon: 1, time: 1000}, function(){

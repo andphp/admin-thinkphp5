@@ -15,7 +15,7 @@
 namespace app\admin\controller;
 
 
-use app\common\controller\AdminBase;
+use app\common\controller\AdminController;
 use app\common\model\AdminUser as AdminUserModel;
 use think\facade\Cache;
 use think\facade\Session;
@@ -30,7 +30,7 @@ use think\facade\Session;
  * +----------------------------------------------------------------------
  * | createTime :2018-03-05 9:21
  */
-class Tool extends AdminBase
+class Tool extends AdminController
 {
 
     /**
@@ -48,9 +48,15 @@ class Tool extends AdminBase
         $data = $this->request->post();
         $skin = trim($data['skin']);
         cookie('skin_name', $skin, 2592000);
-        return json_success('皮肤切换成功');
+        return ajax_json('success','皮肤切换成功');
     }
 
+    /**
+     * 锁屏操作
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 20:24
+     */
     public function lock_screen()
     {
         if (!$this->request->isAjax()) {
@@ -60,6 +66,12 @@ class Tool extends AdminBase
         $this->success('锁屏成功');
     }
 
+    /**
+     * 解锁操作
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 20:25
+     */
     public function relieve_screen()
     {
         if (!$this->request->isAjax()) {
@@ -82,6 +94,13 @@ class Tool extends AdminBase
             $this->error('请输入密码');
         }
     }
+
+    /**
+     * 清空缓存
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 20:25
+     */
     public function clear_cache()
     {
         if (!$this->request->isAjax()) {

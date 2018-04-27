@@ -15,13 +15,22 @@
 namespace app\admin\controller;
 
 
-use app\common\controller\AdminBase;
-use app\common\model\AdminUser as AdminUserModel;
 use app\admin\validate\AdminUser as AdminUserValidate;
+use app\common\controller\AdminController;
+use app\common\model\AdminUser as AdminUserModel;
 use app\common\model\AuthGroup as AuthGroupModel;
-use think\facade\Session;
 
-class AdminUser extends AdminBase
+/**
+ * 后台管理员控制器类
+ * +----------------------------------------------------------------------
+ * Class AdminUser
+ * @package app\admin\controller
+ * +----------------------------------------------------------------------
+ * | author     :BabySeeME <417170808@qq.com>
+ * +----------------------------------------------------------------------
+ * | createTime :2018-04-27 20:26
+ */
+class AdminUser extends AdminController
 {
 
     /**
@@ -32,7 +41,6 @@ class AdminUser extends AdminBase
      * @createTime :2018-03-05 13:19
      */
     public function _list(){
-//        $this->authCheck('adminuser');
         //实例化管理员模型
         $model =new AdminUserModel();
         $user_list = $model->where('is_delete',0)->with('roles')->paginate(20);
@@ -44,7 +52,7 @@ class AdminUser extends AdminBase
             $user_info['title']=implode('|',$title_group);
         }
         $this->assign('user_list',$user_list);
-        return $this->fetch();
+        return $this->fetch('_list');
     }
 
     /**
@@ -55,7 +63,6 @@ class AdminUser extends AdminBase
      * @createTime :2018-03-05 21:10
      */
     public function edit_password(){
-//        $this->authCheck('adminuser');
         //获取管理员登录id
         $adminUser = $this->userSession;
         $id=$adminUser['id'];
@@ -64,6 +71,12 @@ class AdminUser extends AdminBase
         return $this->fetch();
     }
 
+    /**
+     * 提交更新密码
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 19:53
+     */
     public function update_password(){
         $adminUser = $this->userSession;
         $id=$adminUser['id'];
@@ -94,7 +107,7 @@ class AdminUser extends AdminBase
                 $this->error('修改失败');
             }
             //记录日志
-            $this->add_log($this->userSession['id'],$this->userSession['username'],'将原密码'.$post['password_old'].'修改了');
+            //$this->add_log($this->userSession['id'],$this->userSession['username'],'将原密码'.$post['password_old'].'修改了');
             $this->success('修改管理员信息成功','admin/index/welcome');
         }
         $this->error('修改失败:非法提交！');
@@ -169,7 +182,7 @@ class AdminUser extends AdminBase
                 $this->error('添加管理员失败');
             } else {
                 //记录日志
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'添加用户:'.$post['username']);
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'添加用户:'.$post['username']);
                 $this->success('添加管理员成功','admin/admin_user/_list');
             }
         }else{
@@ -213,7 +226,7 @@ class AdminUser extends AdminBase
                 $this->error('修改失败');
             } else {
                 //记录日志
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'修改了基本账户信息');
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'修改了基本账户信息');
                 $this->success('修改账户信息成功', 'admin/admin_user/_list');
             }
         }else{
@@ -234,7 +247,7 @@ class AdminUser extends AdminBase
             if($is_delete == 0) {
                 if(true == (new AdminUserModel())->where('id',$post['id'])->update(['is_delete'=>1])) {
                     //记录日志
-                    $this->add_log($this->userSession['id'],$this->userSession['username'],'删除ID:'.$post['id'].'账户');
+                    //$this->add_log($this->userSession['id'],$this->userSession['username'],'删除ID:'.$post['id'].'账户');
                     $this->success('删除成功','admin/admin_user/_list');
                 }
             }
@@ -256,7 +269,7 @@ class AdminUser extends AdminBase
         $model = new AdminUserModel();
         if ($model->where('id', $get['id'])->update(['status' =>$get['status']]) !== false) {
             //记录日志
-            $this->add_log($this->userSession['id'],$this->userSession['username'],'更新ID:'.$get['id'].'账户状态');
+            //$this->add_log($this->userSession['id'],$this->userSession['username'],'更新ID:'.$get['id'].'账户状态');
             //  $this->success('更新成功');
             return json(array('code' => 200, 'msg' => '更新成功'));
         }
@@ -285,7 +298,7 @@ class AdminUser extends AdminBase
                 }
             }
             //记录日志
-            $this->add_log($this->userSession['id'],$this->userSession['username'],'批量启用ID账户【'.implode(',',$post['user_id']).'】');
+            //$this->add_log($this->userSession['id'],$this->userSession['username'],'批量启用ID账户【'.implode(',',$post['user_id']).'】');
             $this->success('更新成功，启用'.$i.'个账户','admin/admin_user/_list');
         }
     }
@@ -311,7 +324,7 @@ class AdminUser extends AdminBase
                 }
             }
             //记录日志
-            $this->add_log($this->userSession['id'],$this->userSession['username'],'批量禁用ID账户【'.implode(',',$post['user_id']).'】');
+            //$this->add_log($this->userSession['id'],$this->userSession['username'],'批量禁用ID账户【'.implode(',',$post['user_id']).'】');
             $this->success('更新成功，禁用'.$i.'个账户','admin/admin_user/_list');
         }
     }
@@ -337,7 +350,7 @@ class AdminUser extends AdminBase
                 }
             }
             //记录日志
-            $this->add_log($this->userSession['id'],$this->userSession['username'],'批量删除ID账户【'.implode(',',$post['user_id']).'】');
+            //$this->add_log($this->userSession['id'],$this->userSession['username'],'批量删除ID账户【'.implode(',',$post['user_id']).'】');
             $this->success('更新成功，删除'.$i.'个账户','admin/admin_user/_list');
         }
     }
@@ -365,7 +378,7 @@ class AdminUser extends AdminBase
                 }
             }
             //记录日志
-            $this->add_log($this->userSession['id'],$this->userSession['username'],'批量重置密码【'.$this->andConfig['default_password'].'】ID账户：'.implode(',',$post['user_id']));
+            //$this->add_log($this->userSession['id'],$this->userSession['username'],'批量重置密码【'.$this->andConfig['default_password'].'】ID账户：'.implode(',',$post['user_id']));
             $this->success('更新成功，重置'.$i.'个账户密码:'.$this->andConfig['default_password'],'admin/admin_user/_list');
         }
     }
@@ -389,7 +402,7 @@ class AdminUser extends AdminBase
                 $this->error('修改规则失败');
             } else {
                 //记录日志
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'更新了'.$model->where(['id'=>$id])->value('username').'的角色');
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'更新了'.$model->where(['id'=>$id])->value('username').'的角色');
                 $this->success('修改规则信息成功','admin/admin_user/_list');
             }
         }else {

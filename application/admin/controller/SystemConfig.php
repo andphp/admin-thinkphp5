@@ -15,7 +15,7 @@
 namespace app\admin\controller;
 
 
-use app\common\controller\AdminBase;
+use app\common\controller\AdminController;
 use app\common\model\SystemConfig as SystemConfigModel;
 use app\admin\validate\SystemConfig as SystemConfigValidate;
 use think\facade\Cache;
@@ -30,7 +30,7 @@ use think\facade\Cache;
  * +----------------------------------------------------------------------
  * | createTime :2018-03-04 14:08
  */
-class SystemConfig extends AdminBase
+class SystemConfig extends AdminController
 {
     /**
      * 渲染输出全局配置项列表
@@ -48,7 +48,7 @@ class SystemConfig extends AdminBase
         ]);
         $this->assign('config_list',$configList);
         $this->assign('show',true);
-        return $this->fetch();
+        return $this->fetch('_list');
     }
 
     /**
@@ -82,10 +82,7 @@ class SystemConfig extends AdminBase
      * @createTime :2018-03-04 14:10
      */
     public function update_value(){
-        if ($this->request->isGet()==false) {
-            return json(array('code' => 0, 'msg' => '更新失败'));
-        }
-        $get = $this->request->get();
+        $get = request()->param();
         $model = new SystemConfigModel();
         if($get['type']=='checkbox'){
             $config=$model->find($get['id']);
@@ -112,10 +109,11 @@ class SystemConfig extends AdminBase
             }
         }
         if ($model->where('id', $get['id'])->update(['value' =>$get['value']]) !== false) {
+
             //  清空缓存
             Cache::clear();
             //记录日志
-            $this->add_log($this->userSession['id'],$this->userSession['username'],'更新配置项：'.$model->where('id', $get['id'])->value('title').'值=》'.$get['value']);
+            //$this->add_log($this->userSession['id'],$this->userSession['username'],'更新配置项：'.$model->where('id', $get['id'])->value('title').'值=》'.$get['value']);
             return json(array('code' => 200, 'msg' => '更新成功'));
         }
         // $this->error('更新失败');
@@ -132,6 +130,12 @@ class SystemConfig extends AdminBase
         return $this->fetch();
     }
 
+    /**
+     * 提交新增
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 20:21
+     */
     public function save(){
         //新增操作
         if($this->request->isPost()) {
@@ -155,7 +159,7 @@ class SystemConfig extends AdminBase
                 //  清空缓存
                 Cache::clear();
                 //记录日志
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'新增：'.$post['vari'].'配置项');
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'新增：'.$post['vari'].'配置项');
                 $this->success('添加配置成功','/admin/system_config/_list');
             }
         }else{
@@ -183,6 +187,12 @@ class SystemConfig extends AdminBase
         return $this->fetch();
     }
 
+    /**
+     * 提交更新
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 20:22
+     */
     public function update(){
         //修改操作
         if($this->request->isPost()) {
@@ -195,7 +205,7 @@ class SystemConfig extends AdminBase
                 $this->error('提交失败：' . $is_Check);
             }
             //验证变量名是否存在
-            $name = $model->where(['vari'=>$post['vari'],['id','neq',$post['id']]])->find();
+            $name = $model->where(['vari'=>$post['vari']])->where('id','neq',$post['id'])->find();
             if(!empty($name)) {
                 $this->error('提交失败：该变量名已经存在！');
             }
@@ -205,12 +215,34 @@ class SystemConfig extends AdminBase
                 //  清空缓存
                 Cache::clear();
                 //记录日志
-                $this->add_log($this->userSession['id'],$this->userSession['username'],'修改：'.$post['vari'].'配置项');
-                $this->success('修改管理员信息成功','admin/system_config/_list');
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'修改：'.$post['vari'].'配置项');
+                $this->success('修改管理员信息成功','admin/system_config/system');
             }
         }else{
             $this->error('修改失败:非法操作！');
         }
+    }
+
+    /**
+     * 更新数据
+     * @param $group
+     * @param $data
+     * @return int
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-04-27 20:24
+     */
+    public function common_update($group,$data){
+        //修改操作
+        $model = new SystemConfigModel();
+        $ok = 0;
+        foreach ($data as $key => $value) {
+            if($model->where(['vari'=>$key])->update(['value'=>$value])){
+                $ok=$ok+1;
+                //$this->add_log($this->userSession['id'],$this->userSession['username'],'更新了'.$group.'配置项'.$key.'为'.$value);
+            }
+        }
+        return $ok;
     }
 
     /**
@@ -237,18 +269,7 @@ class SystemConfig extends AdminBase
         }
     }
 
-    /**
-     * 渲染输出系统相关配置
-     * @return mixed
-     * @company    :WuYuZhong Co. Ltd
-     * @author     :BabySeeME <417170808@qq.com>
-     * @createTime :2018-03-05 9:17
-     */
-    public function system(){
-        $config_lists=(new SystemConfigModel())->where('group','system')->paginate(20);
-        $this->assign('config_list',$config_lists);
-        return $this->fetch('_list');
-    }
+
     /**
      * 渲染输出站点相关配置
      * @return mixed
@@ -270,9 +291,9 @@ class SystemConfig extends AdminBase
      * @createTime :date
      */
     public function email(){
-        $config_lists=(new SystemConfigModel())->where('group','email')->paginate(20);
-        $this->assign('config_list',$config_lists);
-        return $this->fetch('_list');
+        $config_email=(new SystemConfigModel())->where('group','email')->column('vari,value');
+        $this->assign('config_email',$config_email);
+        return $this->fetch();
     }
 
     /**
@@ -310,6 +331,19 @@ class SystemConfig extends AdminBase
      */
     public function home(){
         $config_lists=(new SystemConfigModel())->where('group','home')->paginate(20);
+        $this->assign('config_list',$config_lists);
+        return $this->fetch('_list');
+    }
+
+    /**
+     * 渲染输出User相关配置
+     * @return mixed
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-03-13 14:37
+     */
+    public function user(){
+        $config_lists=(new SystemConfigModel())->where('group','user')->paginate(20);
         $this->assign('config_list',$config_lists);
         return $this->fetch('_list');
     }

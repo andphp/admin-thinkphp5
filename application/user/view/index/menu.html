@@ -1,0 +1,86 @@
+<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+    <li class="layui-nav-item">
+        <a href="{:url('user/home/index',array('id'=>$Think.session.userId))}">
+            <i class="layui-icon">&#xe68e;</i> 我的主页
+        </a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="{:url('user/index/index')}">
+            <i class="layui-icon">&#xe612;</i> 个人中心
+        </a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="{:url('user/set/index')}">
+            <i class="layui-icon">&#xe620;</i> 基本设置
+        </a>
+    </li>
+    <!--<li class="layui-nav-item">-->
+        <!--<a href="{:url('user/post/index')}">-->
+            <!--<i class="layui-icon">&#xe60a;</i> 我的帖子-->
+        <!--</a>-->
+    <!--</li>-->
+    <!--<li class="layui-nav-item">-->
+        <!--<a href="{:url('user/comment/index')}">-->
+            <!--<i class="layui-icon">&#xe63a;</i> 我的回复-->
+        <!--</a>-->
+    <!--</li>-->
+    <li class="layui-nav-item">
+        <a href="{:url('user/message/index')}">
+            <i class="layui-icon">&#xe611;</i> 我的消息
+        </a>
+    </li>
+</ul>
+<script>
+    layui.use(['jquery', 'element'], function() {
+        var jq = layui.jquery;
+        var n = 1;
+        var element = layui.element;
+        //显示当前tab
+        if (location.hash) {
+            element.tabChange('user', location.hash.replace(/^#/, ''));
+        }
+
+        element.on('tab(user)', function() {
+            var othis = jq(this),
+                    layid = othis.attr('lay-id');
+            if (layid) {
+                location.hash = layid;
+            }
+        });
+        jq('.site-tree-mobile').click(function() {
+
+            if (n == 2) {
+                jq('.layui-nav').animate({
+                    left: '-300px'
+                }, "fast");
+                jq(this).find('.layui-icon').html('&#xe602;');
+                n = 1;
+            } else {
+                n = 2;
+                jq('.layui-nav').animate({
+                    left: '0px'
+                }, "fast");
+                jq(this).find('.layui-icon').html('&#xe603;');
+            }
+        });
+        //----------动态添加导航active样式--------------
+        var _nava = jq('.layui-nav .layui-nav-item a');
+        var _url = window.location.href;
+        var _host = window.location.host;
+        for (var i = 0; i < _nava.length; i++) {
+            var _astr = _nava.eq(i).attr('href');
+            // alert(_astr);
+            if (_url.indexOf(_astr) != -1) {
+
+                _nava.eq(i).addClass('layui-this').siblings().removeClass('layui-this');
+            } else if (_url == ('http://' + _host + '/')) {
+                _nava.eq(0).addClass('layui-this').siblings().removeClass('layui-this');
+            }
+        }
+        //----------动态添加导航active样式结束------------
+    })
+</script>
+<div class="site-tree-mobile layui-hide">
+    <i class="layui-icon">&#xe602;</i>
+</div>
+<div class="site-mobile-shade"></div>

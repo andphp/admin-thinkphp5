@@ -6,26 +6,33 @@
  * +----------------------------------------------------------------------
  * | AndPHP承诺基础框架永久免费开源，您可用于学习和商用，但必须保留软件版权信息。
  * +----------------------------------------------------------------------
- * | author    :DaXiong <417170808@qq.com>
+ * | author    :BabySeeME <417170808@qq.com>
  * +----------------------------------------------------------------------
- * |createTime :2018/2/6 000619:27
+ * | createTime :2018/4/19 001915:57
  * +----------------------------------------------------------------------
  */
-
 /**
- * 返回成功json格式数据
+ * 返回json格式数据
+ * @param $type
  * @param $msg
  * @param null $url
  * @param int $wait
  * @return string
+ * @company    :WuYuZhong Co. Ltd
  * @author     :BabySeeME <417170808@qq.com>
- * @createTime :2018-03-02 15:35
+ * @createTime :2018-04-19 16:02
  */
-function json_success($msg, $url = null,$wait=3)
+function ajax_json($type,$msg, $url = null,$wait=3)
 {
+    if($type == 'success'){
+        $code = 1;
+    }else{
+        $type = 'error';
+        $code = 0;
+    }
     return json_encode(array(
-        'result' => 'success',
-        'code' => 1,
+        'result' => $type,
+        'code' => $code,
         'msg' => $msg,
         'url' => $url,
         'wait' => $wait
@@ -33,100 +40,33 @@ function json_success($msg, $url = null,$wait=3)
 }
 
 /**
- * 返回失败json格式数据
- * @param $msg
- * @param null $data
- * @param int $wait
- * @return string
- * @author     :BabySeeME <417170808@qq.com>
- * @createTime :2018-03-02 15:35
+ * 根据附件表的id返回url地址
+ * param  [type] $id [description]
+ * return [type]     [description]
  */
-function json_error($msg, $data = null,$wait=3)
+function get_url($id)
 {
-    return json_encode(array(
-        'result' => 'error',
-        'code' => 0,
-        'msg' => $msg,
-        'data' => $data,
-        'wait' => $wait
-    ));
-}
-/**
- * 构建层级（树状）数组
- * @param array  $array          要进行处理的一维数组，经过该函数处理后，该数组自动转为树状数组
- * @param string $pid_name       父级ID的字段名
- * @param string $child_key_name 子元素键名
- * @return array|bool
- * @author     :BabySeeME <417170808@qq.com>
- * @createTime :2018-03-02 15:38
- */
-function array2tree(&$array, $pid_name = 'pid', $child_key_name = 'children')
-{
-    $counter = array_children_count($array, $pid_name);
-    if (!isset($counter[0]) || $counter[0] == 0) {
-        return $array;
-    }
-    $tree = [];
-    while (isset($counter[0]) && $counter[0] > 0) {
-        $temp = array_shift($array);
-        if (isset($counter[$temp['id']]) && $counter[$temp['id']] > 0) {
-            array_push($array, $temp);
-        } else {
-            if ($temp[$pid_name] == 0) {
-                $tree[] = $temp;
-            } else {
-                $array = array_child_append($array, $temp[$pid_name], $temp, $child_key_name);
-            }
+    $domain = request()->domain();
+    if ($id) {
+        $getAttachment = (new \app\common\model\Attachment())->where(['id' => $id])->find();
+        if(empty($getAttachment)) {
+            //无资源
+            return $domain.'/static/common/images/andphp_bg_null.png';
         }
-        $counter = array_children_count($array, $pid_name);
-    }
+        if($getAttachment['status'] === 0) {
+            //待审核
+            return $domain.'/static/common/images/andphp_bg_shenhe.png';
+        }elseif($getAttachment['status'] === 1) {
+            //审核通过
+            if($getAttachment['location']==0){
 
-    return $tree;
-}
-/**
- * 子元素计数器
- * @param array $array
- * @param int   $pid
- * @return array
- * @author     :BabySeeME <417170808@qq.com>
- * @createTime :2018-03-02 15:38
- */
-function array_children_count($array, $pid)
-{
-    $counter = [];
-    foreach ($array as $item) {
-        $count = isset($counter[$item[$pid]]) ? $counter[$item[$pid]] : 0;
-        $count++;
-        $counter[$item[$pid]] = $count;
-    }
-
-    return $counter;
-}
-/**
- * 把元素插入到对应的父元素$child_key_name字段
- * @param        $parent
- * @param        $pid
- * @param        $child
- * @param string $child_key_name 子元素键名
- * @return mixed
- * @author     :BabySeeME <417170808@qq.com>
- * @createTime :2018-03-02 15:38
- */
-function array_child_append($parent, $pid, $child, $child_key_name)
-{
-    foreach ($parent as &$item) {
-        if ($item['id'] == $pid) {
-            if (!isset($item[$child_key_name])) {
-                $item[$child_key_name] = [];
+                return $domain.'/'.$getAttachment['savepath'];
             }
-
-            $item[$child_key_name][] = $child;
+            return $getAttachment['savepath'];
+        }else {
+            //不通过
+            return $domain.'/static/common/images/andphp_bg_jujue.png';
         }
     }
-
-    return $parent;
-}
-
-function get_theme_thumb_image($module,$name){
-    return WEB_URL.'/template/'.$module.'/'.$name.'/thumb_image.png';
+    return false;
 }

@@ -15,7 +15,7 @@
 namespace app\admin\validate;
 
 
-class AuthGroup extends ValidateBase
+class AuthGroup extends AdminValidate
 {
     /**
      * 校验规则
