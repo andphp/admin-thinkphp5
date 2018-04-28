@@ -3,7 +3,7 @@
   'hostname' => '127.0.0.1',
   'username' => 'root',
   'password' => '',
-  'database' => 'and_andphpeee',
+  'database' => 'and_andphp',
   'prefix' => 'and_',
   'dsn' => '',
   'charset' => 'utf8',
