@@ -2,3 +2,4 @@
 /vendor
 *.log
 .env
+/.idea
