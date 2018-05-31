@@ -1,0 +1,155 @@
+{extend name="base" /}
+
+{block name="main"}
+<div class="box_form">
+
+    <div class="box_content">
+        <form class="layui-form" id="admin">
+            <input type="hidden" name="token" value="{$token}" />
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">版块分类</label>
+                <div class="layui-input-inline">
+                    <select name="is_show">
+                        <option value="1" {notempty name="$category.is_show"}{eq name="$category.is_show" value="1"} selected=""{/eq}{/notempty}>显示</option>
+                        <option value="2" {notempty name="$category.is_show"}{eq name="$category.is_show" value="0"} selected=""{/eq}{/notempty}>隐藏</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块名称</label>
+                <div class="layui-input-inline">
+                    <input name="name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$category.name"}value="{$category.name}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块别名</label>
+                <div class="layui-input-inline">
+                    <input name="alias" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$category.alias"}value="{$category.alias}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否显示</label>
+                <div class="layui-input-inline">
+                    <select name="is_show">
+                        <option value="1" {notempty name="$category.is_show"}{eq name="$category.is_show" value="1"} selected=""{/eq}{/notempty}>显示</option>
+                        <option value="2" {notempty name="$category.is_show"}{eq name="$category.is_show" value="0"} selected=""{/eq}{/notempty}>隐藏</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否开启评论</label>
+                <div class="layui-input-inline">
+                    <select name="is_comment">
+                        <option value="1" {notempty name="$category.is_comment"}{eq name="$category.is_comment" value="1"} selected=""{/eq}{/notempty}>开启</option>
+                        <option value="2" {notempty name="$category.is_comment"}{eq name="$category.is_comment" value="0"} selected=""{/eq}{/notempty}>关闭</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">关键字</label>
+                <div class="layui-input-inline">
+                    <input name="keywords" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$category.keywords"}value="{$category.keywords}"{/notempty}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块描述</label>
+                <div class="layui-input-inline">
+                    <input name="description" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$category.description"}value="{$category.description}"{/notempty}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-inline">
+                    <input name="orders" placeholder="请输入" lay-verify="required|number" autocomplete="off" class="layui-input" type="text" value="0" {notempty name="$category.orders"}value="{$category.orders}"{/notempty} >
+                </div>
+            </div>
+            <div class="layui-upload" id="upload-thumb">
+                <label class="layui-form-label">缩略图</label>
+                <button type="button" class="layui-btn and-bg-{$skin_name|default='default'}" id="thumb_img">上传缩略图</button>
+                <div class="layui-upload-list">
+                    <label class="layui-form-label"></label>
+                    <img class="layui-upload-img" id="demo1" width="150" height="150"{notempty name="$category.thumb_img"}src="{$category.thumb_img|get_url}"{/notempty}>
+                    <p id="demoText"></p>
+                </div>
+            </div>
+
+            {notempty name="$category"}
+            <input type="hidden" name="id" value="{$category.id}">
+            {/notempty}
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn and-bg-{$skin_name|default='default'}" lay-submit lay-filter="admin">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{/block}
+
+
+{block name="script"}
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        $(window).on('load', function() {
+            form.on('submit(admin)', function(data) {
+                $.ajax({
+                    url:"{:url('admin/forum/category_update')}",
+                    data:$('#admin').serialize(),
+                    type:'post',
+                    async: false,
+                    success:function(res) {
+                        if(res.code == 1) {
+                            layer.alert(res.msg, function(index){
+                                location.href = res.url;
+                                //parent.location.reload();
+                            })
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    });
+</script>
+<script>
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#thumb_img' //绑定元素
+            ,url: "{:url('admin/Upload/upload_image')}" //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                if(res.code == 200) {
+                    $('#demo1').attr('src',res.path);
+                    $('#upload-thumb').append('<input type="hidden" name="thumb_img" value="'+ res.id +'">');
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+    });
+</script>
+{/block}

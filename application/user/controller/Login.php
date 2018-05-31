@@ -77,7 +77,7 @@ class Login extends UserController
                     );
                     //$this->add_log($user['id'], $user['username'], $user['nickname'].'登录于'.date('Y-m-d H:i:s',time()));
 
-                    return json(array('code' => 200, 'msg' => '登录成功','url'=>url('/user/index')));
+                    return json(array('code' => 200, 'msg' => '登录成功','url'=>url('user/index/index')));
                 } else {
                     return json(array('code' => 0, 'msg' => '密码错误'));
                 }

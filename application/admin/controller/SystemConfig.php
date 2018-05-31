@@ -216,7 +216,7 @@ class SystemConfig extends AdminController
                 Cache::clear();
                 //记录日志
                 //$this->add_log($this->userSession['id'],$this->userSession['username'],'修改：'.$post['vari'].'配置项');
-                $this->success('修改管理员信息成功','admin/system_config/system');
+                $this->success('修改管理员信息成功','admin/system_config/_list');
             }
         }else{
             $this->error('修改失败:非法操作！');

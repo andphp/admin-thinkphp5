@@ -99,4 +99,26 @@ class Site extends AdminController
         return $this->fetch('public/add');
     }
 
+    /**
+     * 存储配置
+     * @company    :WuYuZhong Co. Ltd
+     * @author     :BabySeeME <417170808@qq.com>
+     * @createTime :2018-05-23 8:44
+     */
+    public function config_storage(){
+        if($this->config['location'] == 0){
+            $this->addInput('location','0','radio','本地',null,null,null,1);
+            $this->addInput('location','1','radio','七牛',null,null);
+        }elseif($this->config['location'] == 1){
+            $this->addInput('location','0','radio','本地',null,null,null,0);
+            $this->addInput('location','1','radio','七牛',null,null,null,1);
+        }
+        $this->addFormItem('选择存储位置');
+        $this->addButtonB('提交',null,null,true,'layui-btn-sm','','',['lay-filter'=>'add']);
+        $this->addButtonB('重置',null,null,true,'layui-btn-sm','','',['type'=>'reset']);
+        $this->addButtonForm('config_add');
+
+        return $this->fetch('public/add');
+    }
+
 }

@@ -74,11 +74,11 @@
             <ul class="layui-nav list" lay-filter="">
                 <li class="layui-nav-item">
                     <a href="javascript:;" class="admin-user" >
-                        <span class="admin-user-headpic"><img  src="{$login.thumb|get_url|default='__ADMIN__/images/default_headimg.png'}" alt=""/></span><span class="admin-user-name en-font">{$login.username|default='admin'}</span>
+                        <span class="admin-user-headpic"><img  src="{$login.thumb_url|default='__ADMIN__/images/default_headimg.png'}" alt=""/></span><span class="admin-user-name en-font">{$login.username|default='admin'}</span>
                     </a>
                     <dl class="layui-nav-child">
                         <i class="i"></i>
-                        <dd><a href="/admin/admin_user/edit_password.html" class="new_tab" data-icon="fa-user"><i class="fa fa-pencil" aria-hidden="true"></i>修改密码</a></dd>
+                        <dd><a href=" /admin/admin_user/edit_password.html" class="new_tab" data-icon="fa-user"><i class="fa fa-pencil" aria-hidden="true"></i>修改密码</a></dd>
                         <dd><a href="" class="javascript" rel="lockScreen"><i class="fa fa-lock" aria-hidden="true" style="padding-right: 2px;padding-left: 2px;"></i>锁屏(Alt+L)</a></dd>
                         <dd class="bt"><a id="logout"><i class="fa fa-sign-out" aria-hidden="true"></i>注销登录</a></dd>
                     </dl>
@@ -156,7 +156,7 @@
 
                                 <div class="layui-hide-sm layui-show-md-block homeRght">
                                     <div class="headimg">
-                                        <a href="{url('Member/modify',['parent_id'=>$login.id])}" data-icon="fa-user" data-title="修改信息" class="new_tab"><img  src="{$login.thumb|get_url|default='__ADMIN__/images/default_headimg.png'}" alt=""/></a>
+                                        <a href="{url('Member/modify',['parent_id'=>$login.id])}" data-icon="fa-user" data-title="修改信息" class="new_tab"><img  src="{$login.thumb_url|default='__ADMIN__/images/default_headimg.png'}" alt=""/></a>
                                     </div>
                                     <div class="welcome en-font">
                                         您好！<span>{$login.nickname|default=''}</span>

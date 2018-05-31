@@ -36,12 +36,11 @@
             </div>
 
             <div class="layui-upload" id="upload-thumb">
-                <input type="hidden" name="thumb" value="{$user_info.thumb}">
                 <label class="layui-form-label">头像</label>
-                <button type="button" class="layui-btn and-bg-{$skin_name|default='default'}" id="thumb">上传头像</button>
+                <button type="button" class="layui-btn and-bg-{$skin_name|default='default'}" id="thumb_url">上传头像</button>
                 <div class="layui-upload-list">
                     <label class="layui-form-label"></label>
-                    <img class="layui-upload-img" id="and1" width="150" height="150" {notempty name="$user_info.thumb"}src="{$user_info.thumb|get_url}"{/notempty}>
+                    <img class="layui-upload-img" id="and1" width="150" height="150" {notempty name="$user_info.thumb_url"}src="{$user_info.thumb_url}"{/notempty}>
                     <p id="demoText"></p>
                 </div>
             </div>
@@ -64,13 +63,13 @@
         var upload = layui.upload;
         //执行实例
         var uploadInst = upload.render({
-            elem: '#thumb' //绑定元素
+            elem: '#thumb_url' //绑定元素
             ,url: "{:url('admin/Upload/upload_image')}" //上传接口
             ,done: function(res){
                 //上传完毕回调
                 if(res.code == 200) {
                     $('#and1').attr('src',res.path);
-                    $('#upload-thumb').append('<input type="hidden" name="thumb" value="'+ res.id +'">');
+                    $('#upload-thumb').append('<input type="hidden" name="thumb_url" value="'+ res.path +'">');
                 } else {
                     layer.msg(res.msg);
                 }

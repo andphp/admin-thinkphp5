@@ -8,34 +8,26 @@
  * +----------------------------------------------------------------------
  * | author    :BabySeeME <417170808@qq.com>
  * +----------------------------------------------------------------------
- * | createTime :2018/4/19 001915:57
+ * | createTime :2018/3/25 002520:10
  * +----------------------------------------------------------------------
  */
-/**
- * 返回json格式数据
- * @param $type
- * @param $msg
- * @param null $url
- * @param int $wait
- * @return string
- * @company    :WuYuZhong Co. Ltd
- * @author     :BabySeeME <417170808@qq.com>
- * @createTime :2018-04-19 16:02
- */
-function ajax_json($type,$msg, $url = null,$wait=3)
-{
-    if($type == 'success'){
-        $code = 1;
-    }else{
-        $type = 'error';
-        $code = 0;
-    }
-    return json_encode(array(
-        'result' => $type,
-        'code' => $code,
-        'msg' => $msg,
-        'url' => $url,
-        'wait' => $wait
-    ));
-}
 
+namespace app\admin\controller;
+
+
+use app\common\controller\AdminController;
+use app\common\model\Upload as UploadModel;
+
+class Upload extends AdminController
+{
+    public function upload_image()
+    {
+        if(!$this->isLogin()){
+            $return['code']=1;
+            $return['msg']='未检测到登录状态！';
+        }
+        $model =new UploadModel();
+        $data=$model->upImage('images');
+        return json($data);
+    }
+}

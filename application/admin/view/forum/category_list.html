@@ -1,0 +1,176 @@
+{extend name="base" /}
+{block name="header"}
+<div class="admin_header_{$skin_name|default='default'} clearfix">
+    <div class="title"><i></i>{$title|default=""}</div>
+    <div class="action">
+        <b></b>
+        <div class="layui-btn-group layui-btn-group-only">
+            <a class="layui-btn  layui-btn-disabled layui-btn-sm "><i class="fa fa-reply"></i> 返 回 </a>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="main"}
+
+<div class="layui-btn-group">
+    <a href="{:url('admin/forum/category_add')}" class="layui-btn layui-btn-primary"><i class="layui-icon" style="color: #ffffff;">&#xe608;</i>添加新板块</a>
+</div>
+
+<table class="layui-table layui-form" lay-even="" lay-skin="row" lay-size="sm">
+    <colgroup>
+        <col width="50">
+        <col width="50">
+        <col width="50">
+        <col width="200">
+        <col width="100">
+        <col width="150">
+        <col width="100">
+        <col width="100">
+        <col width="100">
+        <col width="200">
+        <col width="150">
+    </colgroup>
+    <thead>
+    <tr>
+        <th>排序</th>
+        <th>ID</th>
+        <th>封面</th>
+        <th>名称</th>
+        <th>别名</th>
+        <th>是否显示</th>
+        <th>是否开启评论</th>
+        <th>关键字</th>
+        <th>描述</th>
+        <th>创建时间</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <form class="layui-form" id="admin">
+        {volist name="category" id="vo"}
+        <tr>
+            <td><input type="text" name="orders[]" value="{$vo.orders}" style="width: 20px;" class="orders">
+                <input type="hidden" name="id[]" value="{$vo.id}">
+            </td>
+            <td>{$vo.id}</td>
+            <td><a href="{$vo.thumb_img|get_url}" class="tooltip"><img src="{$vo.thumb_img|get_url}" width="20" height="20"></a></td>
+            <td><span style="font-weight:500;">{$vo.str|raw}</span>{$vo.name}</td>
+            <td>{$vo.alias}</td>
+            <td><input type="checkbox" name="is_show" lay-skin="switch" lay-text="显示|隐藏" lay-filter="switchShow" value="{$vo.id}" {notempty name="$vo.is_show"}{eq name="$vo.is_show" value="1"}checked=""{/eq}{/notempty}>
+            </td>
+            <td><input type="checkbox" name="is_comment" lay-skin="switch" lay-text="显示|隐藏" lay-filter="switchComment" value="{$vo.id}" {notempty name="$vo.is_comment"}{eq name="$vo.is_comment" value="1"}checked=""{/eq}{/notempty}>
+            </td>
+            <td>{$vo.keywords}</td>
+            <td>{$vo.description}</td>
+            <td>{$vo.create_time}</td>
+            <td class="operation-menu skin">
+                <a href="{:url('admin/forum/category_edit',['id'=>$vo.id])}" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs a_menu"><i class="layui-icon"></i></a>
+                <a href="javascript:;" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs delete" id="{$vo.id}"><i class="layui-icon"></i></a>
+            </td>
+        </tr>
+        {/volist}
+    </form>
+    </tbody>
+</table>
+
+<button class="layui-btn layui-btn-sm and-bg-{$skin_name}" lay-submit lay-filter="admin">更新排序</button>
+
+{/block}
+
+{block name="script"}
+<script type="text/javascript">
+    $('.delete').click(function(){
+        var id = $(this).attr('id');
+        layer.confirm('确定要删除?', function(index) {
+            $.ajax({
+                url:"{:url('admin/forum/category_delete')}",
+                data:{id:id},
+                success:function(res) {
+                    layer.msg(res.msg);
+                    if(res.code == 1) {
+                        setTimeout(function(){
+                            location.href = res.url;
+                        },1500)
+                    }
+                }
+            })
+        })
+    })
+</script>
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        form.on('submit(admin)', function(data) {
+            $.ajax({
+                url:"{:url('admin/forum/category_orders')}",
+                data:$('#admin').serialize(),
+                type:'post',
+                async: false,
+                success:function(res) {
+                    if(res.code == 1) {
+                        layer.alert(res.msg, function(index){
+                            location.href = res.url;
+                        })
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                }
+            });
+            return false;
+        });
+        var status=0;
+        form.on('switch(switchShow)', function(data){
+            loading = layer.load(2, {
+                shade: [0.2,'#000']
+            });
+            if(data.elem.checked){
+                status=1;
+            }else{
+                status=0;
+            }
+            var url="{:url('admin/forum/category_updateShow')}?id="+data.value+'&status='+status ;
+
+            $.get(url,function(data){
+
+                if(data.code == 200){
+                    layer.close(loading);
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+                        //  location.reload();
+                    });
+                }else{
+                    layer.close(loading);
+                    layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+                }
+            });
+            return false;
+        });
+        form.on('switch(switchComment)', function(data){
+            loading = layer.load(2, {
+                shade: [0.2,'#000']
+            });
+            if(data.elem.checked){
+                status=1;
+            }else{
+                status=0;
+            }
+            var url="{:url('admin/forum/category_updateComment')}?id="+data.value+'&status='+status ;
+
+            $.get(url,function(data){
+
+                if(data.code == 200){
+                    layer.close(loading);
+                    layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+                        //  location.reload();
+                    });
+                }else{
+                    layer.close(loading);
+                    layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+                }
+            });
+            return false;
+        });
+    });
+</script>
+{/block}

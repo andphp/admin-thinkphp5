@@ -1,0 +1,133 @@
+{extend name="base" /}
+
+{block name="main"}
+<div class="box_form">
+
+    <div class="box_content">
+        <form class="layui-form layui-form-pane" id="admin">
+            <input type="hidden" name="token" value="{$token}" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块类型（栏目/标签）</label>
+                <div class="layui-input-block">
+                    <select name="type">
+                        <option value="0" {notempty name="$category.type"}{eq name="$category.type" value="0"} selected=""{/eq}{/notempty}>栏目</option>
+                        <option value="1" {notempty name="$category.type"}{eq name="$category.type" value="1"} selected=""{/eq}{/notempty}>标签</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块名称</label>
+                <div class="layui-input-block">
+                    <input name="name" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$category.name"}value="{$category.name}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块别名</label>
+                <div class="layui-input-block">
+                    <input name="alias" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$category.alias"}value="{$category.alias}"{/notempty}>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否显示</label>
+                <div class="layui-input-block">
+                    <select name="is_show">
+                        <option value="1" {notempty name="$category.is_show"}{eq name="$category.is_show" value="1"} selected=""{/eq}{/notempty}>显示</option>
+                        <option value="2" {notempty name="$category.is_show"}{eq name="$category.is_show" value="0"} selected=""{/eq}{/notempty}>隐藏</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否开启评论</label>
+                <div class="layui-input-block">
+                    <select name="is_comment">
+                        <option value="1" {notempty name="$category.is_comment"}{eq name="$category.is_comment" value="1"} selected=""{/eq}{/notempty}>开启</option>
+                        <option value="2" {notempty name="$category.is_comment"}{eq name="$category.is_comment" value="0"} selected=""{/eq}{/notempty}>关闭</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">关键字</label>
+                <div class="layui-input-block">
+                    <input name="keywords" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$category.keywords"}value="{$category.keywords}"{/notempty}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块描述</label>
+                <div class="layui-input-block">
+                    <input name="description" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text" {notempty name="$category.description"}value="{$category.description}"{/notempty}>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">排序</label>
+                <div class="layui-input-block">
+                    <input name="orders" placeholder="请输入" lay-verify="required|number" autocomplete="off" class="layui-input" type="text" value="0" {notempty name="$category.orders"}value="{$category.orders}"{/notempty} >
+                </div>
+            </div>
+
+            <div class="layui-form-item"  pane="">
+                <label class="layui-form-label">背景色</label>
+                <div class="layui-input-block"><button class="layui-btn layui-btn-xs nav-0" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-0"  value="0" checked="" type="radio"><button class="layui-btn layui-btn-xs nav-1" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-1" value="1" type="radio"><button class="layui-btn layui-btn-xs nav-2" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-2" value="2" type="radio"><button class="layui-btn layui-btn-xs nav-3" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-3" value="3" type="radio"><button class="layui-btn layui-btn-xs nav-4" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-4" value="4" type="radio"><button class="layui-btn layui-btn-xs nav-5" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-5" value="5" type="radio"><button class="layui-btn layui-btn-xs nav-6" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-6" value="6" type="radio"><button class="layui-btn layui-btn-xs nav-7" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-7" value="7" type="radio"><button class="layui-btn layui-btn-xs nav-8" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-8" value="8" type="radio"><button class="layui-btn layui-btn-xs nav-9" disabled="disabled"><i class="layui-icon"></i></button>
+                    <input name="sidebar" class="nav-9" value="9" type="radio">
+                </div>
+            </div>
+
+            {notempty name="$category"}
+            <input type="hidden" name="id" value="{$category.id}">
+            {/notempty}
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn and-bg-{$skin_name|default='default'}" lay-submit lay-filter="admin">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{/block}
+
+
+{block name="script"}
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        $(window).on('load', function() {
+            form.on('submit(admin)', function(data) {
+                $.ajax({
+                    url:"{:url('admin/forum/category_save')}",
+                    data:$('#admin').serialize(),
+                    type:'post',
+                    async: false,
+                    success:function(res) {
+                        if(res.code == 1) {
+                            layer.alert(res.msg, function(index){
+                                location.href = res.url;
+                                //parent.location.reload();
+                            })
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    });
+</script>
+
+{/block}

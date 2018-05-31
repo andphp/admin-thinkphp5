@@ -1,0 +1,580 @@
+{extend name="base" /}
+{block name="header"}
+<div class="admin_header_{$skin_name|default='default'} clearfix">
+  <div class="title"><i></i>{$title|default=""}</div>
+  <div class="action">
+    <b></b>
+    <div class="layui-btn-group layui-btn-group-only">
+      <a class="layui-btn  layui-btn-disabled layui-btn-sm "><i class="fa fa-reply"></i> 返 回 </a>
+    </div>
+  </div>
+</div>
+{/block}
+{block name="main"}
+
+<div class="layui-btn-group">
+
+  {if $type eq 'audit1'}
+  <a href="{:url('admin/forum/post_add')}" class="layui-btn layui-btn-primary"><i class="layui-icon" style="color: #ffffff;">&#xe608;</i>添加一篇帖子</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_commentOn" href="javascript:void(0);"><i class="fa fa-commenting-o" aria-hidden="true"></i>评论开</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_commentOff" href="javascript:void(0);"><i class="fa fa-comment" aria-hidden="true"></i> 评论关</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_choiceOn" href="javascript:void(0);"><i class="fa fa-star-o" aria-hidden="true"></i> 加精</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_choiceOff" href="javascript:void(0);"><i class="fa fa-star-half" aria-hidden="true"></i>取消加精</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_topOn" href="javascript:void(0);"><i class="fa fa-arrow-up" aria-hidden="true"></i>置顶</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_topOff" href="javascript:void(0);"><i class="fa fa-caret-up" aria-hidden="true"></i>取消置顶</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_memoOn" href="javascript:void(0);"><i class="fa fa-step-forward" aria-hidden="true"></i>结贴</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_memoOff" href="javascript:void(0);"><i class="fa fa-clipboard" aria-hidden="true"></i>未结贴</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_statusOn" href="javascript:void(0);"><i class="fa fa-unlock" aria-hidden="true"></i>解封</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_statusOff" href="javascript:void(0);"><i class="fa fa-lock" aria-hidden="true"></i>禁封</a>
+  <a data-href="" class="layui-btn layui-btn-primary delete_all" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe640;</i>删除</a>
+  {elseif $type eq 'audit0' /}
+  <a data-href="" class="layui-btn layui-btn-primary all_auditOn" href="javascript:void(0);"><i class="fa fa-smile-o" aria-hidden="true"></i>审核通过</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_auditOff" href="javascript:void(0);"><i class="fa fa-meh-o" aria-hidden="true"></i>审核未通过</a>
+  {else /}
+  <a data-href="" class="layui-btn layui-btn-primary delete_all" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe640;</i>删除</a>
+  {/if}
+
+</div>
+<form class="layui-form" id="admin">
+<table class="layui-table" lay-even="" lay-skin="row" lay-size="sm">
+  <colgroup>
+    <col width="50">
+    <col width="100">
+    <col width="100">
+    <col width="50">
+    <col width="150">
+    <col width="50">
+    <col width="50">
+    <col width="50">
+    <col width="50">
+    <col width="50">
+    <col width="80">
+    <col width="300">
+    <col width="150">
+    <col width="150">
+  </colgroup>
+  <thead>
+  <tr>
+    <th>选择</th>
+    <th>ID</th>
+    <th>用户ID</th>
+    <th>封面</th>
+    <th>标题</th>
+    <th>评论开关</th>
+    <th>是否精贴</th>
+    <th>是否置顶</th>
+    <th>是否结贴</th>
+    <th>封禁</th>
+    <th>审核</th>
+    <th>描述</th>
+    <th>创建时间</th>
+    <th>操作</th>
+  </tr>
+  </thead>
+  <tbody>
+
+  {volist name="post" id="vo"}
+  <tr>
+    <td><input type="checkbox" name="id[]" class="checkbox" value="{$vo.id}"></td>
+    <td>{$vo.id}</td>
+    <td>{$vo.user_id}</td>
+    <td><a href="{$vo.cover_pic|get_url}" class="tooltip"><img src="{$vo.cover_pic|get_url}" width="20" height="20"></a></td>
+    <td>{$vo.title}</td>
+    <td><input type="checkbox" name="is_comment[]" lay-skin="switch" {if $vo.is_audit neq 1}disabled=""{/if} lay-text="开启|关闭" lay-filter="switchComment" value="{$vo.id}" {notempty name="$vo.is_comment"}{eq name="$vo.is_comment" value="1"}checked=""{/eq}{/notempty}>
+    </td>
+    <td><input type="checkbox" name="is_choice[]" lay-skin="switch" {if $vo.is_audit neq 1}disabled=""{/if} lay-text="加精|未加" lay-filter="switchChoice" value="{$vo.id}" {notempty name="$vo.is_choice"}{eq name="$vo.is_choice" value="1"}checked=""{/eq}{/notempty}>
+    </td>
+    <td><input type="checkbox" name="is_top[]" lay-skin="switch" {if $vo.is_audit neq 1}disabled=""{/if} lay-text="置顶|未顶" lay-filter="switchTop" value="{$vo.id}" {notempty name="$vo.is_top"}{eq name="$vo.is_top" value="1"}checked=""{/eq}{/notempty}>
+    </td>
+    <td><input type="checkbox" name="is_memo[]" lay-skin="switch" {if $vo.is_audit neq 1}disabled=""{/if} lay-text="已结|未结" lay-filter="switchMemo" value="{$vo.id}" {notempty name="$vo.is_memo"}{eq name="$vo.is_memo" value="1"}checked=""{/eq}{/notempty}>
+    </td>
+    <td><input type="checkbox" name="status[]" lay-skin="switch" {if $vo.is_audit neq 1}disabled=""{/if} lay-text="禁封|未封" lay-filter="switchStatus" value="{$vo.id}" {notempty name="$vo.status"}{eq name="$vo.status" value="1"}checked=""{/eq}{/notempty}>
+    </td>
+    <td>{if $vo.is_audit eq 0}<a style="color:#535353">待审核</a>{elseif $vo.is_audit eq 1 /}<a style="color: green">审核通过</a>{else /}<a style="color: red">审核失败</a>{/if}</td>
+    <td>{$vo.description|substr=0,60}...</td>
+    <td>{$vo.create_time}</td>
+    <td class="operation-menu">
+      <a href="{:url('forum/post/index',['id'=>$vo.id])}" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs a_menu"><i class="layui-icon">&#xe615;</i></a>
+      {if $type eq 'audit1'}
+      <a href="javascript:;" class="layui-btn and-bg-{$skin_name|default='default'} layui-btn-xs delete" id="{$vo.id}"><i class="layui-icon"></i></a>
+      {/if}
+    </td>
+  </tr>
+  {/volist}
+  </tbody>
+</table>
+  </form>
+<div class="layui-btn-group">
+  {if $type eq 'audit1'}
+  <a href="{:url('admin/forum/post_add')}" class="layui-btn layui-btn-primary"><i class="layui-icon" style="color: #ffffff;">&#xe608;</i>添加一篇帖子</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_commentOn" href="javascript:void(0);"><i class="fa fa-commenting-o" aria-hidden="true"></i>评论开</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_commentOff" href="javascript:void(0);"><i class="fa fa-comment" aria-hidden="true"></i> 评论关</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_choiceOn" href="javascript:void(0);"><i class="fa fa-star-o" aria-hidden="true"></i> 加精</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_choiceOff" href="javascript:void(0);"><i class="fa fa-star-half" aria-hidden="true"></i>取消加精</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_topOn" href="javascript:void(0);"><i class="fa fa-arrow-up" aria-hidden="true"></i>置顶</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_topOff" href="javascript:void(0);"><i class="fa fa-caret-up" aria-hidden="true"></i>取消置顶</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_memoOn" href="javascript:void(0);"><i class="fa fa-step-forward" aria-hidden="true"></i>结贴</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_memoOff" href="javascript:void(0);"><i class="fa fa-clipboard" aria-hidden="true"></i>未结贴</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_statusOn" href="javascript:void(0);"><i class="fa fa-unlock" aria-hidden="true"></i>解封</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_statusOff" href="javascript:void(0);"><i class="fa fa-lock" aria-hidden="true"></i>禁封</a>
+  <a data-href="" class="layui-btn layui-btn-primary delete_all" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe640;</i>删除</a>
+  {elseif $type eq 'audit0' /}
+  <a data-href="" class="layui-btn layui-btn-primary all_auditOn" href="javascript:void(0);"><i class="fa fa-smile-o" aria-hidden="true"></i>审核通过</a>
+  <a data-href="" class="layui-btn layui-btn-primary all_auditOff" href="javascript:void(0);"><i class="fa fa-meh-o" aria-hidden="true"></i>审核未通过</a>
+  {else /}
+  <a data-href="" class="layui-btn layui-btn-primary delete_all" href="javascript:void(0);"><i class="layui-icon" style="color: #ffffff;">&#xe640;</i>删除</a>
+  {/if}
+
+</div>
+<div class="layui-btn-group">
+<div style="padding:0 20px 0;">{$post->render()|raw}
+</div></div>
+{/block}
+
+{block name="script"}
+
+<script type="text/javascript">
+  $(function(){
+    var x = 10;
+    var y = 20;
+    $(".tooltip").mouseover(function(e){
+      var tooltip = "<div id='tooltip'><img src='"+ this.href +"' alt='预览图' height='200'/>"+"<\/div>"; //创建 div 元素
+      $("body").append(tooltip);  //把它追加到文档中
+      $("#tooltip")
+              .css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+              }).show("fast");    //设置x坐标和y坐标，并且显示
+    }).mouseout(function(){
+      $("#tooltip").remove();  //移除
+    }).mousemove(function(e){
+      $("#tooltip")
+              .css({
+                "top": (e.pageY+y) + "px",
+                "left":  (e.pageX+x)  + "px"
+              });
+    });
+  });
+
+  $('.delete').click(function(){
+    var id = $(this).attr('id');
+    layer.confirm('确定要删除?', function(index) {
+      $.ajax({
+        url:"{:url('admin/forum/post_delete')}",
+        data:{id:id},
+        success:function(res) {
+          layer.msg(res.msg);
+          if(res.code == 1) {
+            setTimeout(function(){
+              location.href = res.url;
+            },1500)
+          }
+        }
+      })
+    })
+  });
+  $('.a_menu').click(function(){
+    var url = $(this).attr('href');
+    var id = $(this).attr('id');
+    var a = true;
+    if(id) {
+      $.ajax({
+        url:url
+        ,async:false
+        ,data:{id:id}
+        ,success:function(res){
+          if(res.code == 0) {
+            layer.msg(res.msg);
+            a = false;
+          }
+        }
+      })
+    } else {
+      $.ajax({
+        url:url
+        ,async:false
+        ,success:function(res){
+          if(res.code == 0) {
+            layer.msg(res.msg);
+            a = false;
+          }
+        }
+      })
+    }
+    return a;
+  })
+</script>
+<script type="text/javascript">
+  layui.use(['layer', 'form'], function() {
+    var layer = layui.layer,
+            $ = layui.jquery,
+            form = layui.form;
+
+    var status=0;
+    form.on('switch(switchStatus)', function(data){
+      loading = layer.load(2, {
+        shade: [0.2,'#000']
+      });
+      if(data.elem.checked){
+        status=1;
+      }else{
+        status=0;
+      }
+      var url="{:url('admin/forum/post_update_status')}?id="+data.value+'&status='+status ;
+
+      $.get(url,function(data){
+
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+            //  location.reload();
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+      return false;
+    });
+    form.on('switch(switchComment)', function(data){
+      loading = layer.load(2, {
+        shade: [0.2,'#000']
+      });
+      if(data.elem.checked){
+        status=1;
+      }else{
+        status=0;
+      }
+      var url="{:url('admin/forum/post_update_comment')}?id="+data.value+'&status='+status ;
+
+      $.get(url,function(data){
+
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+            //  location.reload();
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+      return false;
+    });
+    form.on('switch(switchChoice)', function(data){
+      loading = layer.load(2, {
+        shade: [0.2,'#000']
+      });
+      if(data.elem.checked){
+        status=1;
+      }else{
+        status=0;
+      }
+      var url="{:url('admin/forum/post_update_choice')}?id="+data.value+'&status='+status ;
+
+      $.get(url,function(data){
+
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+            //  location.reload();
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+      return false;
+    });
+    form.on('switch(switchTop)', function(data){
+      loading = layer.load(2, {
+        shade: [0.2,'#000']
+      });
+      if(data.elem.checked){
+        status=1;
+      }else{
+        status=0;
+      }
+      var url="{:url('admin/forum/post_update_top')}?id="+data.value+'&status='+status ;
+
+      $.get(url,function(data){
+
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+            //  location.reload();
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+      return false;
+    });
+    form.on('switch(switchMemo)', function(data){
+      loading = layer.load(2, {
+        shade: [0.2,'#000']
+      });
+      if(data.elem.checked){
+        status=1;
+      }else{
+        status=0;
+      }
+      var url="{:url('admin/forum/post_update_memo')}?id="+data.value+'&status='+status ;
+
+      $.get(url,function(data){
+
+        if(data.code == 200){
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+            //  location.reload();
+          });
+        }else{
+          layer.close(loading);
+          layer.msg(data.msg, {icon: 2, anim: 6, time: 1000});
+        }
+      });
+      return false;
+    });
+  });
+
+
+  $('.all_commentOn').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_comment_on')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_commentOff').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_comment_off')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_choiceOn').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_choice_on')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_choiceOff').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_choice_off')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_topOn').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_top_on')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_topOff').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_top_off')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_memoOn').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_memo_on')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_memoOff').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_memo_off')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_statusOn').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_status_on')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_statusOff').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_status_off')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+  $('.all_auditOn').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_audit_on')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+
+  $('.all_auditOff').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/all_audit_off')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+
+
+  $('.delete_all').click(function(){
+    var id = $(this).attr('id');
+    $.ajax({
+      url:"{:url('admin/forum/delete_all')}",
+      data:$('#admin').serialize(),
+      type:'post',
+      async: false,
+      success:function(res) {
+        if(res.code == 1) {
+          layer.alert(res.msg, function(index){
+            location.href = res.url;
+          })
+        } else {
+          layer.msg(res.msg);
+        }
+      }
+    })
+  });
+</script>
+{/block}

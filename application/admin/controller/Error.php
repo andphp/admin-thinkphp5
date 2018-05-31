@@ -40,12 +40,11 @@ class Error extends AdminController
     {
         $controllerName = request()->controller();
         $actionName = $name;
-        $path=APP_PATH.$controllerName.DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.$controllerName.'.php';
+        $path=APP_PATH.strtolower($controllerName).DIRECTORY_SEPARATOR.'admin'.DIRECTORY_SEPARATOR.'controller'.DIRECTORY_SEPARATOR.$controllerName.'.php';
         if(file_exists($path)){
             require_once($path);
             return (new $controllerName())->$actionName();
         }
-
         $this->error('你访问了一个错误的地址：'.request()->url().'<br/> 正在为你跳转。。。','admin/index/welcome');
     }
 }

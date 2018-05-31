@@ -1,6 +1,6 @@
 <?php
 /**
- * | AndPHP [ PHP and I ]
+ * | AndPHP [ PHP and all,wo AndPHP ]
  * +----------------------------------------------------------------------
  * | Copyright (c) 2017-2022 http://www.wyz.ltd All rights reserved
  * +----------------------------------------------------------------------
@@ -162,7 +162,7 @@ class Nav extends AdminController
         $menu = $model->where(['group_id'=>$group_id])->select();
         $menus = $this->menuList($menu);
         $this->assign('menus',$menus);
-        $this->assign('module',$module);
+        $this->assign('group_id',$module);
         return $this->fetch();
     }
 
@@ -180,7 +180,7 @@ class Nav extends AdminController
             $post = $this->request->post();
 
             //验证菜单是否存在
-            $menu = $model->where(['name'=>$post['name'],'module'=>$post['module']])->find();
+            $menu = $model->where(['name'=>$post['name'],'group_id'=>$post['group_id']])->find();
             if(!empty($menu)) {
                 $this->error('该导航名称已经存在');
             }
@@ -190,7 +190,7 @@ class Nav extends AdminController
             } else {
                 //记录日志
                 //$this->add_log($this->userSession['id'],$this->userSession['username'],'添加新导航：'.$post['name']);
-                $this->success('添加新导航成功','admin/nav/'.$post['module']);
+                $this->success('添加新导航成功','admin/nav/'.$post[' group_id']);
             }
         }else{
             $this->error('添加新导航失败:非法提交！');

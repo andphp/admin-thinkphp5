@@ -55,11 +55,7 @@
   <tr>
     <td><input type="checkbox" name="user_id[]" class="checkbox" value="{$vo.id}"></td>
     <td>{$vo.id}</td>
-    {if $vo['thumb']==0 }
-    <td><a href="__ADMIN__/images/default_headimg.png" class="tooltip"><img src="__ADMIN__/images/default_headimg.png" width="20" height="20"></a></td>
-    {else /}
-    <td><a href="{$vo.thumb|get_url}" class="tooltip"><img src="{$vo.thumb|get_url}" width="20" height="20"></a></td>
-    {/if}
+    <td><a href="{$vo.thumb_url}" class="tooltip"><img src="{$vo.thumb_url}" width="20" height="20"></a></td>
     <td>{$vo.title|raw}</td>
     <td>{$vo.username}</td>
     <td>{$vo.nickname}</td>

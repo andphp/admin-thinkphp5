@@ -1,0 +1,196 @@
+{extend name="base" /}
+
+{block name="main"}
+<div class="box_form">
+
+    <div class="box_content">
+        <form class="layui-form" id="admin">
+            <input type="hidden" name="token" value="{$token}" />
+           
+            <div class="layui-form-item">
+                <label class="layui-form-label">板块名称</label>
+                <div class="layui-input-inline">
+                    <select name="forum_category_id">
+                    {volist name="category" id="vo"}
+                        <option value="{$vo.id}"><span>{$vo.str|raw}</span>{$vo.name}></option>
+                     {/volist}
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">关键词标签</label>
+                <div class="layui-input-inline">
+                    <input name="labels" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">是否开启评论</label>
+                <div class="layui-input-inline">
+                    <select name="is_comment">
+                        <option value="0" {notempty name="$category.is_comment"}{eq name="$category.is_comment" value="1"} selected=""{/eq}{/notempty}>开启</option>
+                        <option value="1" {notempty name="$category.is_comment"}{eq name="$category.is_comment" value="0"} selected=""{/eq}{/notempty}>关闭</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">描述</label>
+                <div class="layui-input-inline">
+                    <input name="description" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">视频地址</label>
+                <div class="layui-input-inline">
+                    <input name="video_src" placeholder="请输入" autocomplete="off" class="layui-input" type="text">
+                </div>
+            </div>
+
+            <div class="ComposerBody-editor">
+                <div class="TextEditor">
+                    <div class="ComposerBody-mentionsWrapper">
+                        <div class="layui-form-item layui-form-text" style="height: 450px;">
+                            <label class="layui-form-label">主题内容</label>
+                            <div class="layui-input-block">
+                                <textarea name="content"  placeholder="请输入内容" class="layui-textarea" id="demo"></textarea>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-upload" id="upload-thumb">
+                <label class="layui-form-label">缩略图</label>
+                <button type="button" class="layui-btn and-bg-{$skin_name|default='default'}" id="thumb_img">上传缩略图</button>
+                <div class="layui-upload-list">
+                    <label class="layui-form-label"></label>
+                    <img class="layui-upload-img" id="demo1" width="150" height="150">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn and-bg-{$skin_name|default='default'}" lay-submit lay-filter="admin">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+{/block}
+
+
+{block name="script"}
+<script>
+    layui.use(['layer', 'form'], function() {
+        var layer = layui.layer,
+                $ = layui.jquery,
+                form = layui.form;
+        $(window).on('load', function() {
+            form.on('submit(admin)', function(data) {
+                $.ajax({
+                    url:"{:url('admin/forum/post_save')}",
+                    data:$('#admin').serialize(),
+                    type:'post',
+                    async: false,
+                    success:function(res) {
+                        if(res.code == 1) {
+                            layer.alert(res.msg, function(index){
+                                location.href = res.url;
+                                //parent.location.reload();
+                            })
+                        } else {
+                            layer.msg(res.msg);
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    });
+</script>
+<script>
+    layui.use(['form', 'layedit', 'laydate','upload'], function(){
+        var form = layui.form
+                ,layer = layui.layer
+                ,layedit = layui.layedit
+                ,laydate = layui.laydate,
+                jq = layui.jquery,
+                upload = layui.upload;
+        //自定义工具栏
+        layedit.set({
+            uploadImage: {
+                url: '/forum/upload/upload_image.html' //接口url
+                ,type: 'post' //默认post
+            }
+        });
+        var index = layedit.build('demo', {
+            tool: ['face', 'link', 'unlink', '|', 'left', 'center', 'right','image']
+            ,height: 350
+        });
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#thumb_img' //绑定元素
+            ,url: "{:url('admin/Upload/upload_image')}" //上传接口
+            ,done: function(res){
+                //上传完毕回调
+                if(res.code == 200) {
+                    $('#demo1').attr('src',res.path);
+                    $('#upload-thumb').append('<input type="hidden" name="cover_pic" value="'+ res.id +'">');
+                } else {
+                    layer.msg(res.msg);
+                }
+            }
+            ,error: function(){
+                //请求异常回调
+                //演示失败状态，并实现重传
+                var demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function(){
+                    uploadInst.upload();
+                });
+            }
+        });
+        form.on('submit(submit)', function(data) {
+            loading = layer.load(2, {
+                shade: [0.2, '#000']
+            });
+            var param =data.field;
+            param.content=layedit.getContent(index);
+            param.label=jq('#label option:selected').attr('id');
+            var str=jq.trim(layedit.getText(index));
+            if(str.length>100){
+                str=str.substring(0,100)+'...';
+            }
+            param.description=str;
+            jq.post("{:url('forum/post/add')}", param, function(data) {
+                if (data.code == 200) {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 1,
+                        time: 1500
+                    }, function() {
+                        location.href = data.url;
+                    });
+                } else {
+                    layer.close(loading);
+                    layer.msg(data.msg, {
+                        icon: 2,
+                        anim: 6,
+                        time: 3000
+                    });
+                }
+            });
+            return false;
+        });
+
+    });
+</script>
+{/block}

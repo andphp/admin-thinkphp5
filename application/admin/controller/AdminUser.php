@@ -370,7 +370,7 @@ class AdminUser extends AdminController
                 $userInfo = $model->where('id',$val)->find();
                 $saveInfo = $this->set_saltByNick($userInfo['nickname']);
                 //密码处理
-                $saveInfo['password'] = passwordMD5($this->andConfig['default_password'],$saveInfo['salt']);
+                $saveInfo['password'] = passwordMD5($this->config['default_password'],$saveInfo['salt']);
                 if(false == $model->allowField(true)->save($saveInfo,['id'=>$val])) {
                     $this->error('更新失败');
                 } else {
@@ -378,8 +378,8 @@ class AdminUser extends AdminController
                 }
             }
             //记录日志
-            //$this->add_log($this->userSession['id'],$this->userSession['username'],'批量重置密码【'.$this->andConfig['default_password'].'】ID账户：'.implode(',',$post['user_id']));
-            $this->success('更新成功，重置'.$i.'个账户密码:'.$this->andConfig['default_password'],'admin/admin_user/_list');
+            //$this->add_log($this->userSession['id'],$this->userSession['username'],'批量重置密码【'.$this->config['default_password'].'】ID账户：'.implode(',',$post['user_id']));
+            $this->success('更新成功，重置'.$i.'个账户密码:'.$this->config['default_password'],'admin/admin_user/_list');
         }
     }
 
