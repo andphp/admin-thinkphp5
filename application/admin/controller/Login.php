@@ -92,10 +92,12 @@ class Login extends AppController
 				$login_time = time();
 				$logLogin['user_id']=$name['id'];
 				$logLogin['username']=$name['username'];
-				$url='http://ip.taobao.com/service/getIpInfo.php?ip='.$login_ip;
+				// $url='http://ip.taobao.com/service/getIpInfo.php?ip='.$login_ip;
+				$url='http://whois.pconline.com.cn/ipJson.jsp?ip='.$login_ip.'&json=true';
 				$result = file_get_contents($url);
-				$result = json_decode($result,true);
-				$logLogin['city']=$result['data']['city'];
+				$result = iconv("EUC-CN","UTF-8",$result);
+				$result= json_decode($result,true);
+				$logLogin['city']=$result['city'];
 				$logLogin['login_ip']=$login_ip;
 				$logLogin['login_time']=$login_time;
 				Session::set("adminUser",$name); //保存新的,最长为2小时
@@ -107,6 +109,16 @@ class Login extends AppController
 		}
 
 	}
+
+	public function ar_utf8(&$ar){
+        array_walk($ar, function(&$s) {
+            if(is_numeric($s)) {
+                $s= intval($s);
+            } else {
+                $s= iconv("GBK","UTF-8",$s);
+            }
+        });
+    }
 
 	/**
 	 * 退出登录
