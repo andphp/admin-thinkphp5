@@ -17,7 +17,7 @@
     ],
     "require": {
         "php": ">=5.6.0",
-        "topthink/framework": "5.1.*",
+        "topthink/framework": "5.1.15",
         "qiniu/php-sdk": "^7.2",
         "topthink/think-captcha": "^2.0"
     },
